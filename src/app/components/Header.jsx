@@ -80,6 +80,117 @@
 //   );
 // }
 
+// "use client";
+
+// import Link from "next/link";
+// import { useState } from "react";
+// import { useCart } from "@/app/context/cartContext";
+
+// export default function Header() {
+//   const { cart } = useCart();
+//   const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+//   const [open, setOpen] = useState(false);
+
+//   return (
+//     <>
+//       {/* HEADER */}
+//       {/* <header
+//         className="
+//         fixed top-0 left-0 w-full z-50 bg-white h-24
+        
+//       "
+//       > */}
+//       <header className="fixed top-0 left-0 w-full z-50 bg-white h-20 md:h-24">
+//         <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-6">
+//           {/* LOGO */}
+//           <Link href="/" className="text-2xl font-bold tracking-wide">
+//             UnifyStore
+//           </Link>
+
+//           {/* DESKTOP NAV */}
+//           <nav className="hidden md:flex gap-10 text-lg items-center">
+//             <NavLink href="/shop">Shop</NavLink>
+
+//             <Link
+//               href="/cart"
+//               className="relative hover:text-green-600 transition"
+//             >
+//               <i className="fas fa-shopping-cart text-xl"></i>
+
+//               {totalQty > 0 && (
+//                 <span
+//                   className="
+//                   absolute -top-2 -right-3 w-5 h-5 text-xs 
+//                   bg-green-600 text-white rounded-full 
+//                   flex items-center justify-center 
+//                 "
+//                 >
+//                   {totalQty}
+//                 </span>
+//               )}
+//             </Link>
+//           </nav>
+
+//           {/* MOBILE BUTTON */}
+//           <button className="md:hidden text-2xl" onClick={() => setOpen(!open)}>
+//             ☰
+//           </button>
+//         </div>
+
+//         {/* MOBILE MENU */}
+//         {open && (
+//           <div className="md:hidden bg-white border-t px-6 py-4 flex flex-col gap-4">
+//             <NavLink href="/shop" mobile>
+//               Shop
+//             </NavLink>
+//             <Link href="/cart" className="relative text-lg">
+//               Cart
+//               {totalQty > 0 && (
+//                 <span
+//                   className="
+//                   absolute -top-2 -right-4 w-5 h-5 text-xs 
+//                   bg-green-600 text-white rounded-full 
+//                   flex items-center justify-center 
+//                 "
+//                 >
+//                   {totalQty}
+//                 </span>
+//               )}
+//             </Link>
+//           </div>
+//         )}
+//       </header>
+
+//       {/* SPACER */}
+//       <div className="h-20"></div>
+//     </>
+//   );
+// }
+
+// /* REUSABLE NAV LINK COMPONENT */
+// function NavLink({ href, children, mobile }) {
+//   return (
+//     <Link
+//       href={href}
+//       className={`
+//         relative group 
+//         ${mobile ? "text-lg py-1" : ""}
+//       `}
+//     >
+//       {children}
+
+//       {/* Hover Underline Animation */}
+//       <span
+//         className="
+//         absolute left-0 -bottom-1 w-0 h-[2px] 
+//         bg-green-600 transition-all duration-300 
+//         group-hover:w-full
+//       "
+//       ></span>
+//     </Link>
+//   );
+// }
+
 "use client";
 
 import Link from "next/link";
@@ -96,14 +207,18 @@ export default function Header() {
       {/* HEADER */}
       <header
         className="
-        fixed top-0 left-0 w-full z-50 
-         bg-white
-        
-      "
+          fixed top-0 left-0 w-full z-50
+          bg-white
+          h-20 md:h-24
+          shadow-sm
+        "
       >
-        <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-6">
+        <div className="max-w-7xl mx-auto h-full flex items-center justify-between px-4 md:px-6">
           {/* LOGO */}
-          <Link href="/" className="text-2xl font-bold tracking-wide">
+          <Link
+            href="/"
+            className="text-xl md:text-2xl font-bold tracking-wide"
+          >
             UnifyStore
           </Link>
 
@@ -120,10 +235,12 @@ export default function Header() {
               {totalQty > 0 && (
                 <span
                   className="
-                  absolute -top-2 -right-3 w-5 h-5 text-xs 
-                  bg-green-600 text-white rounded-full 
-                  flex items-center justify-center 
-                "
+                    absolute -top-2 -right-3
+                    w-5 h-5 text-xs
+                    bg-green-600 text-white
+                    rounded-full
+                    flex items-center justify-center
+                  "
                 >
                   {totalQty}
                 </span>
@@ -131,27 +248,38 @@ export default function Header() {
             </Link>
           </nav>
 
-          {/* MOBILE BUTTON */}
-          <button className="md:hidden text-2xl" onClick={() => setOpen(!open)}>
+          {/* MOBILE MENU BUTTON */}
+          <button
+            className="md:hidden text-3xl p-2"
+            aria-label="Toggle menu"
+            onClick={() => setOpen(!open)}
+          >
             ☰
           </button>
         </div>
 
         {/* MOBILE MENU */}
         {open && (
-          <div className="md:hidden bg-white border-t px-6 py-4 flex flex-col gap-4">
-            <NavLink href="/shop" mobile>
+          <div className="md:hidden bg-white border-t px-6 py-6 flex flex-col gap-6 text-lg shadow-md">
+            <NavLink href="/shop" mobile onClick={() => setOpen(false)}>
               Shop
             </NavLink>
-            <Link href="/cart" className="relative text-lg">
+
+            <Link
+              href="/cart"
+              className="relative text-lg"
+              onClick={() => setOpen(false)}
+            >
               Cart
               {totalQty > 0 && (
                 <span
                   className="
-                  absolute -top-2 -right-4 w-5 h-5 text-xs 
-                  bg-green-600 text-white rounded-full 
-                  flex items-center justify-center 
-                "
+                    absolute -top-2 -right-4
+                    w-5 h-5 text-xs
+                    bg-green-600 text-white
+                    rounded-full
+                    flex items-center justify-center
+                  "
                 >
                   {totalQty}
                 </span>
@@ -161,33 +289,35 @@ export default function Header() {
         )}
       </header>
 
-      {/* SPACER */}
-      <div className="h-20"></div>
+      {/* HEADER OFFSET */}
+      <div className="h-20 md:h-24" />
     </>
   );
 }
 
 /* REUSABLE NAV LINK COMPONENT */
-function NavLink({ href, children, mobile }) {
+function NavLink({ href, children, mobile, onClick }) {
   return (
     <Link
       href={href}
+      onClick={onClick}
       className={`
-        relative group 
-        ${mobile ? "text-lg py-1" : ""}
+        relative group
+        ${mobile ? "text-lg py-2" : ""}
       `}
     >
       {children}
 
-      {/* Hover Underline Animation */}
+      {/* Hover Underline */}
       <span
         className="
-        absolute left-0 -bottom-1 w-0 h-[2px] 
-        bg-green-600 transition-all duration-300 
-        group-hover:w-full
-      "
-      ></span>
+          absolute left-0 -bottom-1
+          w-0 h-[2px]
+          bg-green-600
+          transition-all duration-300
+          group-hover:w-full
+        "
+      />
     </Link>
   );
 }
-

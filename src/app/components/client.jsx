@@ -27,12 +27,15 @@ export default function Testimonials() {
   ];
 
   return (
-    <section className="bg-gray-50 py-16 px-6 text-center rounded-lg max-w-7xl mx-auto">
-      <h2 className="text-4xl font-bold mb-10 text-gray-900">
+    // <section className="bg-gray-50 py-16 px-6 text-center rounded-lg max-w-7xl mx-auto">
+    <section className="bg-gray-50 py-12 md:py-16 px-4 md:px-6 text-center rounded-lg max-w-7xl mx-auto">
+      {/* <h2 className="text-4xl font-bold mb-10 text-gray-900"> */}
+      <h2 className="text-2xl md:text-4xl font-bold mb-10 text-gray-900">
         What Our Customers Say About Us
       </h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+      {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-2"> */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {testimonials.map(({ id, name, avatar, quote, title }) => (
           <div
             key={id}

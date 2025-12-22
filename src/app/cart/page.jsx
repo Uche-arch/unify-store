@@ -416,6 +416,255 @@
 //   );
 // }
 
+// "use client";
+
+// import { useCart } from "@/app/context/cartContext";
+// import Link from "next/link";
+// import { useState } from "react";
+// import Header from "@/app/components/Header";
+
+// export default function CartPage() {
+//   const { cart, updateQty, removeFromCart, clearCart } = useCart();
+//   const [useFreeShipping, setUseFreeShipping] = useState(false);
+
+//   const productTotal = cart.reduce(
+//     (acc, item) => acc + item.price * item.qty,
+//     0
+//   );
+
+//   const shippingFee = productTotal > 50000 && useFreeShipping ? 0 : 1500;
+//   const finalTotal = productTotal + shippingFee;
+
+//   // EMPTY CART
+//   if (cart.length === 0)
+//     return (
+//       <main className="max-w-4xl mx-auto p-8 text-center">
+//         <Header />
+//         <h2 className="text-3xl font-bold mt-10 mb-6">Your Cart is Empty</h2>
+
+//         <Link
+//           href="/shop"
+//           className="inline-block bg-green-600 text-white py-3 px-8 rounded-lg shadow hover:bg-green-700 transition"
+//         >
+//           Go to Shop
+//         </Link>
+//       </main>
+//     );
+
+//   return (
+//     <main className="max-w-6xl mx-auto p-6">
+//       <Header />
+
+//       <h1 className="text-4xl mb-10">Shopping Cart</h1>
+
+//       {/* DESKTOP TABLE */}
+//       <div className="hidden md:block bg-white rounded-2xl  overflow-hidden">
+//         <table className="w-full">
+//           <thead>
+//             <tr className="bg-gray-100 border-b text-gray-700">
+//               <th className="text-left p-5 font-semibold">Product</th>
+//               <th className="text-left p-5 font-semibold">Price</th>
+//               <th className="text-left p-5 font-semibold">Qty</th>
+//               <th className="text-left p-5 font-semibold">Subtotal</th>
+//               <th className="p-5 font-semibold text-center">Remove</th>
+//             </tr>
+//           </thead>
+
+//           <tbody>
+//             {cart.map(
+//               ({
+//                 variantId,
+//                 name,
+//                 price,
+//                 qty,
+//                 image,
+//                 selectedSize,
+//                 selectedColor,
+//               }) => (
+//                 <tr
+//                   key={variantId}
+//                   className="border-b hover:bg-gray-50 transition"
+//                 >
+//                   {/* PRODUCT */}
+//                   <td className="p-5 flex items-center gap-5">
+//                     <img
+//                       src={image}
+//                       className="w-20 h-20 rounded-xl object-cover border shadow-sm"
+//                     />
+
+//                     <div>
+//                       <p className="font-semibold text-lg">{name}</p>
+//                       {(selectedSize || selectedColor) && (
+//                         <p className="text-sm text-gray-500">
+//                           {selectedSize && <span>Size: {selectedSize}</span>}
+//                           {selectedColor && (
+//                             <span> • Color: {selectedColor}</span>
+//                           )}
+//                         </p>
+//                       )}
+//                     </div>
+//                   </td>
+
+//                   <td className="p-5 font-medium text-gray-700">
+//                     ₦{price.toLocaleString()}
+//                   </td>
+
+//                   {/* QTY */}
+//                   <td className="p-5">
+//                     <input
+//                       type="number"
+//                       min={1}
+//                       value={qty}
+//                       onChange={(e) =>
+//                         updateQty(
+//                           variantId,
+//                           e.target.value === "" ? "" : Number(e.target.value)
+//                         )
+//                       }
+//                       onBlur={(e) => {
+//                         if (!e.target.value || Number(e.target.value) < 1)
+//                           updateQty(variantId, 1);
+//                       }}
+//                       className="border rounded-lg p-2 w-20 text-center bg-gray-50 focus:outline-green-600"
+//                     />
+//                   </td>
+
+//                   <td className="p-5 font-bold text-black">
+//                     ₦{(price * qty).toLocaleString()}
+//                   </td>
+
+//                   <td className="p-5 text-center">
+//                     <button
+//                       onClick={() => removeFromCart(variantId)}
+//                       className="text-red-500 hover:text-red-700 text-xl"
+//                     >
+//                       <i className="fas fa-trash"></i>
+//                     </button>
+//                   </td>
+//                 </tr>
+//               )
+//             )}
+//           </tbody>
+//         </table>
+//       </div>
+
+//       {/* MOBILE CARD LIST */}
+//       <div className="md:hidden flex flex-col gap-5 mt-5">
+//         {cart.map((item) => (
+//           <div
+//             key={item.variantId}
+//             className="bg-white rounded-2xl shadow border p-5"
+//           >
+//             <div className="flex gap-4">
+//               <img
+//                 src={item.image}
+//                 className="w-24 h-24 rounded-xl object-cover border shadow"
+//               />
+
+//               <div className="flex-1">
+//                 <p className="font-semibold text-lg">{item.name}</p>
+
+//                 {(item.selectedSize || item.selectedColor) && (
+//                   <p className="text-sm text-gray-600">
+//                     {item.selectedSize && (
+//                       <span>Size: {item.selectedSize}</span>
+//                     )}
+//                     {item.selectedColor && (
+//                       <span> • Color: {item.selectedColor}</span>
+//                     )}
+//                   </p>
+//                 )}
+
+//                 <p className="text-xl font-bold text-green-700 mt-1">
+//                   ₦{item.price.toLocaleString()}
+//                 </p>
+//               </div>
+//             </div>
+
+//             {/* QTY + REMOVE */}
+//             <div className="flex justify-between items-center mt-5">
+//               <input
+//                 type="number"
+//                 min={1}
+//                 value={item.qty}
+//                 onChange={(e) =>
+//                   updateQty(
+//                     item.variantId,
+//                     e.target.value === "" ? "" : Number(e.target.value)
+//                   )
+//                 }
+//                 onBlur={(e) => {
+//                   if (!e.target.value || Number(e.target.value) < 1)
+//                     updateQty(item.variantId, 1);
+//                 }}
+//                 className="border rounded-lg p-2 w-20 text-center bg-gray-50 focus:outline-green-600"
+//               />
+
+//               <button
+//                 onClick={() => removeFromCart(item.variantId)}
+//                 className="text-red-500 text-xl hover:text-red-700"
+//               >
+//                 <i className="fas fa-trash"></i>
+//               </button>
+//             </div>
+//           </div>
+//         ))}
+//       </div>
+
+//       {/* TOTALS SECTION */}
+//       <div className="mt-10 bg-white shadow border p-6">
+//         <p className="text-xl font-semibold">
+//           Products Total: ₦{productTotal.toLocaleString()}
+//         </p>
+
+//         {productTotal > 50000 && (
+//           <label className="flex items-center gap-2 mt-4 cursor-pointer">
+//             <input
+//               type="checkbox"
+//               checked={useFreeShipping}
+//               onChange={(e) => setUseFreeShipping(e.target.checked)}
+//               className="h-5 w-5"
+//             />
+//             <span className="text-green-700 font-medium">
+//               Apply Free Shipping
+//             </span>
+//           </label>
+//         )}
+
+//         <p className="text-lg mt-4">
+//           Shipping Fee:{" "}
+//           <span className="font-semibold text-gray-800">
+//             {shippingFee === 0 ? "₦0 (Free)" : `₦${shippingFee}`}
+//           </span>
+//         </p>
+
+//         <p className="text-4xl font-extrabold mt-6">
+//           Total: ₦{finalTotal.toLocaleString()}
+//         </p>
+//       </div>
+
+//       {/* ACTION BUTTONS */}
+//       <div className="flex flex-col md:flex-row justify-between gap-4 mt-10">
+//         <button
+//           onClick={clearCart}
+//           className="bg-red-500 text-white py-3 px-6 rounded-xl shadow hover:bg-red-600 transition text-lg font-semibold"
+//         >
+//           Clear Cart
+//         </button>
+
+//         <Link
+//           href="/checkout"
+//           className="bg-green-600 text-white py-3 px-10 rounded-xl shadow hover:bg-green-700 transition text-lg font-semibold text-center"
+//         >
+//           Proceed to Checkout
+//         </Link>
+//       </div>
+//     </main>
+//   );
+// }
+
+
+
 "use client";
 
 import { useCart } from "@/app/context/cartContext";
@@ -435,229 +684,207 @@ export default function CartPage() {
   const shippingFee = productTotal > 50000 && useFreeShipping ? 0 : 1500;
   const finalTotal = productTotal + shippingFee;
 
-  // EMPTY CART
+  /* EMPTY CART */
   if (cart.length === 0)
     return (
-      <main className="max-w-4xl mx-auto p-8 text-center">
+      <main className="min-h-screen flex flex-col">
         <Header />
-        <h2 className="text-3xl font-bold mt-10 mb-6">Your Cart is Empty</h2>
+        <div className="flex-grow flex flex-col items-center justify-center px-4">
+          <h2 className="text-2xl md:text-3xl font-bold mb-6">
+            Your Cart is Empty
+          </h2>
 
-        <Link
-          href="/shop"
-          className="inline-block bg-green-600 text-white py-3 px-8 rounded-lg shadow hover:bg-green-700 transition"
-        >
-          Go to Shop
-        </Link>
+          <Link
+            href="/shop"
+            className="bg-green-600 text-white py-3 px-8 rounded-lg shadow hover:bg-green-700 transition"
+          >
+            Go to Shop
+          </Link>
+        </div>
       </main>
     );
 
   return (
-    <main className="max-w-6xl mx-auto p-6">
+    <main className="min-h-screen flex flex-col">
       <Header />
 
-      <h1 className="text-4xl mb-10">Shopping Cart</h1>
+      {/* PAGE CONTENT */}
+      <div className="max-w-6xl mx-auto w-full px-4 md:px-6 pt-6">
+        <h1 className="text-2xl md:text-4xl mb-6 md:mb-10">Shopping Cart</h1>
 
-      {/* DESKTOP TABLE */}
-      <div className="hidden md:block bg-white rounded-2xl  overflow-hidden">
-        <table className="w-full">
-          <thead>
-            <tr className="bg-gray-100 border-b text-gray-700">
-              <th className="text-left p-5 font-semibold">Product</th>
-              <th className="text-left p-5 font-semibold">Price</th>
-              <th className="text-left p-5 font-semibold">Qty</th>
-              <th className="text-left p-5 font-semibold">Subtotal</th>
-              <th className="p-5 font-semibold text-center">Remove</th>
-            </tr>
-          </thead>
+        {/* DESKTOP TABLE */}
+        <div className="hidden md:block bg-white rounded-2xl overflow-hidden border">
+          <table className="w-full">
+            <thead>
+              <tr className="bg-gray-100 border-b text-gray-700">
+                <th className="text-left p-5">Product</th>
+                <th className="text-left p-5">Price</th>
+                <th className="text-left p-5">Qty</th>
+                <th className="text-left p-5">Subtotal</th>
+                <th className="p-5 text-center">Remove</th>
+              </tr>
+            </thead>
 
-          <tbody>
-            {cart.map(
-              ({
-                variantId,
-                name,
-                price,
-                qty,
-                image,
-                selectedSize,
-                selectedColor,
-              }) => (
-                <tr
-                  key={variantId}
-                  className="border-b hover:bg-gray-50 transition"
-                >
-                  {/* PRODUCT */}
-                  <td className="p-5 flex items-center gap-5">
-                    <img
-                      src={image}
-                      className="w-20 h-20 rounded-xl object-cover border shadow-sm"
-                    />
+            <tbody>
+              {cart.map(
+                ({
+                  variantId,
+                  name,
+                  price,
+                  qty,
+                  image,
+                  selectedSize,
+                  selectedColor,
+                }) => (
+                  <tr key={variantId} className="border-b">
+                    <td className="p-5 flex items-center gap-5">
+                      <img
+                        src={image}
+                        className="w-20 h-20 rounded-xl object-cover border"
+                      />
+                      <div>
+                        <p className="font-semibold">{name}</p>
+                        {(selectedSize || selectedColor) && (
+                          <p className="text-sm text-gray-500">
+                            {selectedSize && `Size: ${selectedSize}`}
+                            {selectedColor && ` • Color: ${selectedColor}`}
+                          </p>
+                        )}
+                      </div>
+                    </td>
 
-                    <div>
-                      <p className="font-semibold text-lg">{name}</p>
-                      {(selectedSize || selectedColor) && (
-                        <p className="text-sm text-gray-500">
-                          {selectedSize && <span>Size: {selectedSize}</span>}
-                          {selectedColor && (
-                            <span> • Color: {selectedColor}</span>
-                          )}
-                        </p>
-                      )}
-                    </div>
-                  </td>
+                    <td className="p-5">₦{price.toLocaleString()}</td>
 
-                  <td className="p-5 font-medium text-gray-700">
-                    ₦{price.toLocaleString()}
-                  </td>
+                    <td className="p-5">
+                      <input
+                        type="number"
+                        min={1}
+                        value={qty}
+                        onChange={(e) =>
+                          updateQty(variantId, Number(e.target.value) || 1)
+                        }
+                        className="border rounded-lg p-2 w-20 text-center bg-gray-50"
+                      />
+                    </td>
 
-                  {/* QTY */}
-                  <td className="p-5">
-                    <input
-                      type="number"
-                      min={1}
-                      value={qty}
-                      onChange={(e) =>
-                        updateQty(
-                          variantId,
-                          e.target.value === "" ? "" : Number(e.target.value)
-                        )
-                      }
-                      onBlur={(e) => {
-                        if (!e.target.value || Number(e.target.value) < 1)
-                          updateQty(variantId, 1);
-                      }}
-                      className="border rounded-lg p-2 w-20 text-center bg-gray-50 focus:outline-green-600"
-                    />
-                  </td>
+                    <td className="p-5 font-semibold">
+                      ₦{(price * qty).toLocaleString()}
+                    </td>
 
-                  <td className="p-5 font-bold text-black">
-                    ₦{(price * qty).toLocaleString()}
-                  </td>
+                    <td className="p-5 text-center">
+                      <button
+                        onClick={() => removeFromCart(variantId)}
+                        className="text-red-500 hover:text-red-700 text-xl"
+                      >
+                        <i className="fas fa-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+                )
+              )}
+            </tbody>
+          </table>
+        </div>
 
-                  <td className="p-5 text-center">
-                    <button
-                      onClick={() => removeFromCart(variantId)}
-                      className="text-red-500 hover:text-red-700 text-xl"
-                    >
-                      <i className="fas fa-trash"></i>
-                    </button>
-                  </td>
-                </tr>
-              )
-            )}
-          </tbody>
-        </table>
-      </div>
+        {/* MOBILE CARDS */}
+        <div className="md:hidden flex flex-col gap-4">
+          {cart.map((item) => (
+            <div
+              key={item.variantId}
+              className="bg-white rounded-xl border p-4 shadow-sm"
+            >
+              <div className="flex gap-4">
+                <img
+                  src={item.image}
+                  className="w-24 h-24 rounded-lg object-cover border"
+                />
 
-      {/* MOBILE CARD LIST */}
-      <div className="md:hidden flex flex-col gap-5 mt-5">
-        {cart.map((item) => (
-          <div
-            key={item.variantId}
-            className="bg-white rounded-2xl shadow border p-5"
-          >
-            <div className="flex gap-4">
-              <img
-                src={item.image}
-                className="w-24 h-24 rounded-xl object-cover border shadow"
-              />
+                <div className="flex-1">
+                  <p className="font-semibold">{item.name}</p>
 
-              <div className="flex-1">
-                <p className="font-semibold text-lg">{item.name}</p>
+                  {(item.selectedSize || item.selectedColor) && (
+                    <p className="text-sm text-gray-600">
+                      {item.selectedSize && `Size: ${item.selectedSize}`}
+                      {item.selectedColor && ` • Color: ${item.selectedColor}`}
+                    </p>
+                  )}
 
-                {(item.selectedSize || item.selectedColor) && (
-                  <p className="text-sm text-gray-600">
-                    {item.selectedSize && (
-                      <span>Size: {item.selectedSize}</span>
-                    )}
-                    {item.selectedColor && (
-                      <span> • Color: {item.selectedColor}</span>
-                    )}
+                  <p className="text-lg font-bold text-green-700 mt-1">
+                    ₦{item.price.toLocaleString()}
                   </p>
-                )}
+                </div>
+              </div>
 
-                <p className="text-xl font-bold text-green-700 mt-1">
-                  ₦{item.price.toLocaleString()}
-                </p>
+              <div className="flex items-center justify-between mt-4">
+                <input
+                  type="number"
+                  min={1}
+                  value={item.qty}
+                  onChange={(e) =>
+                    updateQty(item.variantId, Number(e.target.value) || 1)
+                  }
+                  className="border rounded-lg p-2 w-20 text-center bg-gray-50"
+                />
+
+                <button
+                  onClick={() => removeFromCart(item.variantId)}
+                  className="text-red-500 text-xl"
+                >
+                  <i className="fas fa-trash"></i>
+                </button>
               </div>
             </div>
+          ))}
+        </div>
 
-            {/* QTY + REMOVE */}
-            <div className="flex justify-between items-center mt-5">
+        {/* TOTALS */}
+        <div className="mt-8 bg-white border rounded-xl p-5">
+          <p className="text-lg font-semibold">
+            Products Total: ₦{productTotal.toLocaleString()}
+          </p>
+
+          {productTotal > 50000 && (
+            <label className="flex items-center gap-2 mt-3">
               <input
-                type="number"
-                min={1}
-                value={item.qty}
-                onChange={(e) =>
-                  updateQty(
-                    item.variantId,
-                    e.target.value === "" ? "" : Number(e.target.value)
-                  )
-                }
-                onBlur={(e) => {
-                  if (!e.target.value || Number(e.target.value) < 1)
-                    updateQty(item.variantId, 1);
-                }}
-                className="border rounded-lg p-2 w-20 text-center bg-gray-50 focus:outline-green-600"
+                type="checkbox"
+                checked={useFreeShipping}
+                onChange={(e) => setUseFreeShipping(e.target.checked)}
+                className="w-5 h-5"
               />
+              <span className="text-green-700 font-medium">
+                Apply Free Shipping
+              </span>
+            </label>
+          )}
 
-              <button
-                onClick={() => removeFromCart(item.variantId)}
-                className="text-red-500 text-xl hover:text-red-700"
-              >
-                <i className="fas fa-trash"></i>
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* TOTALS SECTION */}
-      <div className="mt-10 bg-white shadow border p-6">
-        <p className="text-xl font-semibold">
-          Products Total: ₦{productTotal.toLocaleString()}
-        </p>
-
-        {productTotal > 50000 && (
-          <label className="flex items-center gap-2 mt-4 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={useFreeShipping}
-              onChange={(e) => setUseFreeShipping(e.target.checked)}
-              className="h-5 w-5"
-            />
-            <span className="text-green-700 font-medium">
-              Apply Free Shipping
+          <p className="mt-3">
+            Shipping Fee:{" "}
+            <span className="font-semibold">
+              {shippingFee === 0 ? "₦0 (Free)" : `₦${shippingFee}`}
             </span>
-          </label>
-        )}
+          </p>
 
-        <p className="text-lg mt-4">
-          Shipping Fee:{" "}
-          <span className="font-semibold text-gray-800">
-            {shippingFee === 0 ? "₦0 (Free)" : `₦${shippingFee}`}
-          </span>
-        </p>
+          <p className="text-2xl md:text-4xl font-extrabold mt-5">
+            Total: ₦{finalTotal.toLocaleString()}
+          </p>
+        </div>
 
-        <p className="text-4xl font-extrabold mt-6">
-          Total: ₦{finalTotal.toLocaleString()}
-        </p>
-      </div>
+        {/* ACTIONS */}
+        <div className="flex flex-col sm:flex-row gap-4 mt-8">
+          <button
+            onClick={clearCart}
+            className="bg-red-500 text-white py-3 px-6 rounded-xl font-semibold hover:bg-red-600"
+          >
+            Clear Cart
+          </button>
 
-      {/* ACTION BUTTONS */}
-      <div className="flex flex-col md:flex-row justify-between gap-4 mt-10">
-        <button
-          onClick={clearCart}
-          className="bg-red-500 text-white py-3 px-6 rounded-xl shadow hover:bg-red-600 transition text-lg font-semibold"
-        >
-          Clear Cart
-        </button>
-
-        <Link
-          href="/checkout"
-          className="bg-green-600 text-white py-3 px-10 rounded-xl shadow hover:bg-green-700 transition text-lg font-semibold text-center"
-        >
-          Proceed to Checkout
-        </Link>
+          <Link
+            href="/checkout"
+            className="bg-green-600 text-white py-3 px-10 rounded-xl font-semibold text-center hover:bg-green-700"
+          >
+            Proceed to Checkout
+          </Link>
+        </div>
       </div>
     </main>
   );

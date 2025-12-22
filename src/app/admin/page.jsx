@@ -1458,7 +1458,6 @@
 //     </div>
 //   );
 // }
-
 "use client";
 
 import { useState, useEffect } from "react";
@@ -1494,6 +1493,7 @@ export default function AdminPage() {
   const [loadingOrders, setLoadingOrders] = useState(false);
   const [view, setView] = useState("products"); // "products" or "orders"
   const [selectedOrder, setSelectedOrder] = useState(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // ---------- Login ----------
   useEffect(() => {
@@ -1736,12 +1736,12 @@ export default function AdminPage() {
   // ----------------------------------------------
   if (!isLoggedIn) {
     return (
-      <div className="fixed inset-0 flex items-center justify-center bg-gradient-to-tr from-blue-600 to-indigo-700">
+      <div className="fixed inset-0 flex items-center justify-center bg-gradient-to-tr from-blue-600 to-indigo-700 p-4">
         <form
           onSubmit={handleLogin}
-          className="bg-white p-8 rounded-lg shadow-xl w-80 max-w-full"
+          className="bg-white p-6 md:p-8 rounded-lg shadow-xl w-full max-w-sm"
         >
-          <h2 className="text-3xl font-extrabold mb-6 text-center text-gray-900">
+          <h2 className="text-2xl md:text-3xl font-extrabold mb-6 text-center text-gray-900">
             Admin Login
           </h2>
 
@@ -1754,12 +1754,14 @@ export default function AdminPage() {
           />
 
           {error && (
-            <p className="text-red-600 text-center mb-4 font-medium">{error}</p>
+            <p className="text-red-600 text-center mb-4 font-medium text-sm">
+              {error}
+            </p>
           )}
 
           <button
             type="submit"
-            className="bg-indigo-600 hover:bg-indigo-700 text-white w-full py-3 rounded-md font-semibold transition"
+            className="bg-indigo-600 hover:bg-indigo-700 text-white w-full py-3 rounded-md font-semibold transition shadow-md active:scale-95 transform duration-150"
           >
             Login
           </button>
@@ -1769,32 +1771,60 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="flex flex-col md:flex-row h-screen bg-gray-100">
+    <div className="flex flex-col md:flex-row h-screen overflow-hidden bg-gray-100">
+      {/* Hamburger Button - Visible only on mobile */}
+      <button
+        className="md:hidden fixed top-2 right-4 z-50 p-2 bg-indigo-600 text-white rounded-md"
+        onClick={() => setIsMenuOpen(!isMenuOpen)}
+      >
+        {isMenuOpen ? "✕" : "☰"}
+      </button>
+
+      {/* Sidebar Overlay - Closes menu when clicking outside */}
+      {isMenuOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-20 md:hidden"
+          onClick={() => setIsMenuOpen(false)}
+        ></div>
+      )}
+
       {/* Sidebar */}
-      <aside className="w-full md:w-64 bg-white border-r shadow-md flex flex-col p-6">
+      <aside
+        className={`
+  fixed inset-y-0 left-0 z-30 w-64 bg-white border-r shadow-md transform transition-transform duration-300 ease-in-out flex flex-col p-6
+  ${isMenuOpen ? "translate-x-0" : "-translate-x-full"} 
+  md:relative md:translate-x-0 md:flex md:h-full md:w-64
+`}
+      >
         <h1 className="text-2xl font-bold mb-8 text-indigo-700 tracking-wide">
-          My Store Admin
+          UnifyStore Admin
         </h1>
 
         <nav className="flex flex-col space-y-4 mb-8">
           <button
-            className={`text-left font-semibold text-lg transition-colors duration-300 ${
+            className={`text-left font-semibold text-lg transition-colors duration-300 py-2 ${
               view === "products"
-                ? "text-indigo-600 border-l-4 border-indigo-600 pl-4"
-                : "text-gray-600 hover:text-indigo-600"
+                ? "text-indigo-600 border-l-4 border-indigo-600 pl-4 bg-indigo-50"
+                : "text-gray-600 hover:text-indigo-600 pl-4"
             }`}
-            onClick={() => setView("products")}
+            onClick={() => {
+              setView("products");
+              setIsMenuOpen(false);
+            }}
           >
             Products
           </button>
 
           <button
-            className={`text-left font-semibold text-lg transition-colors duration-300 ${
+            className={`text-left font-semibold text-lg transition-colors duration-300 py-2 ${
               view === "orders"
-                ? "text-indigo-600 border-l-4 border-indigo-600 pl-4"
-                : "text-gray-600 hover:text-indigo-600"
+                ? "text-indigo-600 border-l-4 border-indigo-600 pl-4 bg-indigo-50"
+                : "text-gray-600 hover:text-indigo-600 pl-4"
             }`}
-            onClick={() => setView("orders")}
+            onClick={() => {
+              setView("orders");
+              setIsMenuOpen(false);
+            }}
           >
             Orders
           </button>
@@ -1802,35 +1832,35 @@ export default function AdminPage() {
 
         <button
           onClick={handleLogout}
-          className="mt-auto bg-red-600 hover:bg-red-700 text-white py-3 rounded-md font-semibold transition"
+          className="mt-auto bg-red-600 hover:bg-red-700 text-white py-3 px-4 rounded-md font-semibold transition text-base w-full"
         >
           Logout
         </button>
       </aside>
 
       {/* Main content */}
-      <main className="flex-1 p-8 overflow-auto">
+      <main className="flex-1 p-4 md:p-8 overflow-y-auto h-full w-full">
         {view === "products" && (
           <>
-            <h2 className="text-3xl font-bold mb-8 text-gray-800">
+            <h2 className="text-2xl md:text-3xl font-bold mb-6 text-gray-800">
               Manage Products
             </h2>
 
             {/* Add Product */}
             <form
               onSubmit={handleAddProduct}
-              className="bg-white rounded-lg shadow p-6 mb-10 max-w-5xl mx-auto"
+              className="bg-white rounded-lg shadow p-4 md:p-6 mb-10 max-w-5xl mx-auto"
             >
-              <h3 className="text-2xl font-semibold mb-6 text-indigo-700">
+              <h3 className="text-xl md:text-2xl font-semibold mb-6 text-indigo-700 border-b pb-2">
                 Add New Product
               </h3>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                 {/* Inputs */}
                 <input
                   type="text"
                   placeholder="Name *"
-                  className="border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+                  className="border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 transition w-full"
                   value={newProduct.name}
                   onChange={(e) =>
                     setNewProduct({ ...newProduct, name: e.target.value })
@@ -1840,7 +1870,7 @@ export default function AdminPage() {
                 <input
                   type="number"
                   placeholder="Price *"
-                  className="border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+                  className="border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 transition w-full"
                   value={newProduct.price}
                   onChange={(e) =>
                     setNewProduct({ ...newProduct, price: e.target.value })
@@ -1850,7 +1880,7 @@ export default function AdminPage() {
                 <input
                   type="number"
                   placeholder="Old Price"
-                  className="border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+                  className="border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 transition w-full"
                   value={newProduct.oldPrice}
                   onChange={(e) =>
                     setNewProduct({ ...newProduct, oldPrice: e.target.value })
@@ -1860,7 +1890,7 @@ export default function AdminPage() {
                 <input
                   type="text"
                   placeholder="Category"
-                  className="border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+                  className="border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 transition w-full"
                   value={newProduct.category}
                   onChange={(e) =>
                     setNewProduct({ ...newProduct, category: e.target.value })
@@ -1869,14 +1899,14 @@ export default function AdminPage() {
 
                 {/* Sizes input */}
                 <div>
-                  <label className="font-semibold text-gray-700 block mb-2">
+                  <label className="font-semibold text-gray-700 block mb-2 text-sm md:text-base">
                     Sizes
                   </label>
-                  <div className="flex gap-3 items-center">
+                  <div className="flex gap-2 items-center">
                     <input
                       type="text"
-                      placeholder="Add size (e.g. S, M, L)"
-                      className="border border-gray-300 p-3 rounded-md flex-grow focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+                      placeholder="e.g. S, M"
+                      className="border border-gray-300 p-3 rounded-md flex-grow focus:outline-none focus:ring-2 focus:ring-indigo-500 transition w-full"
                       value={sizeInput}
                       onChange={(e) => setSizeInput(e.target.value)}
                       onKeyDown={(e) => {
@@ -1889,18 +1919,18 @@ export default function AdminPage() {
                     <button
                       type="button"
                       onClick={addSize}
-                      className="bg-indigo-600 text-white px-5 py-2 rounded-md hover:bg-indigo-700 transition"
+                      className="bg-indigo-600 text-white px-4 py-3 rounded-md hover:bg-indigo-700 transition"
                     >
                       Add
                     </button>
                   </div>
 
                   {/* Display sizes */}
-                  <div className="flex flex-wrap gap-3 mt-3">
+                  <div className="flex flex-wrap gap-2 mt-3">
                     {newProduct.sizes.map((size) => (
                       <div
                         key={size}
-                        className="bg-indigo-100 text-indigo-700 px-4 py-1 rounded-full flex items-center gap-2 shadow-sm"
+                        className="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full flex items-center gap-2 shadow-sm text-sm"
                       >
                         <span>{size}</span>
                         <button
@@ -1918,14 +1948,14 @@ export default function AdminPage() {
 
                 {/* Colors input */}
                 <div>
-                  <label className="font-semibold text-gray-700 block mb-2">
+                  <label className="font-semibold text-gray-700 block mb-2 text-sm md:text-base">
                     Colors
                   </label>
-                  <div className="flex gap-3 items-center">
+                  <div className="flex gap-2 items-center">
                     <input
                       type="text"
-                      placeholder="Add color (e.g. Red, Blue)"
-                      className="border border-gray-300 p-3 rounded-md flex-grow focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+                      placeholder="e.g. Red"
+                      className="border border-gray-300 p-3 rounded-md flex-grow focus:outline-none focus:ring-2 focus:ring-indigo-500 transition w-full"
                       value={colorInput}
                       onChange={(e) => setColorInput(e.target.value)}
                       onKeyDown={(e) => {
@@ -1938,18 +1968,18 @@ export default function AdminPage() {
                     <button
                       type="button"
                       onClick={addColor}
-                      className="bg-indigo-600 text-white px-5 py-2 rounded-md hover:bg-indigo-700 transition"
+                      className="bg-indigo-600 text-white px-4 py-3 rounded-md hover:bg-indigo-700 transition"
                     >
                       Add
                     </button>
                   </div>
 
                   {/* Display colors */}
-                  <div className="flex flex-wrap gap-3 mt-3">
+                  <div className="flex flex-wrap gap-2 mt-3">
                     {newProduct.colors.map((color) => (
                       <div
                         key={color}
-                        className="bg-indigo-100 text-indigo-700 px-4 py-1 rounded-full flex items-center gap-2 shadow-sm"
+                        className="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full flex items-center gap-2 shadow-sm text-sm"
                       >
                         <span>{color}</span>
                         <button
@@ -1969,7 +1999,7 @@ export default function AdminPage() {
                 <div className="md:col-span-2">
                   <label
                     htmlFor="image-upload"
-                    className="block mb-2 font-semibold text-gray-700"
+                    className="block mb-2 font-semibold text-gray-700 text-sm md:text-base"
                   >
                     Upload Images
                   </label>
@@ -1979,28 +2009,28 @@ export default function AdminPage() {
                     multiple
                     accept="image/*"
                     onChange={handleImageUpload}
-                    className="cursor-pointer border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+                    className="cursor-pointer border border-gray-300 rounded-md p-2 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500 transition file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
                   />
 
                   {/* Preview images */}
-                  <div className="flex gap-4 mt-4 flex-wrap">
+                  <div className="flex gap-3 mt-4 flex-wrap">
                     {newProduct.images.map((img, i) => (
                       <img
                         key={i}
                         src={img}
                         alt={`Preview ${i + 1}`}
-                        className="h-24 w-24 rounded-lg object-cover border border-gray-300 shadow-sm"
+                        className="h-20 w-20 md:h-24 md:w-24 rounded-lg object-cover border border-gray-300 shadow-sm"
                       />
                     ))}
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3 md:col-span-2 mt-2">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 md:col-span-2 mt-2 w-full">
                   <input
                     type="number"
                     min={0}
                     placeholder="Stock Quantity *"
-                    className="border p-2 rounded"
+                    className="border p-3 rounded-md w-full sm:w-auto"
                     value={newProduct.stock || ""}
                     onChange={(e) =>
                       setNewProduct({
@@ -2010,30 +2040,32 @@ export default function AdminPage() {
                     }
                   />
 
-                  <input
-                    type="checkbox"
-                    id="popular-checkbox"
-                    checked={newProduct.popular || false}
-                    onChange={(e) =>
-                      setNewProduct({
-                        ...newProduct,
-                        popular: e.target.checked,
-                      })
-                    }
-                    className="h-5 w-5 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-                  />
-                  <label
-                    htmlFor="popular-checkbox"
-                    className="font-semibold text-gray-700 select-none"
-                  >
-                    Mark as Popular
-                  </label>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      id="popular-checkbox"
+                      checked={newProduct.popular || false}
+                      onChange={(e) =>
+                        setNewProduct({
+                          ...newProduct,
+                          popular: e.target.checked,
+                        })
+                      }
+                      className="h-5 w-5 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                    />
+                    <label
+                      htmlFor="popular-checkbox"
+                      className="font-semibold text-gray-700 select-none cursor-pointer"
+                    >
+                      Mark as Popular
+                    </label>
+                  </div>
                 </div>
 
                 <textarea
                   placeholder="Description"
                   rows={4}
-                  className="border border-gray-300 p-3 rounded-md md:col-span-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition resize-none"
+                  className="border border-gray-300 p-3 rounded-md md:col-span-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition resize-none w-full"
                   value={newProduct.description}
                   onChange={(e) =>
                     setNewProduct({
@@ -2052,7 +2084,7 @@ export default function AdminPage() {
 
               <button
                 type="submit"
-                className="mt-6 bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-md font-semibold transition block mx-auto"
+                className="mt-6 bg-green-600 hover:bg-green-700 text-white py-3 px-8 rounded-md font-semibold transition block w-full md:w-auto md:mx-auto shadow-md"
                 disabled={formLoading}
               >
                 {formLoading ? "Adding..." : "Add Product"}
@@ -2060,7 +2092,7 @@ export default function AdminPage() {
             </form>
 
             {/* Products List */}
-            <h3 className="text-2xl font-semibold mb-6 text-gray-800">
+            <h3 className="text-xl md:text-2xl font-semibold mb-6 text-gray-800">
               All Products
             </h3>
 
@@ -2073,33 +2105,33 @@ export default function AdminPage() {
             )}
 
             {!loadingProducts && products.length > 0 && (
-              <div className="overflow-x-auto shadow rounded-lg">
+              <div className="overflow-x-auto shadow rounded-lg border border-gray-200">
                 <table className="w-full table-auto border-collapse bg-white">
                   <thead>
-                    <tr className="bg-indigo-100 text-indigo-700 uppercase text-sm font-semibold tracking-wide">
-                      <th className="p-3 text-left border-b border-indigo-200">
+                    <tr className="bg-indigo-100 text-indigo-700 uppercase text-xs md:text-sm font-semibold tracking-wide">
+                      <th className="p-3 text-left border-b border-indigo-200 whitespace-nowrap">
                         Name
                       </th>
-                      <th className="p-3 text-left border-b border-indigo-200">
+                      <th className="p-3 text-left border-b border-indigo-200 whitespace-nowrap">
                         Price
                       </th>
-                      <th className="p-3 text-left border-b border-indigo-200">
+                      <th className="p-3 text-left border-b border-indigo-200 whitespace-nowrap">
                         Category
                       </th>
-                      <th className="p-3 text-left border-b border-indigo-200">
+                      <th className="p-3 text-left border-b border-indigo-200 whitespace-nowrap">
                         Sizes
                       </th>
-                      <th className="p-3 text-left border-b border-indigo-200">
+                      <th className="p-3 text-left border-b border-indigo-200 whitespace-nowrap">
                         Colors
                       </th>
-                      <th className="p-3 text-left border-b border-indigo-200">
+                      <th className="p-3 text-left border-b border-indigo-200 whitespace-nowrap">
                         Popular
                       </th>
-                      <th className="p-3 text-left border-b border-indigo-200">
-                        Actions
-                      </th>
-                      <th className="p-2 text-left border-b border-indigo-200">
+                      <th className="p-3 text-left border-b border-indigo-200 whitespace-nowrap">
                         Stock
+                      </th>
+                      <th className="p-3 text-left border-b border-indigo-200 whitespace-nowrap">
+                        Actions
                       </th>
                     </tr>
                   </thead>
@@ -2107,19 +2139,30 @@ export default function AdminPage() {
                     {products.map((p) => (
                       <tr
                         key={p._id}
-                        className="border-b border-indigo-100 hover:bg-indigo-50 transition cursor-default"
+                        className="border-b border-indigo-50 hover:bg-indigo-50 transition cursor-default"
                       >
-                        <td className="p-3">{p.name}</td>
-                        <td className="p-3 font-mono text-gray-700">
+                        <td
+                          className="p-3 whitespace-nowrap font-medium text-gray-800 truncate max-w-[150px]"
+                          title={p.name} // This creates the "native" browser tooltip
+                        >
+                          {p.name}
+                        </td>
+                        <td className="p-3 whitespace-nowrap font-mono text-gray-700">
                           ₦{p.price.toLocaleString()}
                         </td>
-                        <td className="p-3">{p.category || "-"}</td>
-                        <td className="p-3">{p.sizes?.join(", ") || "-"}</td>
-                        <td className="p-3">{p.colors?.join(", ") || "-"}</td>
-                        <td className="p-3 text-center">
+                        <td className="p-3 whitespace-nowrap">
+                          {p.category || "-"}
+                        </td>
+                        <td className="p-3 whitespace-nowrap max-w-xs overflow-hidden text-ellipsis">
+                          {p.sizes?.join(", ") || "-"}
+                        </td>
+                        <td className="p-3 whitespace-nowrap max-w-xs overflow-hidden text-ellipsis">
+                          {p.colors?.join(", ") || "-"}
+                        </td>
+                        <td className="p-3 text-center whitespace-nowrap">
                           {p.popular ? "⭐" : ""}
                         </td>
-                        <td className="p-3">
+                        <td className="p-3 whitespace-nowrap">
                           {p.stock > 0 ? (
                             <span className="text-green-600 font-semibold text-sm">
                               {p.stock}
@@ -2130,11 +2173,10 @@ export default function AdminPage() {
                             </span>
                           )}
                         </td>
-
-                        <td className="p-3">
+                        <td className="p-3 whitespace-nowrap">
                           <button
                             onClick={() => handleDeleteProduct(p._id)}
-                            className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md font-semibold transition"
+                            className="bg-red-50 text-red-600 border border-red-200 hover:bg-red-600 hover:text-white px-3 py-1 rounded text-sm font-semibold transition"
                           >
                             Delete
                           </button>
@@ -2150,7 +2192,9 @@ export default function AdminPage() {
 
         {view === "orders" && (
           <>
-            <h2 className="text-3xl font-bold mb-6 text-gray-800">Orders</h2>
+            <h2 className="text-2xl md:text-3xl font-bold mb-6 text-gray-800">
+              Orders
+            </h2>
 
             {loadingOrders && (
               <p className="text-center text-gray-500">Loading orders...</p>
@@ -2161,26 +2205,26 @@ export default function AdminPage() {
             )}
 
             {!loadingOrders && orders.length > 0 && (
-              <div className="overflow-x-auto shadow rounded-lg max-w-full">
+              <div className="overflow-x-auto shadow rounded-lg border border-gray-200 max-w-full">
                 <table className="w-full table-auto border-collapse bg-white">
                   <thead>
-                    <tr className="bg-indigo-100 text-indigo-700 uppercase text-sm font-semibold tracking-wide">
-                      <th className="p-3 text-left border-b border-indigo-200">
+                    <tr className="bg-indigo-100 text-indigo-700 uppercase text-xs md:text-sm font-semibold tracking-wide">
+                      <th className="p-3 text-left border-b border-indigo-200 whitespace-nowrap">
                         Order ID
                       </th>
-                      <th className="p-3 text-left border-b border-indigo-200">
+                      <th className="p-3 text-left border-b border-indigo-200 whitespace-nowrap">
                         Customer
                       </th>
-                      <th className="p-3 text-left border-b border-indigo-200">
+                      <th className="p-3 text-left border-b border-indigo-200 whitespace-nowrap">
                         Email
                       </th>
-                      <th className="p-3 text-left border-b border-indigo-200">
+                      <th className="p-3 text-left border-b border-indigo-200 whitespace-nowrap">
                         Total
                       </th>
-                      <th className="p-3 text-left border-b border-indigo-200">
+                      <th className="p-3 text-left border-b border-indigo-200 whitespace-nowrap">
                         Status
                       </th>
-                      <th className="p-3 text-left border-b border-indigo-200">
+                      <th className="p-3 text-left border-b border-indigo-200 whitespace-nowrap">
                         Date
                       </th>
                     </tr>
@@ -2189,22 +2233,36 @@ export default function AdminPage() {
                     {orders.map((order) => (
                       <tr
                         key={order._id}
-                        className="border-b border-indigo-100 hover:bg-indigo-50 cursor-pointer transition"
+                        className="border-b border-indigo-50 hover:bg-indigo-50 cursor-pointer transition active:bg-indigo-100"
                         onClick={() => setSelectedOrder(order)}
                       >
-                        <td className="p-3 font-mono text-sm">
-                          {order._id.slice(-6).toUpperCase()}
+                        <td className="p-3 font-mono text-sm whitespace-nowrap font-bold text-indigo-600">
+                          #{order._id.slice(-6).toUpperCase()}
                         </td>
-                        <td className="p-3">{`${order.customer.firstName} ${order.customer.lastName}`}</td>
-                        <td className="p-3">{order.customer.email}</td>
-                        <td className="p-3 font-mono">
+                        <td className="p-3 whitespace-nowrap text-gray-800">{`${order.customer.firstName} ${order.customer.lastName}`}</td>
+                        <td className="p-3 whitespace-nowrap text-gray-600">
+                          {order.customer.email}
+                        </td>
+                        <td className="p-3 font-mono font-medium whitespace-nowrap">
                           ₦{order.total.toLocaleString()}
                         </td>
-                        <td className="p-3 capitalize font-semibold">
-                          {order.status}
+                        <td className="p-3 whitespace-nowrap">
+                          <span
+                            className={`px-2 py-1 rounded text-xs font-bold uppercase ${
+                              order.status === "completed"
+                                ? "bg-green-100 text-green-700"
+                                : order.status === "pending"
+                                ? "bg-yellow-100 text-yellow-700"
+                                : order.status === "cancelled"
+                                ? "bg-red-100 text-red-700"
+                                : "bg-blue-100 text-blue-700"
+                            }`}
+                          >
+                            {order.status}
+                          </span>
                         </td>
-                        <td className="p-3">
-                          {new Date(order.createdAt).toLocaleString()}
+                        <td className="p-3 whitespace-nowrap text-gray-500 text-sm">
+                          {new Date(order.createdAt).toLocaleDateString()}
                         </td>
                       </tr>
                     ))}
@@ -2216,106 +2274,158 @@ export default function AdminPage() {
             {/* Selected Order Modal */}
             {selectedOrder && (
               <div
-                className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+                className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4 backdrop-blur-sm"
                 onClick={() => setSelectedOrder(null)}
               >
                 <div
-                  className="bg-white rounded-lg shadow-xl max-w-3xl w-full max-h-[80vh] overflow-auto p-6"
+                  className="bg-white rounded-xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-auto p-4 md:p-8 animate-fadeIn"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <h3 className="text-2xl font-bold mb-6 text-indigo-700">
-                    Order Details: #{selectedOrder._id.slice(-6).toUpperCase()}
-                  </h3>
-
-                  <section className="mb-6">
-                    <h4 className="font-semibold text-gray-700 mb-2">
-                      Customer Info
-                    </h4>
-                    <p>{`${selectedOrder.customer.firstName} ${selectedOrder.customer.lastName}`}</p>
-                    <p>{selectedOrder.customer.email}</p>
-                    <p>{selectedOrder.customer.phone}</p>
-                    <p>
-                      {`${selectedOrder.customer.street}, ${selectedOrder.customer.city}, ${selectedOrder.customer.state}, ${selectedOrder.customer.country}`}
-                    </p>
-                    <p>
-                      Notes:{" "}
-                      <span className="italic">
-                        {selectedOrder.customer.notes || "None"}
-                      </span>
-                    </p>
-                  </section>
-
-                  <section className="mb-6">
-                    <h4 className="font-semibold text-gray-700 mb-2">
-                      Products
-                    </h4>
-                    <ul className="list-disc pl-5 max-h-48 overflow-auto space-y-1">
-                      {selectedOrder.cart.map((item, i) => (
-                        <li key={i} className="text-gray-700">
-                          {item.name}
-                          {item.selectedSize && ` - Size: ${item.selectedSize}`}
-                          {item.selectedColor &&
-                            ` - Color: ${item.selectedColor}`}{" "}
-                          - ₦{item.price.toLocaleString()} x {item.qty} = ₦
-                          {(item.price * item.qty).toLocaleString()}
-                        </li>
-                      ))}
-                    </ul>
-                  </section>
-
-                  <div className="mb-6 text-gray-800">
-                    <p>
-                      Shipping Fee: ₦
-                      {selectedOrder.shippingFee
-                        ? selectedOrder.shippingFee.toLocaleString()
-                        : 0}
-                    </p>
-                    <p className="text-lg font-medium text-gray-800">
-                      <strong>Total:</strong> ₦
-                      {selectedOrder.total.toLocaleString()}
-                    </p>
-                    <p className="text-gray-700 mb-6">
-                      Free Shipping Applied:{" "}
-                      <span
-                        className={
-                          selectedOrder.freeShippingApplied
-                            ? "text-green-600 font-semibold"
-                            : "text-red-600 font-semibold"
-                        }
-                      >
-                        {selectedOrder.freeShippingApplied ? "Yes" : "No"}
-                      </span>
-                    </p>
+                  <div className="flex justify-between items-start mb-6 border-b pb-4">
+                    <h3 className="text-xl md:text-2xl font-bold text-indigo-700">
+                      Order #{selectedOrder._id.slice(-6).toUpperCase()}
+                    </h3>
+                    <button
+                      onClick={() => setSelectedOrder(null)}
+                      className="text-gray-400 hover:text-red-500 text-2xl font-bold leading-none"
+                    >
+                      &times;
+                    </button>
                   </div>
 
-                  <div className="flex items-center gap-4">
+                  <div className="grid md:grid-cols-2 gap-8">
+                    <section>
+                      <h4 className="font-semibold text-gray-900 mb-3 border-b border-gray-100 pb-1 uppercase text-xs tracking-wider">
+                        Customer Info
+                      </h4>
+                      <div className="text-sm md:text-base space-y-1 text-gray-700">
+                        <p className="font-medium">{`${selectedOrder.customer.firstName} ${selectedOrder.customer.lastName}`}</p>
+                        <p className="text-indigo-600">
+                          {selectedOrder.customer.email}
+                        </p>
+                        <p>{selectedOrder.customer.phone}</p>
+                        <p className="mt-2 text-gray-500">
+                          {`${selectedOrder.customer.street}, ${selectedOrder.customer.city}, ${selectedOrder.customer.state}, ${selectedOrder.customer.country}`}
+                        </p>
+                        {selectedOrder.customer.notes && (
+                          <div className="mt-2 bg-yellow-50 p-2 rounded text-sm text-yellow-800">
+                            <strong>Note:</strong>{" "}
+                            {selectedOrder.customer.notes}
+                          </div>
+                        )}
+                      </div>
+                    </section>
+
+                    <section>
+                      <h4 className="font-semibold text-gray-900 mb-3 border-b border-gray-100 pb-1 uppercase text-xs tracking-wider">
+                        Order Summary
+                      </h4>
+                      <div className="bg-gray-50 p-4 rounded-lg">
+                        <div className="flex justify-between mb-2 text-sm text-gray-600">
+                          <span>Subtotal</span>
+                          <span>-</span>
+                        </div>
+                        <div className="flex justify-between mb-2 text-sm text-gray-600">
+                          <span>Shipping</span>
+                          <span>
+                            ₦
+                            {selectedOrder.shippingFee
+                              ? selectedOrder.shippingFee.toLocaleString()
+                              : 0}
+                          </span>
+                        </div>
+                        <div className="border-t border-gray-200 pt-2 flex justify-between font-bold text-lg text-gray-800">
+                          <span>Total</span>
+                          <span>₦{selectedOrder.total.toLocaleString()}</span>
+                        </div>
+                        <p className="text-xs text-right mt-1">
+                          Free Shipping:{" "}
+                          <span
+                            className={
+                              selectedOrder.freeShippingApplied
+                                ? "text-green-600 font-bold"
+                                : "text-gray-500"
+                            }
+                          >
+                            {selectedOrder.freeShippingApplied ? "YES" : "NO"}
+                          </span>
+                        </p>
+                      </div>
+                    </section>
+                  </div>
+
+                  <section className="mt-8">
+                    <h4 className="font-semibold text-gray-900 mb-3 border-b border-gray-100 pb-1 uppercase text-xs tracking-wider">
+                      Items
+                    </h4>
+                    <div className="bg-white border rounded-lg overflow-hidden">
+                      <ul className="divide-y divide-gray-100 max-h-60 overflow-auto">
+                        {selectedOrder.cart.map((item, i) => (
+                          <li
+                            key={i}
+                            className="p-3 md:p-4 flex flex-col sm:flex-row justify-between sm:items-center text-sm md:text-base hover:bg-gray-50"
+                          >
+                            <div>
+                              <p className="font-medium text-gray-800">
+                                {item.name}
+                              </p>
+                              <div className="text-xs text-gray-500 flex gap-2 mt-1">
+                                {item.selectedSize && (
+                                  <span className="bg-gray-200 px-2 py-0.5 rounded">
+                                    Size: {item.selectedSize}
+                                  </span>
+                                )}
+                                {item.selectedColor && (
+                                  <span className="bg-gray-200 px-2 py-0.5 rounded">
+                                    Color: {item.selectedColor}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                            <div className="mt-2 sm:mt-0 font-mono text-gray-600 text-right">
+                              <span className="text-xs text-gray-400 block sm:inline mr-2">
+                                ₦{item.price.toLocaleString()} x {item.qty}
+                              </span>
+                              <span className="font-semibold text-indigo-600">
+                                ₦{(item.price * item.qty).toLocaleString()}
+                              </span>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </section>
+
+                  <div className="mt-8 pt-6 border-t border-gray-200 flex flex-col sm:flex-row items-center gap-4 justify-between bg-gray-50 -mx-4 md:-mx-8 -mb-4 md:-mb-8 p-4 md:p-6 rounded-b-xl">
                     <label
                       htmlFor="status"
-                      className="font-semibold text-gray-700"
+                      className="font-semibold text-gray-700 whitespace-nowrap"
                     >
                       Update Status:
                     </label>
-                    <select
-                      id="status"
-                      value={selectedOrder.status}
-                      onChange={(e) =>
-                        updateOrderStatus(selectedOrder._id, e.target.value)
-                      }
-                      className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-                    >
-                      <option value="pending">Pending</option>
-                      <option value="processing">Processing</option>
-                      <option value="shipped">Shipped</option>
-                      <option value="completed">Completed</option>
-                      <option value="cancelled">Cancelled</option>
-                    </select>
+                    <div className="flex w-full sm:w-auto gap-3">
+                      <select
+                        id="status"
+                        value={selectedOrder.status}
+                        onChange={(e) =>
+                          updateOrderStatus(selectedOrder._id, e.target.value)
+                        }
+                        className="flex-grow border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition bg-white"
+                      >
+                        <option value="pending">Pending</option>
+                        <option value="processing">Processing</option>
+                        <option value="shipped">Shipped</option>
+                        <option value="completed">Completed</option>
+                        <option value="cancelled">Cancelled</option>
+                      </select>
 
-                    <button
-                      onClick={() => setSelectedOrder(null)}
-                      className="ml-auto bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold px-5 py-2 rounded-md transition"
-                    >
-                      Close
-                    </button>
+                      <button
+                        onClick={() => setSelectedOrder(null)}
+                        className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold px-6 py-2 rounded-md transition"
+                      >
+                        Close
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>

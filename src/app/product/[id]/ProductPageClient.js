@@ -931,45 +931,44 @@ export default function ProductPageClient({ product, related }) {
 
   return (
     <>
-      <main className="max-w-6xl mx-auto p-6">
-        <Header></Header>
+      <main className="max-w-6xl mx-auto p-4 sm:p-6">
         {/* Title + Category */}
-        <div className="mb-6">
-          <h1 className="text-3xl md:text-4xl font-semi-bold tracking-tight">
+        <div className="mb-4 sm:mb-6">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight">
             {product.name}
           </h1>
-          <p className="text-green-600 font-medium mt-1">{product.category}</p>
+          <p className="text-green-600 font-medium mt-1 text-sm sm:text-base">
+            {product.category}
+          </p>
         </div>
 
         {/* Main layout */}
-        <div className="grid md:grid-cols-2 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10">
           {/* LEFT — Image Section */}
           <div>
-            {/* Main Image */}
             <div
-              className="w-full overflow-hidden rounded-xl border cursor-pointer"
+              className="w-full overflow-hidden  border cursor-pointer"
               onClick={() => setModalOpen(true)}
             >
               <img
                 src={mainImage}
-                className="w-full object-cover rounded-xl transition"
+                className="w-full object-cover transition"
               />
             </div>
 
-            {/* Thumbnails */}
-            <div className="flex gap-3 mt-5 overflow-x-auto pb-2">
+            <div className="flex gap-2 sm:gap-3 mt-4 sm:mt-5 overflow-x-auto pb-2">
               {product.images?.map((img, index) => (
                 <img
                   key={index}
                   src={img}
                   onClick={() => setMainImage(img)}
-                  className={`w-20 h-20 border rounded-lg object-cover cursor-pointer transition
-                  ${
-                    mainImage === img
-                      ? "ring-2 ring-green-600 border-green-600"
-                      : "opacity-80 hover:opacity-100"
-                  }
-                `}
+                  className={`w-14 h-14 sm:w-20 sm:h-20 border object-cover cursor-pointer transition
+              ${
+                mainImage === img
+                  ? "ring-2 ring-green-600 border-green-600"
+                  : "opacity-80 hover:opacity-100"
+              }
+            `}
                 />
               ))}
             </div>
@@ -978,40 +977,42 @@ export default function ProductPageClient({ product, related }) {
           {/* RIGHT — Product Info */}
           <div className="flex flex-col">
             {/* Price */}
-            <div className="flex items-end gap-4 mb-6">
-              <p className="text-3xl md:text-4xl font-semi-bold text-green-700">
+            <div className="flex items-end gap-3 sm:gap-4 mb-4 sm:mb-6">
+              <p className="text-2xl sm:text-3xl md:text-4xl font-semibold text-green-700">
                 ₦{product.price.toLocaleString()}
               </p>
 
               {product.oldPrice && (
-                <p className="text-gray-400 line-through text-xl">
+                <p className="text-gray-400 line-through text-lg sm:text-xl">
                   ₦{product.oldPrice.toLocaleString()}
                 </p>
               )}
             </div>
 
             {/* Description */}
-            <p className="text-gray-700 leading-relaxed mb-6">
+            <p className="text-gray-700 leading-relaxed mb-4 sm:mb-6 text-sm sm:text-base">
               {product.description}
             </p>
 
             {/* Size Selector */}
             {product.sizes?.length > 0 && (
-              <div className="mb-5">
-                <p className="font-semibold mb-2">Size</p>
+              <div className="mb-4 sm:mb-5">
+                <p className="font-semibold mb-1 sm:mb-2 text-sm sm:text-base">
+                  Size
+                </p>
 
-                <div className="flex flex-wrap gap-3">
+                <div className="flex flex-wrap gap-2 sm:gap-3">
                   {product.sizes.map((s) => (
                     <button
                       key={s}
                       onClick={() => setSelectedSize(s)}
-                      className={`px-4 py-2 border rounded-lg transition text-sm
-                      ${
-                        selectedSize === s
-                          ? "border-green-600 bg-green-50"
-                          : "hover:bg-gray-100"
-                      }
-                    `}
+                      className={`px-3 py-1 sm:px-4 sm:py-2 border rounded-lg transition text-xs sm:text-sm
+                  ${
+                    selectedSize === s
+                      ? "border-green-600 bg-green-50"
+                      : "hover:bg-gray-100"
+                  }
+                `}
                     >
                       {s}
                     </button>
@@ -1022,21 +1023,23 @@ export default function ProductPageClient({ product, related }) {
 
             {/* Color Selector */}
             {product.colors?.length > 0 && (
-              <div className="mb-6">
-                <p className="font-semibold mb-2">Color</p>
+              <div className="mb-4 sm:mb-6">
+                <p className="font-semibold mb-1 sm:mb-2 text-sm sm:text-base">
+                  Color
+                </p>
 
-                <div className="flex flex-wrap gap-3">
+                <div className="flex flex-wrap gap-2 sm:gap-3">
                   {product.colors.map((c) => (
                     <button
                       key={c}
                       onClick={() => setSelectedColor(c)}
-                      className={`px-4 py-2 border rounded-lg transition text-sm
-                      ${
-                        selectedColor === c
-                          ? "border-green-600 bg-green-50"
-                          : "hover:bg-gray-100"
-                      }
-                    `}
+                      className={`px-3 py-1 sm:px-4 sm:py-2 border rounded-lg transition text-xs sm:text-sm
+                  ${
+                    selectedColor === c
+                      ? "border-green-600 bg-green-50"
+                      : "hover:bg-gray-100"
+                  }
+                `}
                     >
                       {c}
                     </button>
@@ -1046,8 +1049,8 @@ export default function ProductPageClient({ product, related }) {
             )}
 
             {/* Quantity */}
-            <div className="flex items-center gap-4 mb-8">
-              <p className="font-semibold">Quantity:</p>
+            <div className="flex items-center gap-3 sm:gap-4 mb-6 sm:mb-8">
+              <p className="font-semibold text-sm sm:text-base">Quantity:</p>
               <input
                 type="number"
                 min={1}
@@ -1061,7 +1064,7 @@ export default function ProductPageClient({ product, related }) {
                   }
                   setQty(value);
                 }}
-                className="border p-2 w-24 text-center rounded-lg"
+                className="border p-1 sm:p-2 w-16 sm:w-24 text-center rounded-lg text-sm sm:text-base"
               />
             </div>
 
@@ -1069,19 +1072,19 @@ export default function ProductPageClient({ product, related }) {
             <button
               disabled={product.stock === 0}
               onClick={handleAdd}
-              className={`py-4 rounded-lg text-lg font-semibold transition
-    ${
-      product.stock === 0
-        ? "bg-gray-400 cursor-not-allowed"
-        : "bg-green-600 hover:bg-green-700 text-white"
-    }`}
+              className={`py-3 sm:py-4 rounded-lg text-base sm:text-lg font-semibold transition
+          ${
+            product.stock === 0
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-green-600 hover:bg-green-700 text-white"
+          }`}
             >
               {product.stock === 0 ? "Out of Stock" : "Add to Cart"}
             </button>
 
             {/* Safe Checkout */}
-            <div className="mt-8 p-5 bg-gray-50">
-              <p className="text-lg flex items-center gap-2 justify-center">
+            <div className="mt-6 sm:mt-8 p-3 sm:p-5 bg-gray-50">
+              <p className="text-base sm:text-lg flex items-center gap-2 justify-center">
                 <i className="fas fa-lock"></i> Safe & Secure Checkout
               </p>
             </div>
@@ -1090,17 +1093,16 @@ export default function ProductPageClient({ product, related }) {
 
         {/* Related Products */}
         {related.length > 0 && (
-          <section className="mt-20">
-            <h2 className="text-2xl md:text-3xl font-semi-bold mb-8">
+          <section className="mt-16 sm:mt-20">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold mb-6 sm:mb-8">
               You May Also Like
             </h2>
 
-            <div className="flex gap-6 overflow-x-auto pb-4 scroll-smooth hide-scrollbar">
+            <div className="flex gap-4 sm:gap-6 overflow-x-auto pb-3 sm:pb-4 scroll-smooth hide-scrollbar">
               {related.map((item) => (
                 <div
                   key={item._id}
-                  className="w-[200px] h-[320px] md:w-[300px] md:h-[340px] bg-white shadow-sm
-   flex-shrink-0 overflow-hidden"
+                  className="w-[150px] sm:w-[200px] md:w-[300px] h-[240px] sm:h-[320px] md:h-[340px] bg-white shadow-sm flex-shrink-0 overflow-hidden"
                 >
                   <Link href={`/product/${item._id}`}>
                     <img
@@ -1109,17 +1111,19 @@ export default function ProductPageClient({ product, related }) {
                     />
                   </Link>
 
-                  <div className="p-3 flex flex-col justify-between h-[40%]">
+                  <div className="p-2 sm:p-3 flex flex-col justify-between h-[40%]">
                     <div>
-                      <p className="font-semibold truncate">{item.name}</p>
-                      <p className="text-green-700 font-bold text-lg mt-1">
+                      <p className="font-semibold truncate text-sm sm:text-base">
+                        {item.name}
+                      </p>
+                      <p className="text-green-700 font-bold text-base sm:text-lg mt-1">
                         ₦{item.price.toLocaleString()}
                       </p>
                     </div>
 
                     <button
                       onClick={() => addToCart(item)}
-                      className="mt-3 w-full bg-green-700 hover:bg-green-800 text-white py-2 rounded-lg font-semibold"
+                      className="mt-2 sm:mt-3 w-full bg-green-700 hover:bg-green-800 text-white py-1.5 sm:py-2 rounded-lg font-semibold text-sm sm:text-base"
                     >
                       Add to Cart
                     </button>
@@ -1129,50 +1133,7 @@ export default function ProductPageClient({ product, related }) {
             </div>
           </section>
         )}
-
-        {/* Modal Image */}
-        {modalOpen && (
-          <div
-            className="fixed inset-0 bg-black bg-opacity-80 z-[9999] flex items-center justify-center p-4"
-            onClick={() => setModalOpen(false)}
-          >
-            <img
-              src={mainImage}
-              className="max-w-[90%] max-h-[90%] rounded-xl shadow-lg object-contain"
-              onClick={(e) => e.stopPropagation()}
-            />
-          </div>
-        )}
       </main>
-      {/* FOOTER */}
-      <footer className="mt-14 bg-gray-900 text-gray-400 text-center text-sm py-6">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between">
-          <p>© 2025 UnifyStore — All Rights Reserved.</p>
-          <div className="flex space-x-6 mt-3 md:mt-0">
-            <a
-              href="#"
-              className="hover:text-white transition-colors"
-              aria-label="Privacy Policy"
-            >
-              Privacy Policy
-            </a>
-            <a
-              href="#"
-              className="hover:text-white transition-colors"
-              aria-label="Terms of Service"
-            >
-              Terms of Service
-            </a>
-            <a
-              href="#"
-              className="hover:text-white transition-colors"
-              aria-label="Contact Us"
-            >
-              Contact Us
-            </a>
-          </div>
-        </div>
-      </footer>
     </>
   );
 }

@@ -5,30 +5,32 @@ import ProductCard from "./components/ProductCard";
 import Header from "./components/Header";
 import Testimonials from "./components/client";
 
-
 export default function HomePageClient({ hotSales, popularProducts }) {
- 
-
   return (
     <main className="">
       <Header></Header>
-      {/* HEADER */}
-      {/* HERO */}
-      {/* <section className="bg-gray-900 text-white p-10 rounded-lg mb-10 text-center">
-        <p>WELCOME TO UNIFYSTORE</p>
-        <h2 className="text-4xl font-bold mb-4">
-          Elevate Your Style With Premium Fashion
-        </h2>
-        <p className="text-gray-300 text-lg">
-          Discover trendy wear, quality materials, & timeless outfits.
+      {/* <section className="bg-gray-900 text-white py-20 md:py-40 mb-10 text-center flex flex-col justify-center items-center"> */}
+      <section
+        className="
+  bg-gray-900 text-white
+  py-16 md:py-40
+  px-4
+  mb-10
+  text-center
+  flex flex-col
+  justify-center
+  items-center
+"
+      >
+        <p className="text-sm md:text-base tracking-wide">
+          WELCOME TO UNIFYSTORE
         </p>
-      </section> */}
-      <section className="bg-gray-900 text-white p-10  mb-10 text-center h-[50vh] lg:h-[90vh] flex flex-col justify-center items-center">
-        <p>WELCOME TO UNIFYSTORE</p>
-        <h2 className="text-4xl font-bold mb-4">
+
+        <h2 className="text-2xl md:text-4xl font-bold mb-4 max-w-2xl">
           Elevate Your Style With Premium Fashion
         </h2>
-        <p className="text-gray-300 text-lg mb-6">
+
+        <p className="text-gray-300 text-base md:text-lg mb-6 max-w-xl">
           Discover trendy wear, quality materials, & timeless outfits.
         </p>
 
@@ -40,29 +42,19 @@ export default function HomePageClient({ hotSales, popularProducts }) {
         </a>
       </section>
 
-      {/* FEATURES
-      <section className="grid grid-cols-2 sm:grid-cols-4 gap-5 text-center mb-14">
-        <div className="p-4 bg-gray-100 rounded-lg font-medium">
-          <i class="fas fa-lock"></i>
-          <br />
-          Secured Payment
-        </div>
-        <div className="p-4 bg-gray-100 rounded-lg font-medium">
-          <i class="fas fa-truck"></i>
-          <br />
-          Free Shipping
-        </div>
-        <div className="p-4 bg-gray-100 rounded-lg font-medium">
-          <i class="fas fa-box"></i> <br />
-          Delivered With Care
-        </div>
-        <div className="p-4 bg-gray-100 rounded-lg font-medium">
-          <i class="fas fa-star"></i> <br />
-          Excellent Service
-        </div>
-      </section> */}
       {/* FEATURES */}
-      <section className="grid grid-cols-2 sm:grid-cols-4 gap-8 text-center mb-14 mx-6 border-b border-gray-300 pb-6">
+      {/* <section className="grid grid-cols-2 sm:grid-cols-4 gap-8 text-center mb-14 mx-6 border-b border-gray-300 pb-6"> */}
+      <section
+        className="
+  grid grid-cols-2 sm:grid-cols-4
+  gap-6
+  text-center
+  mb-14
+  px-4 md:px-6
+  border-b border-gray-300
+  pb-6
+"
+      >
         {[
           { icon: "fas fa-lock", label: "Secured Payment" },
           { icon: "fas fa-truck", label: "Free Shipping" },
@@ -70,9 +62,10 @@ export default function HomePageClient({ hotSales, popularProducts }) {
           { icon: "fas fa-star", label: "Excellent Service" },
         ].map(({ icon, label }) => (
           <div key={label} className="flex flex-col items-center">
-            <div className="bg-gray-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto">
-              <i className={`${icon} text-xl text-dark-700`}></i>
+            <div className="bg-gray-100 rounded-full w-12 h-12 md:w-16 md:h-16 flex items-center justify-center">
+              <i className={`${icon} text-lg md:text-xl text-dark-700`}></i>
             </div>
+
             <span className="mt-4 font-medium text-gray-900 max-w-xs">
               {label}
             </span>
@@ -80,47 +73,37 @@ export default function HomePageClient({ hotSales, popularProducts }) {
         ))}
       </section>
 
-      {/* HOT SALES
-      <section className="mb-12">
-        <h3 className="text-3xl font-bold mb-6">
-          <i className="fas fa-fire"></i> Hot Sales
-        </h3>
-
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-6">
-          {hotSales.map((product) => (
-            <ProductCard key={product._id} product={product} />
-          ))}
-        </div>
-      </section> */}
       {/* HOT SALES */}
-      <section className="mb-12 mx-6">
+      <section className="mb-12 mx-1 md:mx-6">
         <h3 className="text-4xl font-normal mb-6 text-center">
           <i className="fas fa-fire mr-2"></i> Hot Sales
         </h3>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-1">
+        {/* <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-1"> */}
+        {/* <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-4"> */}
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-1">
           {hotSales.map((product) => (
             <ProductCard key={product._id} product={product} />
           ))}
         </div>
       </section>
 
-      {/* FLASH SALES HERO
-      <section className="bg-red-600 text-white p-10 rounded-lg mb-14 text-center">
-        <h2 className="text-3xl font-bold mb-4">
-          FLASH SALES!! Enjoy 50% Off Selected Items
-        </h2>
-        <a
-          href="/shop"
-          className="mt-4 inline-block bg-black text-white px-6 py-3 rounded-lg"
-        >
-          Shop Now
-        </a>
-      </section> */}
-
       {/* FLASH SALES HERO */}
-      <section className="bg-red-700 text-white p-12 rounded-xl my-24 text-center shadow-lg max-w-6xl mx-auto">
-        <h2 className="text-4xl font-extrabold mb-3 tracking-wide drop-shadow-md">
+      {/* <section className="bg-red-700 text-white p-12 rounded-xl my-24 text-center shadow-lg max-w-6xl mx-auto"> */}
+      <section
+        className="
+  bg-red-700 text-white
+  px-6 py-10 md:p-12
+  rounded-xl
+  my-16 md:my-24
+  text-center
+  shadow-lg
+  max-w-6xl
+  mx-4 md:mx-auto
+"
+      >
+        {/* <h2 className="text-4xl font-extrabold mb-3 tracking-wide drop-shadow-md"> */}
+        <h2 className="text-2xl md:text-4xl font-extrabold mb-3">
           🔥 FLASH SALES ALERT! 🔥
         </h2>
         <p className="text-lg max-w-xl mx-auto mb-6 leading-relaxed drop-shadow-sm">
@@ -143,7 +126,7 @@ export default function HomePageClient({ hotSales, popularProducts }) {
           <i className="fas fa-star mr-2"></i> Popular Products
         </h3>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-1 mx-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-1 mx-1 md:mx-6">
           {popularProducts.map((product) => (
             <ProductCard key={product._id} product={product} />
           ))}
@@ -151,17 +134,9 @@ export default function HomePageClient({ hotSales, popularProducts }) {
       </section>
       {/* Testimonials */}
       <Testimonials></Testimonials>
-      {/* SOCIALS
-      <section className="mt-16 text-right">
-        <p className="text-lg font-semibold">Follow Us</p>
-        <div className="flex justify-end gap-4 mt-2">
-          <a href="#">Instagram</a>
-          <a href="#">Twitter</a>
-          <a href="#">Facebook</a>
-        </div>
-      </section> */}
-      {/* SOCIALS */}
-      <section className="mt-16 text-left mx-9">
+
+      {/* <section className="mt-16 text-left mx-9"> */}
+      <section className="mt-16 text-left px-4 md:px-9">
         <p className="text-lg  mb-3">Follow Us</p>
         <div className="flex justify-start  gap-6 text-gray-600">
           <a
@@ -194,7 +169,8 @@ export default function HomePageClient({ hotSales, popularProducts }) {
       </footer> */}
       {/* FOOTER */}
       <footer className="mt-14 bg-gray-900 text-gray-400 text-center text-sm py-6">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between">
+        {/* <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between"> */}
+        <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
           <p>© 2025 UnifyStore — All Rights Reserved.</p>
           <div className="flex space-x-6 mt-3 md:mt-0">
             <a
