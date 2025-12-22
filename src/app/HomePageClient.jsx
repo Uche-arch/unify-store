@@ -76,7 +76,7 @@ export default function HomePageClient({ hotSales, popularProducts }) {
       {/* HOT SALES */}
       <section className="mb-12 mx-1 md:mx-6">
         <h3 className="text-4xl font-normal mb-6 text-center">
-          <i className="fas fa-fire mr-2"></i> Hot Sales
+           Hot Sales
         </h3>
 
         {/* <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-1"> */}
@@ -104,7 +104,7 @@ export default function HomePageClient({ hotSales, popularProducts }) {
       >
         {/* <h2 className="text-4xl font-extrabold mb-3 tracking-wide drop-shadow-md"> */}
         <h2 className="text-2xl md:text-4xl font-extrabold mb-3">
-          🔥 FLASH SALES ALERT! 🔥
+          FLASH SALES ALERT! 
         </h2>
         <p className="text-lg max-w-xl mx-auto mb-6 leading-relaxed drop-shadow-sm">
           Don't miss out on our limited-time offer — enjoy up to{" "}
@@ -123,7 +123,7 @@ export default function HomePageClient({ hotSales, popularProducts }) {
       {/* POPULAR */}
       <section className="mb-12">
         <h3 className="text-4xl font-normal mb-6 text-center">
-          <i className="fas fa-star mr-2"></i> Popular Products
+           Popular Products
         </h3>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-1 mx-1 md:mx-6">
