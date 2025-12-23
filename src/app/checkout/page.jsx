@@ -470,30 +470,30 @@
 
 //       const data = await res.json();
 
-//       if (!res.ok) {
-//         alert(data.error || "Failed to place order");
-//         setLoading(false);
-//         return;
-//       }
+  //     if (!res.ok) {
+  //       alert(data.error || "Failed to place order");
+  //       setLoading(false);
+  //       return;
+  //     }
 
-//       setOrderId(data.orderId);
-//       setFinalTotal(grandTotal); // <-- save total here
-//       setSubmitted(true);
-//       setShowConfetti(true);
-//       setConfettiRecycle(true); // start recycling (dropping)
-//       setTimeout(() => {
-//         setConfettiRecycle(false); // stop spawning new confetti, existing falls
-//       }, 6000);
-//       setTimeout(() => {
-//         setShowConfetti(false); // remove confetti from DOM after animation done
-//       }, 10000); // extra few seconds so confetti disappears naturally
-//       clearCart();
-//     } catch (error) {
-//       alert("Network error, try again.");
-//     } finally {
-//       setLoading(false);
-//     }
-//   }
+  //     setOrderId(data.orderId);
+  //     setFinalTotal(grandTotal); // <-- save total here
+  //     setSubmitted(true);
+  //     setShowConfetti(true);
+  //     setConfettiRecycle(true); // start recycling (dropping)
+  //     setTimeout(() => {
+  //       setConfettiRecycle(false); // stop spawning new confetti, existing falls
+  //     }, 6000);
+  //     setTimeout(() => {
+  //       setShowConfetti(false); // remove confetti from DOM after animation done
+  //     }, 10000); // extra few seconds so confetti disappears naturally
+  //     clearCart();
+  //   } catch (error) {
+  //     alert("Network error, try again.");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // }
 //   if (submitted) {
 //     const shortOrderId = orderId ? orderId.slice(-6) : "";
 
@@ -885,6 +885,13 @@ export default function CheckoutPage() {
   const [loading, setLoading] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
 
+  const [finalTotals, setFinalTotals] = useState({
+    productsTotal: 0,
+    shippingCost: 0,
+    grandTotal: 0,
+  });
+
+
   const SHIPPING_FEE = 1500;
   const FREE_SHIPPING_THRESHOLD = 50000;
 
@@ -948,10 +955,17 @@ export default function CheckoutPage() {
         return;
       }
 
+      setFinalTotals({
+        productsTotal,
+        shippingCost,
+        grandTotal,
+      });
+
       setOrderId(data.orderId);
       setSubmitted(true);
       setShowConfetti(true);
       clearCart();
+
 
       setTimeout(() => setShowConfetti(false), 10000);
     } catch (error) {
@@ -966,18 +980,18 @@ export default function CheckoutPage() {
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 px-4">
         {showConfetti && <Confetti width={width} height={height} />}
-        <div className="max-w-3xl w-full bg-white rounded-lg shadow-lg p-8 text-center">
-          <h2 className="text-3xl font-bold text-green-700 mb-4">
+        <div className="max-w-3xl w-full bg-white rounded shadow-lg p-5 text-center">
+          <h2 className="text-2xl font-bold text-green-700 mb-2">
             Order Received!
           </h2>
-          <p className="text-lg mb-4">
+          <p className="mb-3">
             Thank you,{" "}
             <strong>
               {orderInfo.firstName} {orderInfo.lastName}
             </strong>
             . Please make a bank transfer to:
           </p>
-          <p className="font-semibold text-gray-700 leading-relaxed mb-4">
+          <p className="font-semibold text-gray-700 leading-relaxed mb-2">
             Account Name: Your Store Name
             <br />
             Bank: Your Bank Name
@@ -985,7 +999,10 @@ export default function CheckoutPage() {
             Account Number: 1234567890
             <br />
             Amount:{" "}
-            <span className="text-xl">₦{grandTotal.toLocaleString()}</span>
+            {/* <span className="text-xl">₦{grandTotal.toLocaleString()}</span> */}
+            <span className="text-xl">
+              ₦{finalTotals.grandTotal.toLocaleString()}
+            </span>
           </p>
           <p className="font-semibold">
             Order ID:{" "}
@@ -999,7 +1016,7 @@ export default function CheckoutPage() {
           </p>
           <button
             onClick={() => (window.location.href = "/shop")}
-            className="mt-6 bg-green-700 text-white px-6 py-3 rounded-md font-semibold hover:bg-green-800 transition"
+            className="mt-6 bg-green-700 text-white px-6 py-2 rounded-md font-semibold hover:bg-green-800 transition"
           >
             Back to Shop
           </button>
@@ -1010,7 +1027,7 @@ export default function CheckoutPage() {
 
   return (
     <main className="min-h-screen bg-gray-50 px-2 py-3">
-      <h1 className="text-3xl md:text-4xl font-semibold mb-4 text-gray-900">
+      <h1 className="text-2xl md:text-4xl font-semibold mb-4 text-gray-900">
         Checkout
       </h1>
       <div className="flex flex-col lg:flex-row gap-8">
@@ -1020,7 +1037,7 @@ export default function CheckoutPage() {
           className="flex-1 bg-white p-6 md:p-8 rounded-lg shadow-md space-y-6"
           noValidate
         >
-          <h2 className="text-2xl font-semibold mb-6 border-b pb-2">
+          <h2 className="text-xl font-semibold mb-6 border-b pb-2">
             Customer Information
           </h2>
 
@@ -1100,7 +1117,7 @@ export default function CheckoutPage() {
 
         {/* Order Summary */}
         <aside className="flex-1 bg-white p-6 md:p-8 rounded-lg shadow-md max-h-[min-content]">
-          <h2 className="text-2xl font-semibold mb-6 border-b pb-2">
+          <h2 className="text-xl font-semibold mb-6 border-b pb-2">
             Your Order
           </h2>
           {cart.length === 0 ? (
@@ -1192,7 +1209,7 @@ function InputField({ label, name, value, onChange, type = "text" }) {
         required
         value={value}
         onChange={onChange}
-        className="border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+        className="border border-gray-300 p-1.5 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
       />
     </div>
   );
@@ -1203,8 +1220,9 @@ function TextareaField({ label, name, value, onChange }) {
     <div className="flex flex-col w-full">
       <label className="mb-1 font-medium text-gray-700">{label}</label>
       <textarea
+      placeholder="Notes about your order, e.g special notes for delivery"
         name={name}
-        rows={4}
+        rows={3}
         value={value}
         onChange={onChange}
         className="border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"

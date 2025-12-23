@@ -6,8 +6,6 @@
 // // import Header from "./components/Header";
 // import Header from "@/app/components/Header";
 
-
-
 // export default function CartPage() {
 //   const { cart, updateQty, removeFromCart, clearCart } = useCart();
 
@@ -16,7 +14,7 @@
 //   const productTotal = cart.reduce(
 //     (acc, item) => acc + item.price * item.qty,
 //     0
-//   );  
+//   );
 
 //   // Shipping logic
 //   const shippingFee = productTotal > 50000 && useFreeShipping ? 0 : 1500;
@@ -52,7 +50,7 @@
 //           </tr>
 //         </thead>
 //         <tbody>
-          
+
 //           {cart.map(
 //             ({
 //               _id,
@@ -663,8 +661,6 @@
 //   );
 // }
 
-
-
 "use client";
 
 import { useCart } from "@/app/context/cartContext";
@@ -690,13 +686,13 @@ export default function CartPage() {
       <main className="min-h-screen flex flex-col">
         <Header />
         <div className="flex-grow flex flex-col items-center justify-center px-4">
-          <h2 className="text-2xl md:text-3xl font-bold mb-6">
+          <h2 className="text-xl md:text-3xl font-bold mb-6">
             Your Cart is Empty
           </h2>
 
           <Link
             href="/shop"
-            className="bg-green-600 text-white py-3 px-8 rounded-lg shadow hover:bg-green-700 transition"
+            className="bg-green-600 text-white py-2.5 px-7 rounded shadow hover:bg-green-700 transition"
           >
             Go to Shop
           </Link>
@@ -710,13 +706,14 @@ export default function CartPage() {
 
       {/* PAGE CONTENT */}
       <div className="max-w-6xl mx-auto w-full px-4 md:px-6 pt-6">
-        <h1 className="text-2xl md:text-4xl mb-6 md:mb-10">Shopping Cart</h1>
+        <h1 className="text-xl md:text-4xl mb-4 md:mb-10">Shopping Cart</h1>
 
         {/* DESKTOP TABLE */}
-        <div className="hidden md:block bg-white rounded-2xl overflow-hidden border">
+        {/* <div className="hidden md:block bg-white rounded overflow-hidden border border-bg-gray"> */}
+        <div className="hidden md:block bg-white rounded overflow-hidden border border-gray-200">
           <table className="w-full">
             <thead>
-              <tr className="bg-gray-100 border-b text-gray-700">
+              <tr className="bg-gray-100 border-b border-gray-200 text-gray-700">
                 <th className="text-left p-5">Product</th>
                 <th className="text-left p-5">Price</th>
                 <th className="text-left p-5">Qty</th>
@@ -736,7 +733,7 @@ export default function CartPage() {
                   selectedSize,
                   selectedColor,
                 }) => (
-                  <tr key={variantId} className="border-b">
+                  <tr key={variantId} className="border-b border-gray-200">
                     <td className="p-5 flex items-center gap-5">
                       <img
                         src={image}
@@ -791,7 +788,7 @@ export default function CartPage() {
           {cart.map((item) => (
             <div
               key={item.variantId}
-              className="bg-white rounded-xl border p-4 shadow-sm"
+              className="bg-white rounded border border-gray-200 p-4 shadow"
             >
               <div className="flex gap-4">
                 <img
@@ -823,12 +820,12 @@ export default function CartPage() {
                   onChange={(e) =>
                     updateQty(item.variantId, Number(e.target.value) || 1)
                   }
-                  className="border rounded-lg p-2 w-20 text-center bg-gray-50"
+                  className="border border-gray-200 rounded-lg p-1 w-15 text-center bg-gray-50"
                 />
 
                 <button
                   onClick={() => removeFromCart(item.variantId)}
-                  className="text-red-500 text-xl"
+                  className="text-red-500"
                 >
                   <i className="fas fa-trash"></i>
                 </button>
@@ -838,7 +835,7 @@ export default function CartPage() {
         </div>
 
         {/* TOTALS */}
-        <div className="mt-8 bg-white border rounded-xl p-5">
+        <div className="mt-8 bg-white border border-gray-200 rounded p-5">
           <p className="text-lg font-semibold">
             Products Total: ₦{productTotal.toLocaleString()}
           </p>
@@ -864,7 +861,7 @@ export default function CartPage() {
             </span>
           </p>
 
-          <p className="text-2xl md:text-4xl font-extrabold mt-5">
+          <p className="text-xl md:text-4xl font-extrabold mt-5">
             Total: ₦{finalTotal.toLocaleString()}
           </p>
         </div>
@@ -873,14 +870,14 @@ export default function CartPage() {
         <div className="flex flex-col sm:flex-row gap-4 mt-8">
           <button
             onClick={clearCart}
-            className="bg-red-500 text-white py-3 px-6 rounded-xl font-semibold hover:bg-red-600"
+            className="bg-red-500 text-white py-2 px-6 rounded font-semibold hover:bg-red-600"
           >
             Clear Cart
           </button>
 
           <Link
             href="/checkout"
-            className="bg-green-600 text-white py-3 px-10 rounded-xl font-semibold text-center hover:bg-green-700"
+            className="bg-green-600 text-white py-3 px-10 rounded font-semibold text-center hover:bg-green-700"
           >
             Proceed to Checkout
           </Link>

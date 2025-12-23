@@ -209,7 +209,7 @@ export default function Header() {
         className="
           fixed top-0 left-0 w-full z-50
           bg-white
-          h-20 md:h-24
+          h-15 md:h-24
           shadow-sm
         "
       >
@@ -217,7 +217,7 @@ export default function Header() {
           {/* LOGO */}
           <Link
             href="/"
-            className="text-xl md:text-2xl font-bold tracking-wide"
+            className="text-lg md:text-2xl font-bold tracking-wide"
           >
             UnifyStore
           </Link>
@@ -250,7 +250,7 @@ export default function Header() {
 
           {/* MOBILE MENU BUTTON */}
           <button
-            className="md:hidden text-3xl p-2"
+            className="md:hidden text-2xl px-5"
             aria-label="Toggle menu"
             onClick={() => setOpen(!open)}
           >
@@ -260,7 +260,7 @@ export default function Header() {
 
         {/* MOBILE MENU */}
         {open && (
-          <div className="md:hidden bg-white border-t px-6 py-6 flex flex-col gap-6 text-lg shadow-md">
+          <div className="md:hidden bg-white border-t px-5 py-4 flex flex-col gap-6 text-lg shadow-md">
             <NavLink href="/shop" mobile onClick={() => setOpen(false)}>
               Shop
             </NavLink>
@@ -290,7 +290,7 @@ export default function Header() {
       </header>
 
       {/* HEADER OFFSET */}
-      <div className="h-20 md:h-24" />
+      <div className="h-15 md:h-24" />
     </>
   );
 }

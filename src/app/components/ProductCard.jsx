@@ -422,7 +422,7 @@ export default function ProductCard({ product }) {
       {/* IMAGE */}
       <Link
         href={`/product/${product._id}`}
-        className="block mb-3 overflow-hidden rounded-lg bg-gray-100"
+        className="block mb-3 overflow-hidden rounded bg-gray-100"
       >
         <img
           src={product.images?.[0] || "/placeholder.png"}
@@ -445,14 +445,13 @@ export default function ProductCard({ product }) {
             font-semibold
             text-gray-900
             truncate
-            mb-1
           "
           title={product.name}
         >
           {product.name}
         </h3>
 
-        <p className="text-xs sm:text-sm text-gray-500 mb-2 capitalize">
+        <p className="text-xs sm:text-sm text-gray-500 mb-1 capitalize">
           {product.category || "Uncategorized"}
         </p>
         <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">

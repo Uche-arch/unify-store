@@ -202,49 +202,62 @@ export default function ShopPageClient({ products }) {
       {/* FILTER BAR */}
       <div
         className="
-          fixed
-          top-20 md:top-24
-          left-0
-          w-full
-          z-40
-          bg-white
-          shadow-sm
-          px-4
-          py-4
-        "
+    fixed
+    top-14 md:top-24
+    left-0
+    w-full
+    z-40
+    bg-white
+    shadow-sm
+    px-3 md:px-6
+    py-2.5 md:py-4
+  "
       >
-        {/* <div className="max-w-6xl mx-auto flex flex-col sm:flex-row gap-3"> */}
-        <div className="max-w-6xl mx-auto w-full flex flex-row gap-4">
+        <div
+          className="
+      max-w-6xl
+      mx-auto
+      w-full
+      flex
+      flex-row
+      gap-2 sm:gap-4
+    "
+        >
           <input
             type="text"
             placeholder="Search products..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="
-              w-full
-              p-3
-              rounded-lg
-              bg-gray-100
-              focus:outline-none
-              focus:ring-2
-              focus:ring-blue-500
-              transition
-            "
+        w-full
+        p-2 md:p-3
+        text-sm md:text-base
+        rounded-md md:rounded-lg
+        bg-gray-100
+        placeholder-gray-500
+        focus:outline-none
+        focus:ring-2
+        focus:ring-blue-500
+        transition
+      "
           />
 
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
             className="
-              w-full sm:w-60
-              p-3
-              rounded-lg
-              bg-gray-100
-              focus:outline-none
-              focus:ring-2
-              focus:ring-blue-500
-              transition
-            "
+        w-full
+        sm:w-56
+        p-2 md:p-3
+        text-sm md:text-base
+        rounded-md md:rounded-lg
+        bg-gray-100
+        text-gray-700
+        focus:outline-none
+        focus:ring-2
+        focus:ring-blue-500
+        transition
+      "
           >
             <option value="">All Categories</option>
             {categories.map((cat) => (
@@ -257,7 +270,7 @@ export default function ShopPageClient({ products }) {
       </div>
 
       {/* OFFSET FOR HEADER + FILTER BAR */}
-      <div className="h-20 md:h-20" />  
+      <div className="h-15 md:h-20" />
 
       {/* PRODUCTS */}
       <section className="flex-grow px-0 md:px-6">
@@ -275,10 +288,10 @@ export default function ShopPageClient({ products }) {
       </section>
 
       {/* FOOTER */}
-      <footer className="mt-3 bg-gray-900 text-gray-400 text-center text-sm py-6">
+      <footer className="mt-3 bg-gray-900 text-gray-400 text-center text-sm py-4">
         <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
           <p>© 2025 UnifyStore — All Rights Reserved.</p>
-          <div className="flex space-x-6">
+          {/* <div className="flex space-x-6">
             <a href="#" className="hover:text-white transition-colors">
               Privacy Policy
             </a>
@@ -288,7 +301,7 @@ export default function ShopPageClient({ products }) {
             <a href="#" className="hover:text-white transition-colors">
               Contact Us
             </a>
-          </div>
+          </div> */}
         </div>
       </footer>
     </main>

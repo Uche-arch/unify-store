@@ -28,9 +28,9 @@ export default function Testimonials() {
 
   return (
     // <section className="bg-gray-50 py-16 px-6 text-center rounded-lg max-w-7xl mx-auto">
-    <section className="bg-gray-50 py-12 md:py-16 px-4 md:px-6 text-center rounded-lg max-w-7xl mx-auto">
+    <section className="bg-gray-50 py-8 md:py-16 px-4 md:px-6 text-center rounded-lg max-w-7xl mx-auto">
       {/* <h2 className="text-4xl font-bold mb-10 text-gray-900"> */}
-      <h2 className="text-2xl md:text-4xl font-bold mb-10 text-gray-900">
+      <h2 className="text-xl md:text-4xl font-bold mb-10 text-gray-900 px-5">
         What Our Customers Say About Us
       </h2>
 
@@ -39,14 +39,14 @@ export default function Testimonials() {
         {testimonials.map(({ id, name, avatar, quote, title }) => (
           <div
             key={id}
-            className="bg-white shadow-lg rounded-lg p-8 max-w-sm mx-auto md:mx-0"
+            className="bg-white shadow-sm rounded-lg p-6 max-w-sm mx-auto md:mx-0"
           >
-            <p className="text-gray-700 italic mb-6">&quot;{quote}&quot;</p>
+            <p className="text-gray-700 italic mb-4">&quot;{quote}&quot;</p>
             <div className="flex items-center justify-center space-x-4">
               <img
                 src={avatar}
                 alt={name}
-                className="w-14 h-14 rounded-full object-cover"
+                className="w-10 h-10 rounded-full object-cover"
               />
               <div>
                 <p className="font-semibold text-gray-900">{name}</p>

@@ -1156,21 +1156,25 @@ export default function ProductPageClient({
   const { addToCart } = useCart();
   const { showToast } = useToast();
 
-  const [qty, setQty] = useState(1);
+  // const [qty, setQty] = useState(1);
   const [mainImage, setMainImage] = useState(product.images?.[0]);
   const [modalOpen, setModalOpen] = useState(false);
 
   const [selectedSize, setSelectedSize] = useState(product.sizes?.[0] || "");
   const [selectedColor, setSelectedColor] = useState(product.colors?.[0] || "");
 
+  const [qtyInput, setQtyInput] = useState(product.stock > 0 ? "1" : "0");
+  const [qty, setQty] = useState(Number(qtyInput));
+
+
   function handleAdd() {
     if (product.sizes?.length > 0 && !selectedSize) {
-      alert("Please select a size");
+      showToast("Please select a size");
       return;
     }
 
     if (product.colors?.length > 0 && !selectedColor) {
-      alert("Please select a color");
+      showToast("Please select a color");
       return;
     }
 
@@ -1315,7 +1319,7 @@ export default function ProductPageClient({
             {/* Quantity */}
             <div className="flex items-center gap-3 sm:gap-4 mb-6 sm:mb-8">
               <p className="font-semibold text-sm sm:text-base">Quantity:</p>
-              <input
+              {/* <input
                 type="number"
                 min={1}
                 max={product.stock}
@@ -1327,6 +1331,38 @@ export default function ProductPageClient({
                     return;
                   }
                   setQty(value);
+                }}
+                className="border p-1 sm:p-2 w-16 sm:w-24 text-center rounded-lg text-sm sm:text-base"
+              /> */}
+
+              <input
+                type="number"
+                min={1}
+                max={product.stock}
+                value={qtyInput}
+                onBlur={() => {
+                  if (qty < 1) {
+                    setQty(1);
+                    setQtyInput("1");
+                  }
+                  if (qty > product.stock) {
+                    setQty(product.stock);
+                    setQtyInput(product.stock.toString());
+                  }
+                }}
+                onChange={(e) => {
+                  let val = e.target.value;
+
+                  // Only allow digits
+                  if (/^\d*$/.test(val)) {
+                    // Enforce max
+                    if (val !== "" && Number(val) > product.stock) {
+                      showToast(`Only ${product.stock} left in stock`);
+                      return;
+                    }
+                    setQtyInput(val);
+                    setQty(val === "" ? 0 : Number(val)); // keep numeric qty for other logic
+                  }
                 }}
                 className="border p-1 sm:p-2 w-16 sm:w-24 text-center rounded-lg text-sm sm:text-base"
               />
@@ -1386,7 +1422,10 @@ export default function ProductPageClient({
                     </div>
 
                     <button
-                      onClick={() => addToCart(item)}
+                      onClick={() => {
+                        addToCart(item);
+                        showToast("Added to cart");
+                      }}
                       className="mt-2 sm:mt-3 w-full bg-green-700 hover:bg-green-800 text-white py-1.5 sm:py-2 rounded-lg font-semibold text-sm sm:text-base"
                     >
                       Add to Cart

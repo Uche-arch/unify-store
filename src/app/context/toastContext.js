@@ -23,7 +23,7 @@ export function ToastProvider({ children }) {
       {children}
 
       {/* TOAST CONTAINER */}
-      <div className="fixed top-5 right-5 space-y-2 z-50">
+      <div className="fixed top-154 right-5 space-y-2 z-50">
         {toasts.map((toast) => (
           <div
             key={toast.id}
