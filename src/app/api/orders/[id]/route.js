@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { connectDB } from "@/app/lib/mongodb";
 import Order from "@/app/models/Order";
 

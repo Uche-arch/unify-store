@@ -16,6 +16,7 @@
 //   return <ProductPageClient product={product} />;
 // }
 
+export const dynamic = "force-dynamic";
 
 import { connectDB } from "@/app/lib/mongodb";
 import Product from "@/app/models/Product";

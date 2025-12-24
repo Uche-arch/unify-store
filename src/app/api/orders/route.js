@@ -1,7 +1,8 @@
+export const dynamic = "force-dynamic";
+
 import { connectDB } from "@/app/lib/mongodb";
 import Order from "@/app/models/Order";
 import Product from "@/app/models/Product";
-
 
 export async function GET() {
   try {
@@ -65,7 +66,6 @@ export async function POST(req) {
       product.stock -= item.qty;
       await product.save();
     }
-
 
     const newOrder = new Order({
       customer: {

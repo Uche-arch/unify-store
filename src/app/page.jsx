@@ -152,6 +152,9 @@
 //   );
 // }
 
+export const dynamic = "force-dynamic";
+
+
 import { connectDB } from "./lib/mongodb";
 import Product from "./models/Product";
 import HomePageClient from "./HomePageClient";

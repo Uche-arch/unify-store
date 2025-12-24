@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { connectDB } from "@/app/lib/mongodb";
 import Product from "@/app/models/Product";
 import { verifyAdmin } from "@/app/lib/verifyAdmin";

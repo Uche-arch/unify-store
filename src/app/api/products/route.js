@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { connectDB } from "@/app/lib/mongodb";
 import Product from "@/app/models/Product";
 import { verifyAdmin } from "@/app/lib/verifyAdmin";
@@ -30,7 +32,6 @@ export async function GET() {
     return Response.json({ error: err.message }, { status: 500 });
   }
 }
-
 
 export async function POST(req) {
   try {
