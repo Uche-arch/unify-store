@@ -41,6 +41,9 @@ export default async function HomePage() {
   await connectDB();
   const products = await Product.find().sort({ createdAt: -1 }).lean();
 
+  // Shuffle products randomly
+  const shuffledProducts = products.sort(() => Math.random() - 0.5);
+
   const safeProducts = products.map((product) => ({
     ...product,
     _id: product._id.toString(),

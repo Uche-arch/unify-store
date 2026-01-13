@@ -31,15 +31,29 @@ export default async function ProductPage({ params }) {
   // Fix serialization
   product._id = product._id.toString();
 
+  // // Fetch related products (same category)
+  // const related = await Product.find({
+  //   category: product.category,
+  //   _id: { $ne: product._id },
+  // })
+  //   .limit(8)
+  //   .lean();
+
+  // const safeRelated = related.map((p) => ({
+  //   ...p,
+  //   _id: p._id.toString(),
+  // }));
+
   // Fetch related products (same category)
   const related = await Product.find({
     category: product.category,
     _id: { $ne: product._id },
-  })
-    .limit(8)
-    .lean();
+  }).lean();
 
-  const safeRelated = related.map((p) => ({
+  // Shuffle randomly (all products)
+  const shuffledRelated = related.sort(() => Math.random() - 0.5);
+
+  const safeRelated = shuffledRelated.map((p) => ({
     ...p,
     _id: p._id.toString(),
   }));

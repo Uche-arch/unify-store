@@ -1,4 +1,6 @@
 @import "tailwindcss";
+/* @import url('https://fonts.cdnfonts.com/css/satoshi'); */
+
 * {
   font-family: "Inter", sans-serif;
   box-sizing: border-box;
@@ -15,6 +17,10 @@
   }
 }
 
+.satoshi {
+   font-family: 'Satoshi', sans-serif;
+}
+
 .animate-slide-in {
   animation: slideIn 0.3s ease-out;
 }
@@ -26,3 +32,17 @@
 .hide-scrollbar {
   scrollbar-width: none; /* Firefox */
 }
+
+@keyframes menuShake {
+  0% { transform: translateX(0); }
+  20% { transform: translateX(-2px); }
+  40% { transform: translateX(2px); }
+  60% { transform: translateX(-1px); }
+  80% { transform: translateX(1px); }
+  100% { transform: translateX(0); }
+}
+
+.animate-menu-shake {
+  animation: menuShake 0.35s ease-in-out;
+}
+

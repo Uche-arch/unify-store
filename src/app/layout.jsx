@@ -1,6 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import { CartProvider } from "./context/cartContext";
 import { ToastProvider } from "./context/toastContext";
+import { ModalProvider } from "./context/modalContext";
 
 import "./globals.css";
 
@@ -31,10 +32,13 @@ export default function RootLayout({ children }) {
           rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
         />
+        <link href="https://fonts.cdnfonts.com/css/satoshi" rel="stylesheet" />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <ToastProvider>
-          <CartProvider>{children}</CartProvider>
+          <CartProvider>
+            <ModalProvider>{children}</ModalProvider>
+          </CartProvider>
         </ToastProvider>
       </body>
     </html>

@@ -39,15 +39,15 @@ export default function Testimonials() {
         {testimonials.map(({ id, name, avatar, quote, title }) => (
           <div
             key={id}
-            className="bg-white shadow-sm rounded-lg p-6 max-w-sm mx-auto md:mx-0"
+            className="bg-white shadow-sm rounded-lg p-6 max-w-sm mx-auto md:mx-0 flex flex-col justify-between"
           >
             <p className="text-gray-700 italic mb-4">&quot;{quote}&quot;</p>
-            <div className="flex items-center justify-center space-x-4">
-              <img
+            <div className="">
+              {/* <img
                 src={avatar}
                 alt={name}
                 className="w-10 h-10 rounded-full object-cover"
-              />
+              /> */}
               <div>
                 <p className="font-semibold text-gray-900">{name}</p>
                 <p className="text-sm text-gray-500">{title}</p>

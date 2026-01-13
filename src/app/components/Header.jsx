@@ -32,11 +32,9 @@
 //         </Link>
 //       </nav>
 //     </header>
-    
-     
+
 //   );
 // }
-
 
 // "use client";
 
@@ -97,7 +95,7 @@
 //       {/* <header
 //         className="
 //         fixed top-0 left-0 w-full z-50 bg-white h-24
-        
+
 //       "
 //       > */}
 //       <header className="fixed top-0 left-0 w-full z-50 bg-white h-20 md:h-24">
@@ -120,9 +118,9 @@
 //               {totalQty > 0 && (
 //                 <span
 //                   className="
-//                   absolute -top-2 -right-3 w-5 h-5 text-xs 
-//                   bg-green-600 text-white rounded-full 
-//                   flex items-center justify-center 
+//                   absolute -top-2 -right-3 w-5 h-5 text-xs
+//                   bg-green-600 text-white rounded-full
+//                   flex items-center justify-center
 //                 "
 //                 >
 //                   {totalQty}
@@ -148,9 +146,9 @@
 //               {totalQty > 0 && (
 //                 <span
 //                   className="
-//                   absolute -top-2 -right-4 w-5 h-5 text-xs 
-//                   bg-green-600 text-white rounded-full 
-//                   flex items-center justify-center 
+//                   absolute -top-2 -right-4 w-5 h-5 text-xs
+//                   bg-green-600 text-white rounded-full
+//                   flex items-center justify-center
 //                 "
 //                 >
 //                   {totalQty}
@@ -173,7 +171,7 @@
 //     <Link
 //       href={href}
 //       className={`
-//         relative group 
+//         relative group
 //         ${mobile ? "text-lg py-1" : ""}
 //       `}
 //     >
@@ -182,8 +180,8 @@
 //       {/* Hover Underline Animation */}
 //       <span
 //         className="
-//         absolute left-0 -bottom-1 w-0 h-[2px] 
-//         bg-green-600 transition-all duration-300 
+//         absolute left-0 -bottom-1 w-0 h-[2px]
+//         bg-green-600 transition-all duration-300
 //         group-hover:w-full
 //       "
 //       ></span>
@@ -191,57 +189,197 @@
 //   );
 // }
 
+// "use client";
+
+// import Link from "next/link";
+// import { useState } from "react";
+// import { useCart } from "@/app/context/cartContext";
+
+// export default function Header() {
+//   const { cart } = useCart();
+//   const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+//   const [open, setOpen] = useState(false);
+
+//   return (
+//     <>
+//       {/* HEADER */}
+//       <header
+//         className="
+//           fixed top-0 left-0 w-full z-50
+//           bg-white
+//           h-15 md:h-24
+//           shadow-sm
+//         "
+//       >
+//         <div className="max-w-7xl mx-auto h-full flex items-center justify-between px-4 md:px-6">
+//           {/* LOGO */}
+//           <Link
+//             href="/"
+//             className="text-lg md:text-2xl font-bold tracking-wide"
+//           >
+//             UnifyStore
+//           </Link>
+
+//           {/* DESKTOP NAV */}
+//           <nav className="hidden md:flex gap-10 text-lg items-center">
+//             <NavLink href="/shop">Shop</NavLink>
+
+//             <Link
+//               href="/cart"
+//               className="relative hover:text-green-600 transition"
+//             >
+//               <i className="fas fa-shopping-cart text-xl"></i>
+
+//               {totalQty > 0 && (
+//                 <span
+//                   className="
+//                     absolute -top-2 -right-3
+//                     w-5 h-5 text-xs
+//                     bg-green-600 text-white
+//                     rounded-full
+//                     flex items-center justify-center
+//                   "
+//                 >
+//                   {totalQty}
+//                 </span>
+//               )}
+//             </Link>
+//           </nav>
+
+//           {/* MOBILE MENU BUTTON */}
+//           <button
+//             className="md:hidden text-2xl px-5"
+//             aria-label="Toggle menu"
+//             onClick={() => setOpen(!open)}
+//           >
+//             ☰
+//           </button>
+//         </div>
+
+//         {/* MOBILE MENU */}
+//         {open && (
+//           <div className="md:hidden bg-white border-t px-5 py-4 flex flex-col gap-6 text-lg shadow-md">
+//             <NavLink href="/shop" mobile onClick={() => setOpen(false)}>
+//               Shop
+//             </NavLink>
+
+//             <Link
+//               href="/cart"
+//               className="relative text-lg"
+//               onClick={() => setOpen(false)}
+//             >
+//               Cart
+//               {totalQty > 0 && (
+//                 <span
+//                   className="
+//                     absolute -top-2 -right-4
+//                     w-5 h-5 text-xs
+//                     bg-green-600 text-white
+//                     rounded-full
+//                     flex items-center justify-center
+//                   "
+//                 >
+//                   {totalQty}
+//                 </span>
+//               )}
+//             </Link>
+//           </div>
+//         )}
+//       </header>
+
+//       {/* HEADER OFFSET */}
+//       <div className="h-15 md:h-24" />
+//     </>
+//   );
+// }
+
+// /* REUSABLE NAV LINK COMPONENT */
+// function NavLink({ href, children, mobile, onClick }) {
+//   return (
+//     <Link
+//       href={href}
+//       onClick={onClick}
+//       className={`
+//         relative group
+//         ${mobile ? "text-lg py-2" : ""}
+//       `}
+//     >
+//       {children}
+
+//       {/* Hover Underline */}
+//       <span
+//         className="
+//           absolute left-0 -bottom-1
+//           w-0 h-[2px]
+//           bg-green-600
+//           transition-all duration-300
+//           group-hover:w-full
+//         "
+//       />
+//     </Link>
+//   );
+// }
+
+// ORIGINAL UP HEREEEEEEEEEEEEEE
+
 "use client";
 
 import Link from "next/link";
 import { useState } from "react";
 import { useCart } from "@/app/context/cartContext";
+import { useEffect } from "react";
 
 export default function Header() {
   const { cart } = useCart();
   const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
   const [open, setOpen] = useState(false);
+  const [shake, setShake] = useState(false);
+
+  useEffect(() => {
+    if (totalQty > 0) {
+      setShake(true);
+      const timer = setTimeout(() => setShake(false), 400);
+      return () => clearTimeout(timer);
+    }
+  }, [totalQty]);
 
   return (
     <>
       {/* HEADER */}
-      <header
-        className="
-          fixed top-0 left-0 w-full z-50
-          bg-white
-          h-15 md:h-24
-          shadow-sm
-        "
-      >
-        <div className="max-w-7xl mx-auto h-full flex items-center justify-between px-4 md:px-6">
+      <header className="fixed top-0 left-0 w-full z-50 bg-white h-15 md:h-24 shadow-sm">
+        {/* <div className="max-w-7xl mx-auto h-full flex items-center justify-between px-4 md:px-6"> */}
+        <div className="max-w-7xl mx-auto h-full flex items-center justify-between px-6 md:px-6">
+          {/* Increased px-4 to px-6 to give the hat breathing room */}
+          {/* LOGO */}
+          {/* <Link
+            href="/"
+            className="text-lg md:text-2xl font-bold tracking-wide satoshi"
+            onClick={() => setOpen(false)}
+          >
+            UnifyStore
+          </Link> */}
+
           {/* LOGO */}
           <Link
             href="/"
-            className="text-lg md:text-2xl font-bold tracking-wide"
+            className="relative group flex items-center text-lg md:text-2xl font-bold tracking-wide satoshi"
+            onClick={() => setOpen(false)}
           >
+            {/* SVG Santa Hat */}
+           
             UnifyStore
+            {/* <span className="relative"></span> */}
           </Link>
 
           {/* DESKTOP NAV */}
           <nav className="hidden md:flex gap-10 text-lg items-center">
             <NavLink href="/shop">Shop</NavLink>
 
-            <Link
-              href="/cart"
-              className="relative hover:text-green-600 transition"
-            >
+            <Link href="/cart" className="relative hover:text-green-600">
               <i className="fas fa-shopping-cart text-xl"></i>
 
               {totalQty > 0 && (
-                <span
-                  className="
-                    absolute -top-2 -right-3
-                    w-5 h-5 text-xs
-                    bg-green-600 text-white
-                    rounded-full
-                    flex items-center justify-center
-                  "
-                >
+                <span className="absolute -top-2 -right-3 w-5 h-5 text-xs bg-green-600 text-white rounded-full flex items-center justify-center">
                   {totalQty}
                 </span>
               )}
@@ -250,11 +388,19 @@ export default function Header() {
 
           {/* MOBILE MENU BUTTON */}
           <button
-            className="md:hidden text-2xl px-5"
+            className={`
+    relative md:hidden text-2xl px-5
+    ${shake ? "animate-menu-shake" : ""}
+  `}
             aria-label="Toggle menu"
-            onClick={() => setOpen(!open)}
+            onClick={() => setOpen((prev) => !prev)}
           >
             ☰
+            {totalQty > 0 && !open && (
+              <span className="absolute -top-1 -right-1 w-5 h-5 text-xs bg-green-600 text-white rounded-full flex items-center justify-center">
+                {totalQty}
+              </span>
+            )}
           </button>
         </div>
 
@@ -267,20 +413,13 @@ export default function Header() {
 
             <Link
               href="/cart"
-              className="relative text-lg"
+              className="relative text-lg w-full"
               onClick={() => setOpen(false)}
             >
               Cart
+              {/* CART COUNT INSIDE MENU */}
               {totalQty > 0 && (
-                <span
-                  className="
-                    absolute -top-2 -right-4
-                    w-5 h-5 text-xs
-                    bg-green-600 text-white
-                    rounded-full
-                    flex items-center justify-center
-                  "
-                >
+                <span className="absolute -top-2 right-68 w-5 h-5 text-xs bg-green-600 text-white rounded-full flex items-center justify-center">
                   {totalQty}
                 </span>
               )}
@@ -295,29 +434,16 @@ export default function Header() {
   );
 }
 
-/* REUSABLE NAV LINK COMPONENT */
+/* REUSABLE NAV LINK */
 function NavLink({ href, children, mobile, onClick }) {
   return (
     <Link
       href={href}
       onClick={onClick}
-      className={`
-        relative group
-        ${mobile ? "text-lg py-2" : ""}
-      `}
+      className={`relative group ${mobile ? "text-lg py-2" : ""}`}
     >
       {children}
-
-      {/* Hover Underline */}
-      <span
-        className="
-          absolute left-0 -bottom-1
-          w-0 h-[2px]
-          bg-green-600
-          transition-all duration-300
-          group-hover:w-full
-        "
-      />
+      <span className="absolute left-0 -bottom-1 w-0 h-[2px] bg-green-600 transition-all duration-300 group-hover:w-full" />
     </Link>
   );
 }

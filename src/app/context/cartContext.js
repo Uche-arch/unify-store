@@ -246,6 +246,105 @@
 
 
 
+// "use client";
+
+// import { createContext, useContext, useEffect, useState } from "react";
+
+// const CartContext = createContext();
+
+// function makeVariantId(productId, size = "", color = "") {
+//   return `${productId}__size:${size}__color:${color}`;
+// }
+
+// export function CartProvider({ children }) {
+//   const [cart, setCart] = useState([]);
+
+//   // Load cart
+//   useEffect(() => {
+//     const stored = localStorage.getItem("cart");
+//     if (stored) setCart(JSON.parse(stored));
+//   }, []);
+
+//   // Save cart
+//   useEffect(() => {
+//     localStorage.setItem("cart", JSON.stringify(cart));
+//   }, [cart]);
+
+//   // ✅ ADD TO CART WITH STOCK CHECK
+//   function addToCart(product, qty = 1, options = {}) {
+//     const size = options.size || "";
+//     const color = options.color || "";
+//     const image = options.image || product.images?.[0] || "";
+
+//     const variantId = makeVariantId(product._id, size, color);
+
+//     setCart((prev) => {
+//       const existing = prev.find((i) => i.variantId === variantId);
+//       const currentQty = existing ? existing.qty : 0;
+//       const newQty = currentQty + qty;
+
+//       const availableStock =
+//         typeof product.stock === "number" ? product.stock : Infinity;
+
+//       if (newQty > availableStock) {
+//         alert(`Only ${availableStock} item(s) left`);
+//         return prev;
+//       }
+
+
+//       if (existing) {
+//         return prev.map((i) =>
+//           i.variantId === variantId ? { ...i, qty: newQty } : i
+//         );
+//       }
+
+//       return [
+//         ...prev,
+//         {
+//           _id: product._id,
+//           variantId,
+//           name: product.name,
+//           price: product.price,
+//           qty,
+//           image,
+//           selectedSize: size,
+//           selectedColor: color,
+//         },
+//       ];
+//     });
+//   }
+
+//   function removeFromCart(variantId) {
+//     setCart((prev) => prev.filter((i) => i.variantId !== variantId));
+//   }
+
+//   function updateQty(variantId, qty) {
+//     if (qty === "" || qty < 1) return;
+
+//     setCart((prev) =>
+//       prev.map((i) => (i.variantId === variantId ? { ...i, qty } : i))
+//     );
+//   }
+
+//   function clearCart() {
+//     setCart([]);
+//     localStorage.removeItem("cart");
+//   }
+
+//   return (
+//     <CartContext.Provider
+//       value={{ cart, addToCart, removeFromCart, updateQty, clearCart }}
+//     >
+//       {children}
+//     </CartContext.Provider>
+//   );
+// }
+
+// export function useCart() {
+//   return useContext(CartContext);
+// }
+
+
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
@@ -260,9 +359,24 @@ export function CartProvider({ children }) {
   const [cart, setCart] = useState([]);
 
   // Load cart
+  // useEffect(() => {
+  //   const stored = localStorage.getItem("cart");
+  //   if (stored) setCart(JSON.parse(stored));
+  // }, []);
+
+  // Load cart (with migration)
   useEffect(() => {
     const stored = localStorage.getItem("cart");
-    if (stored) setCart(JSON.parse(stored));
+    if (!stored) return;
+
+    const parsed = JSON.parse(stored);
+
+    const migrated = parsed.map((item) => ({
+      ...item,
+      stock: typeof item.stock === "number" ? item.stock : Infinity, // fallback for old carts
+    }));
+
+    setCart(migrated);
   }, []);
 
   // Save cart
@@ -270,29 +384,21 @@ export function CartProvider({ children }) {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
 
-  // ✅ ADD TO CART WITH STOCK CHECK
+  // ✅ ADD TO CART (STOCK-SAFE)
   function addToCart(product, qty = 1, options = {}) {
     const size = options.size || "";
     const color = options.color || "";
     const image = options.image || product.images?.[0] || "";
 
     const variantId = makeVariantId(product._id, size, color);
+    const stock = typeof product.stock === "number" ? product.stock : 0;
 
     setCart((prev) => {
       const existing = prev.find((i) => i.variantId === variantId);
-      const currentQty = existing ? existing.qty : 0;
-      const newQty = currentQty + qty;
-
-      const availableStock =
-        typeof product.stock === "number" ? product.stock : Infinity;
-
-      if (newQty > availableStock) {
-        alert(`Only ${availableStock} item(s) left`);
-        return prev;
-      }
-
 
       if (existing) {
+        const newQty = Math.min(existing.qty + qty, existing.stock);
+
         return prev.map((i) =>
           i.variantId === variantId ? { ...i, qty: newQty } : i
         );
@@ -302,10 +408,12 @@ export function CartProvider({ children }) {
         ...prev,
         {
           _id: product._id,
+          productId: product._id,
           variantId,
           name: product.name,
           price: product.price,
-          qty,
+          stock, // ✅ STORE STOCK IN CART
+          qty: Math.min(qty, stock),
           image,
           selectedSize: size,
           selectedColor: color,
@@ -318,11 +426,19 @@ export function CartProvider({ children }) {
     setCart((prev) => prev.filter((i) => i.variantId !== variantId));
   }
 
+  // ✅ UPDATE QTY (STOCK-SAFE)
   function updateQty(variantId, qty) {
-    if (qty === "" || qty < 1) return;
+    if (typeof qty !== "number" || qty < 1) return;
 
     setCart((prev) =>
-      prev.map((i) => (i.variantId === variantId ? { ...i, qty } : i))
+      prev.map((i) =>
+        i.variantId === variantId
+          ? {
+              ...i,
+              qty: Math.min(qty, i.stock), // 🔒 HARD LOCK
+            }
+          : i
+      )
     );
   }
 

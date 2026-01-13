@@ -470,30 +470,30 @@
 
 //       const data = await res.json();
 
-  //     if (!res.ok) {
-  //       alert(data.error || "Failed to place order");
-  //       setLoading(false);
-  //       return;
-  //     }
+//     if (!res.ok) {
+//       alert(data.error || "Failed to place order");
+//       setLoading(false);
+//       return;
+//     }
 
-  //     setOrderId(data.orderId);
-  //     setFinalTotal(grandTotal); // <-- save total here
-  //     setSubmitted(true);
-  //     setShowConfetti(true);
-  //     setConfettiRecycle(true); // start recycling (dropping)
-  //     setTimeout(() => {
-  //       setConfettiRecycle(false); // stop spawning new confetti, existing falls
-  //     }, 6000);
-  //     setTimeout(() => {
-  //       setShowConfetti(false); // remove confetti from DOM after animation done
-  //     }, 10000); // extra few seconds so confetti disappears naturally
-  //     clearCart();
-  //   } catch (error) {
-  //     alert("Network error, try again.");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // }
+//     setOrderId(data.orderId);
+//     setFinalTotal(grandTotal); // <-- save total here
+//     setSubmitted(true);
+//     setShowConfetti(true);
+//     setConfettiRecycle(true); // start recycling (dropping)
+//     setTimeout(() => {
+//       setConfettiRecycle(false); // stop spawning new confetti, existing falls
+//     }, 6000);
+//     setTimeout(() => {
+//       setShowConfetti(false); // remove confetti from DOM after animation done
+//     }, 10000); // extra few seconds so confetti disappears naturally
+//     clearCart();
+//   } catch (error) {
+//     alert("Network error, try again.");
+//   } finally {
+//     setLoading(false);
+//   }
+// }
 //   if (submitted) {
 //     const shortOrderId = orderId ? orderId.slice(-6) : "";
 
@@ -891,7 +891,6 @@ export default function CheckoutPage() {
     grandTotal: 0,
   });
 
-
   const SHIPPING_FEE = 1500;
   const FREE_SHIPPING_THRESHOLD = 50000;
 
@@ -929,13 +928,58 @@ export default function CheckoutPage() {
     }));
   }
 
+  // async function handleSubmit(e) {
+  //   e.preventDefault();
+  //   setLoading(true);
+
+  //   const orderPayload = {
+  //     ...orderInfo,
+  //     cart,
+  //     total: grandTotal,
+  //     shippingFee: shippingCost,
+  //     freeShippingApplied: orderInfo.freeShipping,
+  //   };
+
+  //   try {
+  //     const res = await fetch("/api/orders", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify(orderPayload),
+  //     });
+
+  //     const data = await res.json();
+  //     if (!res.ok) {
+  //       alert(data.error || "Failed to place order");
+  //       setLoading(false);
+  //       return;
+  //     }
+
+  //     setFinalTotals({
+  //       productsTotal,
+  //       shippingCost,
+  //       grandTotal,
+  //     });
+
+  //     setOrderId(data.orderId);
+  //     setSubmitted(true);
+  //     setShowConfetti(true);
+  //     clearCart();
+
+  //     setTimeout(() => setShowConfetti(false), 10000);
+  //   } catch (error) {
+  //     alert("Network error, try again.");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // }
+
   async function handleSubmit(e) {
     e.preventDefault();
     setLoading(true);
 
     const orderPayload = {
       ...orderInfo,
-      cart,
+      cart, // ✅ cart items already contain _id
       total: grandTotal,
       shippingFee: shippingCost,
       freeShippingApplied: orderInfo.freeShipping,
@@ -963,11 +1007,10 @@ export default function CheckoutPage() {
 
       setOrderId(data.orderId);
       setSubmitted(true);
-      setShowConfetti(true);
+      // setShowConfetti(true);
       clearCart();
 
-
-      setTimeout(() => setShowConfetti(false), 10000);
+      // setTimeout(() => setShowConfetti(false), 10000);
     } catch (error) {
       alert("Network error, try again.");
     } finally {
@@ -979,7 +1022,7 @@ export default function CheckoutPage() {
     const shortOrderId = orderId ? orderId.slice(-6) : "";
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 px-4">
-        {showConfetti && <Confetti width={width} height={height} />}
+        {/* {showConfetti && <Confetti width={width} height={height} />} */}
         <div className="max-w-3xl w-full bg-white rounded shadow-lg p-5 text-center">
           <h2 className="text-2xl font-bold text-green-700 mb-2">
             Order Received!
@@ -989,7 +1032,7 @@ export default function CheckoutPage() {
             <strong>
               {orderInfo.firstName} {orderInfo.lastName}
             </strong>
-            . Please make a bank transfer to:
+            ! Please complete a bank transfer using the details below:
           </p>
           <p className="font-semibold text-gray-700 leading-relaxed mb-2">
             Account Name: Your Store Name
@@ -999,7 +1042,6 @@ export default function CheckoutPage() {
             Account Number: 1234567890
             <br />
             Amount:{" "}
-            {/* <span className="text-xl">₦{grandTotal.toLocaleString()}</span> */}
             <span className="text-xl">
               ₦{finalTotals.grandTotal.toLocaleString()}
             </span>
@@ -1010,9 +1052,12 @@ export default function CheckoutPage() {
               {shortOrderId}
             </span>
           </p>
-          <p className="mt-4 text-gray-600">
-            Use your order ID as reference during transfer. Shipping will begin
-            within <strong>3 working days</strong>.
+          <p className="mt-4 text-gray-600 text-sm">
+            Use your Order ID as the payment reference during transfer. <br />
+            Your order will be shipped within <strong>
+              3 working days
+            </strong>{" "}
+            after your payment has been confirmed.
           </p>
           <button
             onClick={() => (window.location.href = "/shop")}
@@ -1026,175 +1071,204 @@ export default function CheckoutPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50 px-2 py-3">
-      <h1 className="text-2xl md:text-4xl font-semibold mb-4 text-gray-900">
-        Checkout
-      </h1>
-      <div className="flex flex-col lg:flex-row gap-8">
-        {/* Customer Info Form */}
-        <form
-          onSubmit={handleSubmit}
-          className="flex-1 bg-white p-6 md:p-8 rounded-lg shadow-md space-y-6"
-          noValidate
-        >
-          <h2 className="text-xl font-semibold mb-6 border-b pb-2">
-            Customer Information
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-            <InputField
-              label="First Name"
-              name="firstName"
-              value={orderInfo.firstName}
-              onChange={handleChange}
-            />
-            <InputField
-              label="Last Name"
-              name="lastName"
-              value={orderInfo.lastName}
-              onChange={handleChange}
-            />
-          </div>
-
-          <SelectField
-            label="Country"
-            name="country"
-            value={orderInfo.country}
-            onChange={handleChange}
-            options={["Nigeria"]}
-          />
-          <InputField
-            label="Street Address"
-            name="street"
-            value={orderInfo.street}
-            onChange={handleChange}
-          />
-          <InputField
-            label="Town / City"
-            name="city"
-            value={orderInfo.city}
-            onChange={handleChange}
-          />
-          <SelectField
-            label="State / Province"
-            name="state"
-            value={orderInfo.state}
-            onChange={handleChange}
-            options={["Akwa Ibom", "Lagos", "Port Harcourt"]}
-          />
-          <InputField
-            label="Phone Number"
-            name="phone"
-            value={orderInfo.phone}
-            onChange={handleChange}
-            type="tel"
-          />
-          <InputField
-            label="Email Address"
-            name="email"
-            value={orderInfo.email}
-            onChange={handleChange}
-            type="email"
-          />
-          <TextareaField
-            label="Order Notes (Optional)"
-            name="notes"
-            value={orderInfo.notes}
-            onChange={handleChange}
-          />
-
-          <button
-            type="submit"
-            disabled={loading}
-            className={`w-full flex items-center justify-center gap-2 bg-blue-600 text-white py-3 rounded-md font-semibold hover:bg-blue-700 transition ${
-              loading ? "opacity-70 cursor-not-allowed" : ""
-            }`}
+    <>
+      <main className="min-h-screen bg-gray-50 px-2 py-3">
+        <h1 className="text-2xl md:text-4xl font-semibold mb-4 text-gray-900">
+          Checkout
+        </h1>
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Customer Info Form */}
+          <form
+            onSubmit={handleSubmit}
+            className="flex-1 bg-white p-6 md:p-8 rounded-lg shadow-md space-y-6"
+            noValidate
           >
-            {loading && <i className="fas fa-spinner fa-spin"></i>}
-            {loading ? "Processing..." : "Place Order"}
-          </button>
-        </form>
+            <h2 className="text-xl font-semibold mb-6 border-b border-gray-300 pb-2">
+              Customer Information
+            </h2>
 
-        {/* Order Summary */}
-        <aside className="flex-1 bg-white p-6 md:p-8 rounded-lg shadow-md max-h-[min-content]">
-          <h2 className="text-xl font-semibold mb-6 border-b pb-2">
-            Your Order
-          </h2>
-          {cart.length === 0 ? (
-            <p className="text-gray-600">Your cart is empty.</p>
-          ) : (
-            <>
-              <ul className="divide-y divide-gray-300 mb-6 max-h-[400px] overflow-y-auto">
-                {cart.map(
-                  ({
-                    variantId,
-                    name,
-                    price,
-                    qty,
-                    image,
-                    selectedSize,
-                    selectedColor,
-                  }) => (
-                    <li
-                      key={variantId}
-                      className="flex items-center gap-4 py-3"
-                    >
-                      <img
-                        src={image}
-                        alt={name}
-                        className="w-16 h-16 object-cover rounded-md border"
-                      />
-                      <div className="flex-1">
-                        <p className="font-semibold truncate">{name}</p>
-                        {(selectedSize || selectedColor) && (
-                          <p className="text-sm text-gray-500">
-                            {selectedSize && `Size: ${selectedSize} `}
-                            {selectedColor && ` • Color: ${selectedColor}`}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+              <InputField
+                label="First Name"
+                name="firstName"
+                value={orderInfo.firstName}
+                onChange={handleChange}
+              />
+              <InputField
+                label="Last Name"
+                name="lastName"
+                value={orderInfo.lastName}
+                onChange={handleChange}
+              />
+            </div>
+
+            <SelectField
+              label="Country"
+              name="country"
+              value={orderInfo.country}
+              onChange={handleChange}
+              options={["Nigeria"]}
+            />
+            <InputField
+              label="Street Address"
+              name="street"
+              value={orderInfo.street}
+              onChange={handleChange}
+            />
+            <InputField
+              label="Town / City"
+              name="city"
+              value={orderInfo.city}
+              onChange={handleChange}
+            />
+            <SelectField
+              label="State / Province"
+              name="state"
+              value={orderInfo.state}
+              onChange={handleChange}
+              options={["Akwa Ibom", "Lagos", "Port Harcourt"]}
+            />
+            <InputField
+              label="Phone Number"
+              name="phone"
+              value={orderInfo.phone}
+              onChange={handleChange}
+              type="tel"
+            />
+            <InputField
+              label="Email Address"
+              name="email"
+              value={orderInfo.email}
+              onChange={handleChange}
+              type="email"
+            />
+
+            <TextareaField
+              label="Order Notes (Optional)"
+              name="notes"
+              value={orderInfo.notes}
+              onChange={handleChange}
+            />
+            <label className="flex items-center gap-2 text-sm text-gray-700 my-0 pb-2">
+              <input
+                type="radio"
+                checked
+                readOnly
+                className="accent-green-600"
+              />
+              Direct bank transfer
+            </label>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className={`w-full flex items-center justify-center gap-2 bg-blue-600 text-white py-3 rounded-md font-semibold hover:bg-blue-700 transition ${
+                loading ? "opacity-70 cursor-not-allowed" : ""
+              }`}
+            >
+              {loading && <i className="fas fa-spinner fa-spin"></i>}
+              {loading ? "Processing..." : "Place Order"}
+            </button>
+          </form>
+
+          {/* Order Summary */}
+          <aside className="flex-1 bg-white p-6 md:p-8 rounded-lg shadow-md max-h-[min-content]">
+            <h2 className="text-xl font-semibold mb-6 border-b pb-2 border-gray-300">
+              Your Order
+            </h2>
+            {cart.length === 0 ? (
+              <p className="text-gray-600">Your cart is empty.</p>
+            ) : (
+              <>
+                <ul className="divide-y divide-gray-300 mb-6 max-h-[400px] overflow-y-auto">
+                  {cart.map(
+                    ({
+                      variantId,
+                      name,
+                      price,
+                      qty,
+                      image,
+                      selectedSize,
+                      selectedColor,
+                    }) => (
+                      <li
+                        key={variantId}
+                        className="flex items-center gap-4 py-3"
+                      >
+                        <img
+                          src={image}
+                          alt={name}
+                          className="w-16 h-16 object-cover rounded-md border"
+                        />
+                        <div className="flex-1">
+                          <p className="font-semibold truncate">{name}</p>
+                          {(selectedSize || selectedColor) && (
+                            <p className="text-sm text-gray-500">
+                              {selectedSize && `Size: ${selectedSize} `}
+                              {selectedColor && ` • Color: ${selectedColor}`}
+                            </p>
+                          )}
+                          <p className="text-gray-700 mt-1">
+                            ₦{price.toLocaleString()} x {qty}
                           </p>
-                        )}
-                        <p className="text-gray-700 mt-1">
-                          ₦{price.toLocaleString()} x {qty}
+                        </div>
+                        <p className="font-semibold">
+                          ₦{(price * qty).toLocaleString()}
                         </p>
-                      </div>
-                      <p className="font-semibold">
-                        ₦{(price * qty).toLocaleString()}
-                      </p>
-                    </li>
-                  )
-                )}
-              </ul>
+                      </li>
+                    )
+                  )}
+                </ul>
 
-              <div className="border-t pt-4 space-y-2">
-                <div className="flex justify-between text-gray-700">
-                  Subtotal: <span>₦{productsTotal.toLocaleString()}</span>
+                <div className="border-t pt-4 space-y-2 border-gray-300">
+                  <div className="flex justify-between text-gray-700">
+                    Subtotal: <span>₦{productsTotal.toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between text-gray-700">
+                    Shipping Fee: <span>₦{shippingCost.toLocaleString()}</span>
+                  </div>
+                  {productsTotal >= FREE_SHIPPING_THRESHOLD && (
+                    <label className="inline-flex items-center gap-2 cursor-pointer text-gray-700">
+                      <input
+                        type="checkbox"
+                        name="freeShipping"
+                        checked={orderInfo.freeShipping}
+                        onChange={handleChange}
+                        className="w-5 h-5"
+                      />
+                      <span className="text-sm">
+                        Apply Free Shipping (Orders over ₦
+                        {FREE_SHIPPING_THRESHOLD.toLocaleString()})
+                      </span>
+                    </label>
+                  )}
+                  <div className="flex justify-between font-bold text-lg text-gray-900 border-t pt-2 border-gray-300">
+                    Total: <span>₦{grandTotal.toLocaleString()}</span>
+                  </div>
                 </div>
-                <div className="flex justify-between text-gray-700">
-                  Shipping Fee: <span>₦{shippingCost.toLocaleString()}</span>
-                </div>
-                {productsTotal >= FREE_SHIPPING_THRESHOLD && (
-                  <label className="inline-flex items-center gap-2 cursor-pointer text-gray-700">
-                    <input
-                      type="checkbox"
-                      name="freeShipping"
-                      checked={orderInfo.freeShipping}
-                      onChange={handleChange}
-                      className="w-5 h-5"
-                    />
-                    <span className="text-sm">
-                      Apply Free Shipping (Orders over ₦
-                      {FREE_SHIPPING_THRESHOLD.toLocaleString()})
-                    </span>
-                  </label>
-                )}
-                <div className="flex justify-between font-bold text-lg text-gray-900 border-t pt-2">
-                  Total: <span>₦{grandTotal.toLocaleString()}</span>
-                </div>
-              </div>
-            </>
-          )}
-        </aside>
-      </div>
-    </main>
+              </>
+            )}
+          </aside>
+        </div>
+      </main>
+      {/* FOOTER */}
+      <footer className="mt-3 bg-gray-900 text-gray-400 text-center text-sm py-4">
+        <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
+          <p>© 2025 UnifyStore — All Rights Reserved.</p>
+          {/* <div className="flex space-x-6">
+            <a href="#" className="hover:text-white transition-colors">
+              Privacy Policy
+            </a>
+            <a href="#" className="hover:text-white transition-colors">
+              Terms of Service
+            </a>
+            <a href="#" className="hover:text-white transition-colors">
+              Contact Us
+            </a>
+          </div> */}
+        </div>
+      </footer>
+    </>
   );
 }
 
@@ -1209,7 +1283,7 @@ function InputField({ label, name, value, onChange, type = "text" }) {
         required
         value={value}
         onChange={onChange}
-        className="border border-gray-300 p-1.5 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+        className="border border-gray-300 p-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
       />
     </div>
   );
@@ -1220,7 +1294,7 @@ function TextareaField({ label, name, value, onChange }) {
     <div className="flex flex-col w-full">
       <label className="mb-1 font-medium text-gray-700">{label}</label>
       <textarea
-      placeholder="Notes about your order, e.g special notes for delivery"
+        placeholder="Notes about your order, e.g special notes for delivery"
         name={name}
         rows={3}
         value={value}

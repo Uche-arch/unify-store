@@ -162,16 +162,40 @@ import HomePageClient from "./HomePageClient";
 export default async function HomePage() {
   await connectDB();
 
-  const hotSales = await Product.find({
-    oldPrice: { $exists: true, $ne: null },
-  })
-    .sort({ createdAt: -1 })
-    .limit(6)
-    .lean();
+  // const hotSales = await Product.find({
+  //   oldPrice: { $exists: true, $ne: null },
+  // })
+  //   .sort({ createdAt: -1 })
+  //   .limit(6)
+  //   .lean();
 
-  const popularProducts = await Product.find({ popular: true })
-    .sort({ createdAt: -1 })
-    .lean();
+  const hotSales = await Product.aggregate([
+    {
+      $match: {
+        oldPrice: { $exists: true, $ne: null },
+      },
+    },
+    {
+      $sample: { size: 6 },
+    },
+  ]);
+
+
+  // const popularProducts = await Product.find({ popular: true })
+  //   .sort({ createdAt: -1 })
+  //   .lean();
+
+  // function clean(products) {
+  //   return products.map((p) => ({
+  //     ...p,
+  //     _id: p._id.toString(),
+  //   }));
+  // }
+
+  const popularProducts = await Product.aggregate([
+    { $match: { popular: true } },
+    { $sample: { size: 20 } }, // number of products you want
+  ]);
 
   function clean(products) {
     return products.map((p) => ({
@@ -179,6 +203,7 @@ export default async function HomePage() {
       _id: p._id.toString(),
     }));
   }
+
 
   return (
     <HomePageClient

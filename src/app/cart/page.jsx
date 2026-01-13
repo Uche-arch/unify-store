@@ -661,16 +661,265 @@
 //   );
 // }
 
+// "use client";
+
+// import { useCart } from "@/app/context/cartContext";
+// import Link from "next/link";
+// import { useState } from "react";
+// import Header from "@/app/components/Header";
+
+// export default function CartPage() {
+//   const { cart, updateQty, removeFromCart, clearCart } = useCart();
+//   const [useFreeShipping, setUseFreeShipping] = useState(false);
+
+//   const productTotal = cart.reduce(
+//     (acc, item) => acc + item.price * item.qty,
+//     0
+//   );
+
+//   const shippingFee = productTotal > 50000 && useFreeShipping ? 0 : 1500;
+//   const finalTotal = productTotal + shippingFee;
+
+//   /* EMPTY CART */
+//   if (cart.length === 0)
+//     return (
+//       <main className="min-h-screen flex flex-col">
+//         <Header />
+//         <div className="flex-grow flex flex-col items-center justify-center px-4">
+//           <h2 className="text-xl md:text-3xl font-bold mb-6">
+//             Your Cart is Empty
+//           </h2>
+
+//           <Link
+//             href="/shop"
+//             className="bg-green-600 text-white py-2.5 px-7 rounded shadow hover:bg-green-700 transition"
+//           >
+//             Go to Shop
+//           </Link>
+//         </div>
+//       </main>
+//     );
+
+//   return (
+//     <main className="min-h-screen flex flex-col">
+//       <Header />
+
+//       {/* PAGE CONTENT */}
+//       <div className="max-w-6xl mx-auto w-full px-4 md:px-6 pt-6">
+//         <h1 className="text-xl md:text-4xl mb-4 md:mb-10">Shopping Cart</h1>
+
+//         {/* DESKTOP TABLE */}
+//         {/* <div className="hidden md:block bg-white rounded overflow-hidden border border-bg-gray"> */}
+//         <div className="hidden md:block bg-white rounded overflow-hidden border border-gray-200">
+//           <table className="w-full">
+//             <thead>
+//               <tr className="bg-gray-100 border-b border-gray-200 text-gray-700">
+//                 <th className="text-left p-5">Product</th>
+//                 <th className="text-left p-5">Price</th>
+//                 <th className="text-left p-5">Qty</th>
+//                 <th className="text-left p-5">Subtotal</th>
+//                 <th className="p-5 text-center">Remove</th>
+//               </tr>
+//             </thead>
+
+//             <tbody>
+//               {cart.map(
+//                 ({
+//                   variantId,
+//                   name,
+//                   price,
+//                   qty,
+//                   image,
+//                   selectedSize,
+//                   selectedColor,
+//                 }) => (
+//                   <tr key={variantId} className="border-b border-gray-200">
+//                     <td className="p-5 flex items-center gap-5">
+//                       <img
+//                         src={image}
+//                         className="w-20 h-20 rounded-xl object-cover border"
+//                       />
+//                       <div>
+//                         <p className="font-semibold">{name}</p>
+//                         {(selectedSize || selectedColor) && (
+//                           <p className="text-sm text-gray-500">
+//                             {selectedSize && `Size: ${selectedSize}`}
+//                             {selectedColor && ` • Color: ${selectedColor}`}
+//                           </p>
+//                         )}
+//                       </div>
+//                     </td>
+
+//                     <td className="p-5">₦{price.toLocaleString()}</td>
+
+//                     <td className="p-5">
+//                       <input
+//                         // disabled={true}
+//                         type="number"
+//                         min={1}
+//                         value={qty}
+//                         onChange={(e) =>
+//                           updateQty(variantId, Number(e.target.value) || 1)
+//                         }
+//                         className="border rounded border-gray-500 p-2 w-20 text-center bg-gray-50"
+//                       />
+//                     </td>
+
+//                     <td className="p-5 font-semibold">
+//                       ₦{(price * qty).toLocaleString()}
+//                     </td>
+
+//                     <td className="p-5 text-center">
+//                       <button
+//                         onClick={() => removeFromCart(variantId)}
+//                         className="text-red-500 hover:text-red-700 text-xl"
+//                       >
+//                         <i className="fas fa-trash"></i>
+//                       </button>
+//                     </td>
+//                   </tr>
+//                 )
+//               )}
+//             </tbody>
+//           </table>
+//         </div>
+
+//         {/* MOBILE CARDS */}
+//         <div className="md:hidden flex flex-col gap-4">
+//           {cart.map((item) => (
+//             <div
+//               key={item.variantId}
+//               className="bg-white rounded border border-gray-200 p-4 shadow"
+//             >
+//               <div className="flex gap-4">
+//                 <img
+//                   src={item.image}
+//                   className="w-24 h-24 rounded-lg object-cover border"
+//                 />
+
+//                 <div className="flex-1">
+//                   <p className="font-semibold">{item.name}</p>
+
+//                   {(item.selectedSize || item.selectedColor) && (
+//                     <p className="text-sm text-gray-600">
+//                       {item.selectedSize && `Size: ${item.selectedSize}`}
+//                       {item.selectedColor && ` • Color: ${item.selectedColor}`}
+//                     </p>
+//                   )}
+
+//                   <p className="text-lg font-bold text-green-700 mt-1">
+//                     ₦{item.price.toLocaleString()}
+//                   </p>
+//                 </div>
+//               </div>
+
+//               <div className="flex items-center justify-between mt-4">
+//                 <input
+//                   type="number"
+//                   min={1}
+//                   value={item.qty}
+//                   onChange={(e) =>
+//                     updateQty(item.variantId, Number(e.target.value) || 1)
+//                   }
+//                   className="border border-gray-200 rounded-lg p-1 w-15 text-center bg-gray-50"
+//                 />
+
+//                 <button
+//                   onClick={() => removeFromCart(item.variantId)}
+//                   className="text-red-500"
+//                 >
+//                   <i className="fas fa-trash"></i>
+//                 </button>
+//               </div>
+//             </div>
+//           ))}
+//         </div>
+
+//         {/* TOTALS */}
+//         <div className="mt-8 bg-white border border-gray-200 rounded p-5">
+//           <p className="text-lg font-semibold">
+//             Products Total: ₦{productTotal.toLocaleString()}
+//           </p>
+
+//           {productTotal > 50000 && (
+//             <label className="flex items-center gap-2 mt-3">
+//               <input
+//                 type="checkbox"
+//                 checked={useFreeShipping}
+//                 onChange={(e) => setUseFreeShipping(e.target.checked)}
+//                 className="w-5 h-5"
+//               />
+//               <span className="text-green-700 font-medium">
+//                 Apply Free Shipping
+//               </span>
+//             </label>
+//           )}
+
+//           <p className="mt-3">
+//             Shipping Fee:{" "}
+//             <span className="font-semibold">
+//               {shippingFee === 0 ? "₦0 (Free)" : `₦${shippingFee}`}
+//             </span>
+//           </p>
+
+//           <p className="text-xl md:text-4xl font-extrabold mt-5">
+//             Total: ₦{finalTotal.toLocaleString()}
+//           </p>
+//         </div>
+
+//         {/* ACTIONS */}
+//         <div className="flex flex-col sm:flex-row gap-4 mt-8">
+//           <button
+//             onClick={clearCart}
+//             className="bg-red-500 text-white py-2 px-6 rounded font-semibold hover:bg-red-600"
+//           >
+//             Clear Cart
+//           </button>
+
+//           <Link
+//             href="/checkout"
+//             className="bg-green-600 text-white py-3 px-10 rounded font-semibold text-center hover:bg-green-700"
+//           >
+//             Proceed to Checkout
+//           </Link>
+//         </div>
+//       </div>
+//     </main>
+//   );
+// }
+
+
+
 "use client";
 
 import { useCart } from "@/app/context/cartContext";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "@/app/components/Header";
+import { useToast } from "@/app/context/toastContext";
+import { useModal } from "@/app/context/modalContext";
+
+
 
 export default function CartPage() {
   const { cart, updateQty, removeFromCart, clearCart } = useCart();
   const [useFreeShipping, setUseFreeShipping] = useState(false);
+
+  const { showToast } = useToast();
+  const { openModal } = useModal();
+
+
+  // Local state for input values keyed by variantId
+  const [inputValues, setInputValues] = useState({});
+
+  // Initialize inputValues when cart changes
+  useEffect(() => {
+    const initialInputs = {};
+    cart.forEach(({ variantId, qty }) => {
+      initialInputs[variantId] = qty.toString();
+    });
+    setInputValues(initialInputs);
+  }, [cart]);
 
   const productTotal = cart.reduce(
     (acc, item) => acc + item.price * item.qty,
@@ -700,6 +949,45 @@ export default function CartPage() {
       </main>
     );
 
+  // function handleInputChange(variantId, val) {
+  //   if (val === "" || /^\d+$/.test(val)) {
+  //     setInputValues((prev) => ({ ...prev, [variantId]: val }));
+
+  //     if (val !== "") {
+  //       updateQty(variantId, Number(val));
+  //     }
+  //   }
+  // }
+
+  function handleInputChange(variantId, val) {
+    // Allow only digits or empty
+    if (!/^\d*$/.test(val)) return;
+
+    const item = cart.find((i) => i.variantId === variantId);
+    if (!item) return;
+
+    // If exceeds stock → toast + block
+    if (val !== "" && Number(val) > item.stock) {
+      // showToast(`Only ${item.stock} left in stock`);
+      openModal(`Only ${item.stock} item(s) left in stock.`);
+
+      return;
+    }
+
+    setInputValues((prev) => ({ ...prev, [variantId]: val }));
+
+    // Update cart qty (numeric)
+    // updateQty(variantId, val === "" ? 0 : Number(val));
+
+    if (val !== "") {
+      updateQty(variantId, Number(val));
+    }
+
+
+    // console.log(item);
+  }
+
+
   return (
     <main className="min-h-screen flex flex-col">
       <Header />
@@ -709,7 +997,6 @@ export default function CartPage() {
         <h1 className="text-xl md:text-4xl mb-4 md:mb-10">Shopping Cart</h1>
 
         {/* DESKTOP TABLE */}
-        {/* <div className="hidden md:block bg-white rounded overflow-hidden border border-bg-gray"> */}
         <div className="hidden md:block bg-white rounded overflow-hidden border border-gray-200">
           <table className="w-full">
             <thead>
@@ -730,6 +1017,7 @@ export default function CartPage() {
                   price,
                   qty,
                   image,
+                  stock,
                   selectedSize,
                   selectedColor,
                 }) => (
@@ -753,14 +1041,48 @@ export default function CartPage() {
                     <td className="p-5">₦{price.toLocaleString()}</td>
 
                     <td className="p-5">
+                      {/* <input
+                        type="number"
+                        min={1}
+                        value={inputValues[variantId] || ""}
+                        onChange={(e) =>
+                          handleInputChange(variantId, e.target.value)
+                        }
+                        className="border rounded border-gray-500 p-2 w-20 text-center bg-gray-50"
+                        placeholder="Qty"
+                      /> */}
                       <input
                         type="number"
                         min={1}
-                        value={qty}
+                        value={inputValues[variantId] || ""}
                         onChange={(e) =>
-                          updateQty(variantId, Number(e.target.value) || 1)
+                          handleInputChange(variantId, e.target.value)
                         }
-                        className="border rounded-lg p-2 w-20 text-center bg-gray-50"
+                        onBlur={() => {
+                          const value = inputValues[variantId];
+                          const item = cart.find(
+                            (i) => i.variantId === variantId
+                          );
+                          if (!item) return;
+
+                          if (!value || Number(value) < 1) {
+                            setInputValues((prev) => ({
+                              ...prev,
+                              [variantId]: "1",
+                            }));
+                            updateQty(variantId, 1);
+                          }
+
+                          if (Number(value) > item.stock) {
+                            setInputValues((prev) => ({
+                              ...prev,
+                              [variantId]: item.stock.toString(),
+                            }));
+                            updateQty(variantId, item.stock);
+                          }
+                        }}
+                        className="border rounded border-gray-500 p-2 w-20 text-center bg-gray-50"
+                        placeholder="Qty"
                       />
                     </td>
 
@@ -816,11 +1138,31 @@ export default function CartPage() {
                 <input
                   type="number"
                   min={1}
-                  value={item.qty}
+                  value={inputValues[item.variantId] || ""}
                   onChange={(e) =>
-                    updateQty(item.variantId, Number(e.target.value) || 1)
+                    handleInputChange(item.variantId, e.target.value)
                   }
+                  onBlur={() => {
+                    const value = inputValues[item.variantId];
+
+                    if (!value || Number(value) < 1) {
+                      setInputValues((prev) => ({
+                        ...prev,
+                        [item.variantId]: "1",
+                      }));
+                      updateQty(item.variantId, 1);
+                    }
+
+                    if (Number(value) > item.stock) {
+                      setInputValues((prev) => ({
+                        ...prev,
+                        [item.variantId]: item.stock.toString(),
+                      }));
+                      updateQty(item.variantId, item.stock);
+                    }
+                  }}
                   className="border border-gray-200 rounded-lg p-1 w-15 text-center bg-gray-50"
+                  placeholder="Qty"
                 />
 
                 <button

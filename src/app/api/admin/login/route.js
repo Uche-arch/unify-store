@@ -19,7 +19,7 @@ export async function POST(req) {
     }
 
     // Create admin token
-    const token = jwt.sign({ role: "admin" }, secret, { expiresIn: "7d" });
+    const token = jwt.sign({ role: "admin" }, secret, { expiresIn: "5h" });
 
     return Response.json({ token }, { status: 200 });
   } catch (err) {

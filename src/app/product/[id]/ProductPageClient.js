@@ -932,6 +932,10 @@
 //   return (
 //     <>
 //     <Header></Header>
+// <main className="max-w-6xl mx-auto p-4 sm:p-6 pb-0">
+// {
+//   /*  */
+// }
 //       <main className="max-w-6xl mx-auto p-4 sm:p-6">
 //         {/* Title + Category */}
 //         <div className="mb-4 sm:mb-6">
@@ -1139,7 +1143,6 @@
 //   );
 // }
 
-
 "use client";
 
 import { useState } from "react";
@@ -1166,7 +1169,6 @@ export default function ProductPageClient({
   const [qtyInput, setQtyInput] = useState(product.stock > 0 ? "1" : "0");
   const [qty, setQty] = useState(Number(qtyInput));
 
-
   function handleAdd() {
     if (product.sizes?.length > 0 && !selectedSize) {
       showToast("Please select a size");
@@ -1184,7 +1186,7 @@ export default function ProductPageClient({
       image: mainImage,
     });
 
-    showToast("Added to cart!");
+    // showToast("Added to cart!");
   }
 
   // Prepare otherProducts filtered to avoid duplicates and exclude current product
@@ -1201,125 +1203,134 @@ export default function ProductPageClient({
 
   return (
     <>
-      <Header></Header>
-      <main className="max-w-6xl mx-auto p-4 sm:p-6">
-        {/* Title + Category */}
-        <div className="mb-4 sm:mb-6">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight">
-            {product.name}
-          </h1>
-          <p className="text-green-600 font-medium mt-1 text-sm sm:text-base">
-            {product.category}
-          </p>
-        </div>
+      <div className="min-h-screen flex flex-col">
+        <Header></Header>
+        <main className="flex-grow max-w-6xl mx-auto p-4 sm:p-6 pb-0">
+          {/* /* Title + Category */}
+          <div className="mb-4 sm:mb-6">
+            <h1 className="text-2xl sm:text-2xl md:text-4xl font-semibold tracking-tight">
+              {product.name}
+            </h1>
+            <p className="text-green-600 font-medium mt-1 text-sm sm:text-base">
+              {product.category}
+            </p>
+          </div>
 
-        {/* Main layout */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10">
-          {/* LEFT — Image Section */}
-          <div>
-            <div
-              className="w-full overflow-hidden  border cursor-pointer"
-              onClick={() => setModalOpen(true)}
-            >
-              <img src={mainImage} className="w-full object-cover transition" />
-            </div>
-
-            <div className="flex gap-2 sm:gap-3 mt-4 sm:mt-5 overflow-x-auto pb-2">
-              {product.images?.map((img, index) => (
+          {/* Main layout */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10">
+            {/* LEFT — Image Section */}
+            <div>
+              <div
+                className="w-full overflow-hidden  border cursor-pointer"
+                onClick={() => setModalOpen(true)}
+              >
                 <img
-                  key={index}
-                  src={img}
-                  onClick={() => setMainImage(img)}
-                  className={`w-14 h-14 sm:w-20 sm:h-20 border object-cover cursor-pointer transition
+                  src={mainImage}
+                  className="w-full object-cover transition"
+                />
+              </div>
+
+              <div className="flex gap-2 sm:gap-3 mt-4 sm:mt-5 overflow-x-auto pb-2">
+                {product.images?.map((img, index) => (
+                  <img
+                    key={index}
+                    src={img}
+                    onClick={() => setMainImage(img)}
+                    className={`w-14 h-14 sm:w-20 sm:h-20  object-cover cursor-pointer transition
               ${
                 mainImage === img
                   ? "ring-2 ring-green-600 border-green-600"
                   : "opacity-80 hover:opacity-100"
               }
             `}
-                />
-              ))}
+                  />
+                ))}
+              </div>
             </div>
-          </div>
 
-          {/* RIGHT — Product Info */}
-          <div className="flex flex-col">
-            {/* Price */}
-            <div className="flex items-end gap-3 sm:gap-4 mb-4 sm:mb-6">
-              <p className="text-2xl sm:text-3xl md:text-4xl font-semibold text-green-700">
-                ₦{product.price.toLocaleString()}
+            {/* RIGHT — Product Info */}
+            <div className="flex flex-col">
+              {/* Price */}
+              <div className="flex items-end gap-3 sm:gap-4 mb-4 sm:mb-6">
+                <p className="text-xl md:text-3xl font-semibold text-green-700">
+                  ₦{product.price.toLocaleString()}
+                </p>
+
+                {product.oldPrice && (
+                  <p className="text-gray-400 line-through text-sm sm:text-xl">
+                    ₦{product.oldPrice.toLocaleString()}
+                  </p>
+                )}
+              </div>
+
+              {/* Description */}
+              <p className="text-gray-700 leading-relaxed mb-4 sm:mb-6 text-sm sm:text-base whitespace-pre-line">
+                {product.description}
               </p>
 
-              {product.oldPrice && (
-                <p className="text-gray-400 line-through text-lg sm:text-xl">
-                  ₦{product.oldPrice.toLocaleString()}
-                </p>
-              )}
-            </div>
+              {/* Size Selector */}
+              {product.sizes?.length > 0 && (
+                <div className="mb-4 sm:mb-5">
+                  <p className="font-semibold mb-1 sm:mb-2 text-sm sm:text-base">
+                    Size
+                  </p>
 
-            {/* Description */}
-            <p className="text-gray-700 leading-relaxed mb-4 sm:mb-6 text-sm sm:text-base">
-              {product.description}
-            </p>
-
-            {/* Size Selector */}
-            {product.sizes?.length > 0 && (
-              <div className="mb-4 sm:mb-5">
-                <p className="font-semibold mb-1 sm:mb-2 text-sm sm:text-base">
-                  Size
-                </p>
-
-                <div className="flex flex-wrap gap-2 sm:gap-3">
-                  {product.sizes.map((s) => (
-                    <button
-                      key={s}
-                      onClick={() => setSelectedSize(s)}
-                      className={`px-3 py-1 sm:px-4 sm:py-2 border rounded-lg transition text-xs sm:text-sm
+                  <div className="flex flex-wrap gap-2 sm:gap-3">
+                    {product.sizes.map((s) => (
+                      <button
+                        key={s}
+                        onClick={() => setSelectedSize(s)}
+                        className={`px-3 py-1 sm:px-4 sm:py-2 border rounded-lg transition text-xs sm:text-sm
                   ${
                     selectedSize === s
                       ? "border-green-600 bg-green-50"
                       : "hover:bg-gray-100"
                   }
                 `}
-                    >
-                      {s}
-                    </button>
-                  ))}
+                      >
+                        {s}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
 
-            {/* Color Selector */}
-            {product.colors?.length > 0 && (
-              <div className="mb-4 sm:mb-6">
-                <p className="font-semibold mb-1 sm:mb-2 text-sm sm:text-base">
-                  Color
-                </p>
+              {/* Color Selector */}
+              {product.colors?.length > 0 && (
+                <div className="mb-4 sm:mb-6">
+                  <p className="font-semibold mb-1 sm:mb-2 text-sm sm:text-base">
+                    Color
+                  </p>
 
-                <div className="flex flex-wrap gap-2 sm:gap-3">
-                  {product.colors.map((c) => (
-                    <button
-                      key={c}
-                      onClick={() => setSelectedColor(c)}
-                      className={`px-3 py-1 sm:px-4 sm:py-2 border rounded-lg transition text-xs sm:text-sm
+                  <div className="flex flex-wrap gap-2 sm:gap-3">
+                    {product.colors.map((c) => (
+                      <button
+                        key={c}
+                        onClick={() => setSelectedColor(c)}
+                        className={`px-3 py-1 sm:px-4 sm:py-2 border rounded-lg transition text-xs sm:text-sm
                   ${
                     selectedColor === c
                       ? "border-green-600 bg-green-50"
                       : "hover:bg-gray-100"
                   }
                 `}
-                    >
-                      {c}
-                    </button>
-                  ))}
+                      >
+                        {c}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+              {/* Important Notice */}
+              {/* <div className="mb-4 p-3 bg-yellow-100 border border-yellow-400 text-yellow-800 rounded-md text-xxs sm:text-base">
+              ⚠️ Please make sure to input the correct quantity here. You may
+              not be able to change it later in the checkout process.
+            </div> */}
 
-            {/* Quantity */}
-            <div className="flex items-center gap-3 sm:gap-4 mb-6 sm:mb-8">
-              <p className="font-semibold text-sm sm:text-base">Quantity:</p>
-              {/* <input
+              {/* Quantity */}
+              <div className="flex items-center gap-3 sm:gap-4 mb-6 sm:mb-8">
+                <p className="font-semibold text-sm sm:text-base">Quantity:</p>
+                {/* <input
                 type="number"
                 min={1}
                 max={product.stock}
@@ -1335,93 +1346,100 @@ export default function ProductPageClient({
                 className="border p-1 sm:p-2 w-16 sm:w-24 text-center rounded-lg text-sm sm:text-base"
               /> */}
 
-              <input
-                type="number"
-                min={1}
-                max={product.stock}
-                value={qtyInput}
-                onBlur={() => {
-                  if (qty < 1) {
-                    setQty(1);
-                    setQtyInput("1");
-                  }
-                  if (qty > product.stock) {
-                    setQty(product.stock);
-                    setQtyInput(product.stock.toString());
-                  }
-                }}
-                onChange={(e) => {
-                  let val = e.target.value;
-
-                  // Only allow digits
-                  if (/^\d*$/.test(val)) {
-                    // Enforce max
-                    if (val !== "" && Number(val) > product.stock) {
-                      showToast(`Only ${product.stock} left in stock`);
-                      return;
+                <input
+                  type="number"
+                  min={1}
+                  max={product.stock}
+                  value={qtyInput}
+                  onBlur={() => {
+                    if (qty < 1) {
+                      setQty(1);
+                      setQtyInput("1");
                     }
-                    setQtyInput(val);
-                    setQty(val === "" ? 0 : Number(val)); // keep numeric qty for other logic
-                  }
-                }}
-                className="border p-1 sm:p-2 w-16 sm:w-24 text-center rounded-lg text-sm sm:text-base"
-              />
-            </div>
+                    if (qty > product.stock) {
+                      setQty(product.stock);
+                      setQtyInput(product.stock.toString());
+                    }
+                  }}
+                  onChange={(e) => {
+                    let val = e.target.value;
 
-            {/* Add to Cart button */}
-            <button
-              disabled={product.stock === 0}
-              onClick={handleAdd}
-              className={`py-3 sm:py-4 rounded-lg text-base sm:text-lg font-semibold transition
+                    // Only allow digits
+                    if (/^\d*$/.test(val)) {
+                      // Enforce max
+                      if (val !== "" && Number(val) > product.stock) {
+                        showToast(`Only ${product.stock} left in stock`);
+                        return;
+                      }
+                      setQtyInput(val);
+                      setQty(val === "" ? 0 : Number(val)); // keep numeric qty for other logic
+                    }
+                  }}
+                  className="border p-1 sm:p-2 w-16 sm:w-24 text-center rounded-lg text-sm sm:text-base"
+                />
+              </div>
+
+              {/* Add to Cart button */}
+              <button
+                disabled={product.stock === 0}
+                onClick={handleAdd}
+                className={`py-2.5 md:py-3 rounded-lg text-base sm:text-lg font-semibold transition
           ${
             product.stock === 0
               ? "bg-gray-400 cursor-not-allowed"
               : "bg-green-600 hover:bg-green-700 text-white"
           }`}
-            >
-              {product.stock === 0 ? "Out of Stock" : "Add to Cart"}
-            </button>
+              >
+                {product.stock === 0 ? "Out of Stock" : "Add to Cart"}
+              </button>
 
-            {/* Safe Checkout */}
-            <div className="mt-6 sm:mt-8 p-3 sm:p-5 bg-gray-50">
-              <p className="text-base sm:text-lg flex items-center gap-2 justify-center">
-                <i className="fas fa-lock"></i> Safe & Secure Checkout
-              </p>
+              {/* Safe Checkout */}
+              <div className="mt-3 md:mt-8 p-3 sm:p-5 bg-gray-50">
+                <p className="text-base sm:text-lg flex items-center gap-2 justify-center">
+                  <i className="fas fa-lock"></i> Safe & Secure Checkout
+                </p>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Related Products + Other Products */}
-        {productsToShow.length > 0 && (
-          <section className="mt-16 sm:mt-20">
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold mb-6 sm:mb-8">
-              You May Also Like
-            </h2>
+          {/* Related Products + Other Products */}
+          {productsToShow.length > 0 && (
+            <section className="mt-16 sm:mt-20">
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold mb-6 sm:mb-8">
+                You May Also Like
+              </h2>
 
-            <div className="flex gap-4 sm:gap-6 overflow-x-auto pb-3 sm:pb-4 scroll-smooth hide-scrollbar">
-              {productsToShow.map((item) => (
-                <div
-                  key={item._id}
-                  className="w-[150px] sm:w-[200px] md:w-[300px] h-[240px] sm:h-[320px] md:h-[340px] bg-white shadow-sm flex-shrink-0 overflow-hidden"
-                >
-                  <Link href={`/product/${item._id}`}>
-                    <img
-                      src={item.images?.[0]}
-                      className="w-full h-[60%] object-cover"
-                    />
-                  </Link>
+              <div className="flex gap-4 sm:gap-6 overflow-x-auto scroll-smooth hide-scrollbar">
+                {productsToShow.map((item) => (
+                  <div
+                    key={item._id}
+                    className="w-[150px] sm:w-[200px] md:w-[300px] h-[240px] sm:h-[320px] md:h-[340px] bg-white  flex-shrink-0 overflow-hidden"
+                  >
+                    <Link href={`/product/${item._id}`}>
+                      <img
+                        src={item.images?.[0]}
+                        className="w-full h-[60%] object-cover rounded"
+                      />
+                    </Link>
 
-                  <div className="p-2 sm:p-3 flex flex-col justify-between h-[40%]">
-                    <div>
-                      <p className="font-semibold truncate text-sm sm:text-base">
-                        {item.name}
-                      </p>
-                      <p className="text-green-700 font-bold text-base sm:text-lg mt-1">
-                        ₦{item.price.toLocaleString()}
-                      </p>
-                    </div>
+                    <div className="p-2 sm:p-3 flex flex-col justify-between h-[40%]">
+                      <div>
+                        <p className="font-semibold truncate text-sm sm:text-base">
+                          {item.name}
+                        </p>
+                        <div className="flex items-center gap-2 mt-1">
+                          <p className="text-green-700 font-bold text-base sm:text-lg">
+                            ₦{item.price.toLocaleString()}
+                          </p>
+                          {item.oldPrice && (
+                            <span className="text-gray-400 line-through text-sm">
+                              ₦{item.oldPrice.toLocaleString()}
+                            </span>
+                          )}
+                        </div>
+                      </div>
 
-                    <button
+                      {/* <button
                       onClick={() => {
                         addToCart(item);
                         showToast("Added to cart");
@@ -1429,14 +1447,49 @@ export default function ProductPageClient({
                       className="mt-2 sm:mt-3 w-full bg-green-700 hover:bg-green-800 text-white py-1.5 sm:py-2 rounded-lg font-semibold text-sm sm:text-base"
                     >
                       Add to Cart
-                    </button>
+                    </button> */}
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
-      </main>
+                ))}
+              </div>
+            </section>
+          )}
+        </main>
+        {/* FOOTER
+      <footer className="mt-14 text-center text-sm text-gray-600">
+        © 2025 UnifyStore — All Rights Reserved.
+      </footer> */}
+        {/* FOOTER */}
+        <footer className="bg-gray-900 text-gray-400 text-center text-sm py-4">
+          {/* <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between"> */}
+          <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
+            <p>© 2025 UnifyStore — All Rights Reserved.</p>
+            {/* <div className="flex space-x-6 mt-3 md:mt-0">
+            <a
+              href="#"
+              className="hover:text-white transition-colors"
+              aria-label="Privacy Policy"
+            >
+              Privacy Policy
+            </a>
+            <a
+              href="#"
+              className="hover:text-white transition-colors"
+              aria-label="Terms of Service"
+            >
+              Terms of Service
+            </a>
+            <a
+              href="#"
+              className="hover:text-white transition-colors"
+              aria-label="Contact Us"
+            >
+              Contact Us
+            </a>
+          </div> */}
+          </div>
+        </footer>
+      </div>
     </>
   );
 }

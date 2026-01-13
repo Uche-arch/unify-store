@@ -126,9 +126,9 @@ export default function HomePageClient({ hotSales, popularProducts }) {
         </h2>
 
         <p className="text-sm md:text-lg max-w-xl mx-auto mb-5 md:mb-6 leading-relaxed">
-          Don't miss out on our limited-time offer — enjoy up to{" "}
+          Don't miss out on our limited-time offer - enjoy up to{" "}
           <span className="font-bold text-white md:text-white">50% OFF</span> on
-          selected premium items. Elevate your wardrobe with unbeatable deals
+          selected premium items. Elevate your style with unbeatable deals
           today!
         </p>
 

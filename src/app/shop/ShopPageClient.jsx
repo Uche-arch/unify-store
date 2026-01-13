@@ -26,7 +26,8 @@
 //   });
 
 //   return (
-//     <main className="min-h-screen flex flex-col pt-6">
+    // <main className="min-h-screen flex flex-col">
+// {/* //     <main className="min-h-screen flex flex-col pt-6">  */}
 //       <Header />
 
 //       {/* FILTER BAR

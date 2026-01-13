@@ -1458,9 +1458,12 @@
 //     </div>
 //   );
 // }
+
+
 "use client";
 
 import { useState, useEffect } from "react";
+import { isAdminTokenValid } from "@/app/lib/adminTokenValid";
 
 export default function AdminPage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -1496,10 +1499,19 @@ export default function AdminPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // ---------- Login ----------
-  useEffect(() => {
-    const token = localStorage.getItem("adminToken");
-    if (token) setIsLoggedIn(true);
-  }, []);
+ useEffect(() => {
+   const token = localStorage.getItem("adminToken");
+
+   if (!token || !isAdminTokenValid(token)) {
+     localStorage.removeItem("adminToken");
+     setIsLoggedIn(false);
+     return;
+   }
+
+   setIsLoggedIn(true);
+ }, []);
+
+
 
   async function handleLogin(e) {
     e.preventDefault();
@@ -1523,6 +1535,13 @@ export default function AdminPage() {
       setError("Network error");
     }
   }
+
+  function logout(message = "Session expired. Please log in again.") {
+    localStorage.removeItem("adminToken");
+    setIsLoggedIn(false);
+    setError(message);
+  }
+
 
   function addSize() {
     if (!sizeInput.trim()) return;
@@ -1563,6 +1582,10 @@ export default function AdminPage() {
     setLoadingProducts(true);
     try {
       const res = await fetch("/api/products");
+       if (res.status === 401) {
+         logout();
+         return;
+       }
       const data = await res.json();
       setProducts(data);
     } catch {
@@ -1577,6 +1600,10 @@ export default function AdminPage() {
     setLoadingOrders(true);
     try {
       const res = await fetch("/api/orders");
+       if (res.status === 401) {
+         logout();
+         return;
+       }
       const data = await res.json();
       setOrders(data);
     } catch {
@@ -1595,10 +1622,10 @@ export default function AdminPage() {
   }, [view, isLoggedIn]);
 
   // ---------- Logout ----------
-  function handleLogout() {
-    localStorage.removeItem("adminToken");
-    setIsLoggedIn(false);
-  }
+    function handleLogout() {
+      logout("Logged out");
+    }
+
 
   // ---------- Delete Product ----------
   async function handleDeleteProduct(id) {
