@@ -1203,9 +1203,9 @@ export default function ProductPageClient({
 
   return (
     <>
-      <div className="min-h-screen flex flex-col">
+      <div className="min-h-screen flex flex-col w-full overflow-x-hidden">
         <Header></Header>
-        <main className="flex-grow max-w-6xl mx-auto p-4 sm:p-6 pb-0">
+        <main className="flex-grow w-full max-w-6xl mx-auto p-4 sm:p-6 pb-0 min-w-0">
           {/* /* Title + Category */}
           <div className="mb-4 sm:mb-6">
             <h1 className="text-2xl sm:text-2xl md:text-4xl font-semibold tracking-tight">
