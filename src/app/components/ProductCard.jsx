@@ -626,7 +626,7 @@ export default function ProductCard({ product }) {
             />
           </svg>
         ) : (
-          <span className="text-xl leading-none font-medium">+</span>
+          <span className="leading-none font-medium"><i className="fas fa-shopping-cart"></i></span>
         )}
       </button>
     </div>

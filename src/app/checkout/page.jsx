@@ -878,6 +878,7 @@ import { useState } from "react";
 import { useCart } from "@/app/context/cartContext";
 import Confetti from "react-confetti";
 import { useWindowSize } from "react-use";
+import Header from "../components/Header";
 
 export default function CheckoutPage() {
   const { cart, clearCart } = useCart();
@@ -1072,8 +1073,9 @@ export default function CheckoutPage() {
 
   return (
     <>
+      <Header></Header>
       <main className="min-h-screen bg-gray-50 px-2 py-3">
-        <h1 className="text-2xl md:text-4xl font-semibold mb-4 text-gray-900">
+        <h1 className="text-2xl md:text-4xl font-semibold mb-4 text-gray-900 ml-2 md:ml-8">
           Checkout
         </h1>
         <div className="flex flex-col lg:flex-row gap-8">

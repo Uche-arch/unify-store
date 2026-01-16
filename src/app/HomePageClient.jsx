@@ -4,13 +4,15 @@ import ProductCard from "./components/ProductCard";
 // import { useCart } from "@/app/context/cartContext";
 import Header from "./components/Header";
 import Testimonials from "./components/client";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function HomePageClient({ hotSales, popularProducts }) {
   return (
     <main className="">
       <Header></Header>
       {/* <section className="bg-gray-900 text-white py-20 md:py-40 mb-10 text-center flex flex-col justify-center items-center"> */}
-      <section
+      {/* <section
         className="
   bg-gray-900 text-white
   py-20 md:py-40
@@ -40,6 +42,39 @@ export default function HomePageClient({ hotSales, popularProducts }) {
         >
           Shop Now
         </a>
+      </section> */}
+
+      <section className="w-full mb-10">
+        <div className="relative h-[50vh] md:h-[80vh] w-full">
+          <Image
+            src="/hero.png"
+            alt="Featured Product"
+            fill
+            priority
+            className="object-cover"
+          />
+
+          {/* Optional overlay
+          <div className="absolute inset-0 bg-black/40" />
+
+          {/* Optional content */}
+          <div className="relative z-10 flex h-full items-center justify-center text-center text-white px-4">
+            <div
+              className="hidden hidden md:block
+"
+            >
+              {/* <h1 className="text-2xl md:text-5xl font-bold mb-4">
+                New Collection
+              </h1>
+              <p className="text-sm md:text-lg mb-6">
+                Premium quality products just for you
+              </p> */}
+              <button className="bg-dark-900 text-black px-6 py-3 border rounded-lg font-semibold hover:bg-gray-200 transition absolute left-[75%] top-[85%]">
+                Shop Now
+              </button>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* FEATURES */}
@@ -108,7 +143,7 @@ export default function HomePageClient({ hotSales, popularProducts }) {
 
       {/* FLASH SALES HERO */}
       {/* <section className="bg-red-700 text-white p-12 rounded-xl my-24 text-center shadow-lg max-w-6xl mx-auto"> */}
-      <section
+      {/* <section
         className="
     bg-red-600 md:bg-red-700
     text-red-50 md:text-white
@@ -152,6 +187,19 @@ export default function HomePageClient({ hotSales, popularProducts }) {
         >
           Shop Now
         </a>
+      </section> */}
+
+      <section className="w-full flex justify-center my-20 md:my-24">
+        <div className="relative h-[40vh] w-[80vw]">
+          <Image
+            src="/promo.png"
+            alt="Hero image"
+            fill
+            priority
+            sizes="80vw"
+            className="object-cover"
+          />
+        </div>
       </section>
 
       {/* POPULAR */}
