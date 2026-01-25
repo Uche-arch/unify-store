@@ -2059,6 +2059,7 @@ export default function AdminClient() {
                       <img
                         key={i}
                         src={img}
+                        loading="lazy"
                         alt={`Preview ${i + 1}`}
                         className="h-20 w-20 md:h-24 md:w-24 rounded-lg object-cover border border-gray-300 shadow-sm"
                       />

@@ -1027,6 +1027,7 @@ export default function CartClient() {
                       <img
                         src={image}
                         className="w-20 h-20 rounded-xl object-cover"
+                        loading="lazy"
                       />
                       <div>
                         <p className="font-semibold">{name}</p>
@@ -1117,6 +1118,7 @@ export default function CartClient() {
                 <img
                   src={item.image}
                   className="w-24 h-24 rounded-lg object-cover border"
+                  loading="lazy"
                 />
 
                 <div className="flex-1">

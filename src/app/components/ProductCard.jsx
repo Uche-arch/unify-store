@@ -553,6 +553,7 @@ export default function ProductCard({ product }) {
             transition-transform duration-300
             group-hover:scale-105
           "
+          loading="lazy"
         />
         {/* DISCOUNT BADGE */}
     {discountPercentage > 0 && (

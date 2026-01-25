@@ -177,6 +177,7 @@
 import { useState } from "react";
 import ProductCard from "@/app/components/ProductCard";
 import Header from "@/app/components/Header";
+import Image from 'next/image'
 
 export default function ShopPageClient({ products }) {
   const [search, setSearch] = useState("");

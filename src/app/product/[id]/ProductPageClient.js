@@ -1227,6 +1227,7 @@ export default function ProductPageClient({
                 <img
                   src={mainImage}
                   className="w-full object-cover transition"
+                  loading="lazy"
                 />
               </div>
 
@@ -1237,6 +1238,7 @@ export default function ProductPageClient({
                     src={img}
                     onClick={() => setMainImage(img)}
                     className={`w-14 h-14 sm:w-20 sm:h-20  object-cover cursor-pointer transition
+                      loading="lazy"
               ${
                 mainImage === img
                   ? "ring-2 ring-green-600 border-green-600"
@@ -1419,6 +1421,7 @@ export default function ProductPageClient({
                       <img
                         src={item.images?.[0]}
                         className="w-full h-[60%] object-cover rounded"
+                        loading="lazy"
                       />
                     </Link>
 

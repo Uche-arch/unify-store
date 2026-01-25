@@ -1203,6 +1203,7 @@ export default function CheckoutClient() {
                           src={image}
                           alt={name}
                           className="w-16 h-16 object-cover rounded-md"
+                          loading="lazy"
                         />
                         <div className="flex-1">
                           <p className="font-semibold truncate">{name}</p>
