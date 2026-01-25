@@ -2,27 +2,27 @@ export default function Testimonials() {
   const testimonials = [
     {
       id: 1,
-      name: "Amina Yusuf",
+      name: "Patience Okon",
       avatar: "/avatars/amina.jpg", // Replace with real image URLs or placeholders
       quote:
-        "Unifystore never disappoints! Great quality and super-fast delivery. Highly recommended!",
+        "This store exceeded my expectations. Quality is top-notch and delivery was quick.",
       title: "Verified Buyer",
     },
     {
       id: 2,
-      name: "John Okafor",
+      name: "Blessing Adebayo",
       avatar: "/avatars/john.jpg",
       quote:
-        "I love the variety of fashion items here. The customer service is top-notch too.",
-      title: "Happy Customer",
+        "Affordable prices and genuine products. I highly recommend UnifyStore.",
+      title: "Returning Customer",
     },
     {
       id: 3,
-      name: "Ngozi Chukwu",
+      name: "Daniel Eze",
       avatar: "/avatars/ngozi.jpg",
       quote:
-        "Shopping here has been a breeze — easy navigation, smooth checkout, and excellent products.",
-      title: "Loyal Shopper",
+        "From browsing to delivery, everything was seamless. Great experience overall.",
+      title: "Satisfied Customer",
     },
   ];
 

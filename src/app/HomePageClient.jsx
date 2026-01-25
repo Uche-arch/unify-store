@@ -1,5 +1,5 @@
 "use client";
-
+import { useState, useEffect } from "react"; // 1. Added missing imports
 import ProductCard from "./components/ProductCard";
 // import { useCart } from "@/app/context/cartContext";
 import Header from "./components/Header";
@@ -7,42 +7,39 @@ import Testimonials from "./components/client";
 import Image from "next/image";
 import Link from "next/link";
 
+
+
 export default function HomePageClient({ hotSales, popularProducts }) {
+// 2. Move the state and logic directly into the component body
+  const [timeLeft, setTimeLeft] = useState({ hours: 0, minutes: 0, seconds: 0 });
+
+  useEffect(() => {
+    const calculateTimeLeft = () => {
+      const now = new Date();
+      const midnight = new Date();
+      midnight.setHours(23, 59, 59, 999);
+
+      const diff = midnight - now;
+
+      if (diff > 0) {
+        setTimeLeft({
+          hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
+          minutes: Math.floor((diff / 1000 / 60) % 60),
+          seconds: Math.floor((diff / 1000) % 60),
+        });
+      }
+    };
+
+    const timer = setInterval(calculateTimeLeft, 1000);
+    return () => clearInterval(timer); 
+  }, []);
+
+  // 3. Define the helper function here so it's accessible below
+  const formatNum = (num) => num.toString().padStart(2, '0');
   return (
     <main className="">
       <Header></Header>
-      {/* <section className="bg-gray-900 text-white py-20 md:py-40 mb-10 text-center flex flex-col justify-center items-center"> */}
-      {/* <section
-        className="
-  bg-gray-900 text-white
-  py-20 md:py-40
-  px-4
-  mb-10
-  text-center
-  flex flex-col
-  justify-center
-  items-center
-"
-      >
-        <p className="text-sm md:text-base tracking-wide">
-          WELCOME TO UNIFYSTORE
-        </p>
-
-        <h2 className="text-2xl md:text-4xl font-bold mb-6 max-w-2xl">
-          Elevate Your Style With Premium Fashion
-        </h2>
-
-        <p className="text-gray-300 text-base md:text-lg mb-6 max-w-xl">
-          Discover trendy wear, quality materials, & timeless outfits.
-        </p>
-
-        <a
-          href="/shop"
-          className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-7 rounded shadow transition"
-        >
-          Shop Now
-        </a>
-      </section> */}
+      
 
       <section className="w-full mb-10">
         <div className="relative h-[50vh] md:h-[80vh] w-full">
@@ -54,24 +51,19 @@ export default function HomePageClient({ hotSales, popularProducts }) {
             className="object-cover"
           />
 
-          {/* Optional overlay
-          <div className="absolute inset-0 bg-black/40" />
-
+          
           {/* Optional content */}
           <div className="relative z-10 flex h-full items-center justify-center text-center text-white px-4">
             <div
               className="hidden hidden md:block
 "
             >
-              {/* <h1 className="text-2xl md:text-5xl font-bold mb-4">
-                New Collection
-              </h1>
-              <p className="text-sm md:text-lg mb-6">
-                Premium quality products just for you
-              </p> */}
-              <button className="bg-dark-900 text-black px-6 py-3 border rounded-lg font-semibold hover:bg-gray-200 transition absolute left-[75%] top-[85%]">
-                Shop Now
-              </button>
+             
+              <Link href="/shop">
+  <button className="bg-dark-900 text-black px-8 py-4 border rounded-lg font-bold cursor-pointer transition absolute left-[75%] top-[85%]">
+    Shop Now
+  </button>
+</Link>
             </div>
           </div>
         </div>
@@ -142,66 +134,61 @@ export default function HomePageClient({ hotSales, popularProducts }) {
       </section>
 
       {/* FLASH SALES HERO */}
-      {/* <section className="bg-red-700 text-white p-12 rounded-xl my-24 text-center shadow-lg max-w-6xl mx-auto"> */}
-      {/* <section
-        className="
-    bg-red-600 md:bg-red-700
-    text-red-50 md:text-white
-    px-5 py-8 md:p-12
-    rounded-xl
-    my-12 md:my-24
-    text-center
-    shadow-lg
-    max-w-6xl
-    mx-4 md:mx-auto
-  "
-      >
-        <h2 className="text-xl md:text-4xl font-extrabold mb-2 md:mb-3">
-          FLASH SALES ALERT!
-        </h2>
+<section className="relative overflow-hidden bg-gradient-to-br from-red-600 via-red-700 to-black text-white px-4 py-8 md:px-12 md:py-16 
+  rounded-2xl md:rounded-[2rem] 
+  my-6 md:my-16 text-center shadow-2xl max-w-6xl mx-4 md:mx-auto border border-white/10">
 
-        <p className="text-sm md:text-lg max-w-xl mx-auto mb-5 md:mb-6 leading-relaxed">
-          Don't miss out on our limited-time offer - enjoy up to{" "}
-          <span className="font-bold text-white md:text-white">50% OFF</span> on
-          selected premium items. Elevate your style with unbeatable deals
-          today!
-        </p>
+  {/* Decorative Glow Elements - Hidden on mobile to save performance/visual clutter */}
+  <div className="hidden md:block absolute top-0 left-0 w-64 h-64 bg-white/10 blur-[80px] -translate-x-1/2 -translate-y-1/2" />
+  <div className="hidden md:block absolute bottom-0 right-0 w-96 h-96 bg-red-500/20 blur-[100px] translate-x-1/4 translate-y-1/4" />
 
-        <a
-          href="/shop"
-          className="
-      inline-block
-      bg-gray-900 hover:bg-black
-      text-white
-      px-6 py-2.5 md:px-8 md:py-3
-      rounded-full
-      text-sm md:text-base
-      font-semibold
-      uppercase
-      tracking-wide
-      shadow-lg
-      hover:bg-gray-900
-      transition
-    "
-          aria-label="Shop the flash sales now"
-        >
-          Shop Now
-        </a>
-      </section> */}
+  <div className="relative z-10">
+    {/* Heading: Smaller and tighter on mobile */}
+    <h2 className="text-2xl sm:text-4xl md:text-6xl font-black mb-3 tracking-tighter uppercase italic leading-tight">
+      Flash Sales <span className="text-red-400">Alert!</span>
+    </h2>
 
-      <section className="w-full flex justify-center my-20 md:my-24">
-        <div className="relative h-[40vh] w-[80vw]">
-          <Image
-            src="/promo.png"
-            alt="Hero image"
-            fill
-            priority
-            sizes="80vw"
-            className="object-cover"
-          />
-        </div>
-      </section>
+    {/* Paragraph: Reduced max-width and bottom margin */}
+    <p className="text-sm md:text-lg max-w-prose mx-auto mb-6 text-red-100 font-light leading-snug px-2">
+      Don't miss out on our limited-time offer. Enjoy up to{" "}
+      <span className="font-bold text-white underline decoration-red-400 decoration-2 md:decoration-4 underline-offset-4">
+        50% OFF
+      </span>{" "}
+      on selected premium items.
+    </p>
 
+    {/* Button: Smaller padding for mobile */}
+    <a
+      href="/shop"
+      className="inline-block bg-white text-black px-6 py-2 md:px-10 md:py-4 rounded-full text-xs md:text-base font-bold uppercase tracking-widest transition-all hover:scale-105 active:scale-95"
+    >
+      Shop Now
+    </a>
+
+    {/* TIMER SECTION: Tightened gaps and smaller digits on small screens */}
+    <div className="flex justify-center gap-2 md:gap-6 mt-8 font-mono">
+      <div className="flex flex-col">
+        <span className="text-2xl sm:text-3xl md:text-5xl font-bold leading-none">{formatNum(timeLeft.hours)}</span>
+        <span className="text-[10px] md:text-xs uppercase text-red-300 mt-1">Hrs</span>
+      </div>
+      
+      <span className="text-xl md:text-4xl font-bold animate-pulse">:</span>
+      
+      <div className="flex flex-col">
+        <span className="text-2xl sm:text-3xl md:text-5xl font-bold leading-none">{formatNum(timeLeft.minutes)}</span>
+        <span className="text-[10px] md:text-xs uppercase text-red-300 mt-1">Min</span>
+      </div>
+      
+      <span className="text-xl md:text-4xl font-bold animate-pulse">:</span>
+      
+      <div className="flex flex-col">
+        <span className="text-2xl sm:text-3xl md:text-5xl font-bold leading-none">{formatNum(timeLeft.seconds)}</span>
+        <span className="text-[10px] md:text-xs uppercase text-red-300 mt-1">Sec</span>
+      </div>
+    </div>
+  </div>
+</section>
+      
       {/* POPULAR */}
       <section className="mb-12">
         <h3 className="text-2xl font-normal mb-6 text-center">Trending Now</h3>
@@ -219,20 +206,7 @@ export default function HomePageClient({ hotSales, popularProducts }) {
       <section className="mt-5 text-left px-4 md:px-9">
         <p className="mb-3">Follow Us</p>
         <div className="flex justify-start  gap-6 text-gray-600">
-          {/* <a
-            href="#"
-            className="hover:text-pink-600 transition-colors"
-            aria-label="Follow us on Instagram"
-          >
-            <i className="fab fa-instagram fa-lg"></i>
-          </a>
-          <a
-            href="#"
-            className="hover:text-blue-400 transition-colors"
-            aria-label="Follow us on Twitter"
-          >
-            <i className="fab fa-twitter fa-lg"></i>
-          </a> */}
+         
           <a
             href="#"
             className="hover:text-blue-700 transition-colors"
@@ -240,41 +214,23 @@ export default function HomePageClient({ hotSales, popularProducts }) {
           >
             <i className="fab fa-facebook-f fa-lg"></i>
           </a>
+           <a
+            href="#"
+            className="hover:text-blue-700 transition-colors"
+            aria-label="Follow us on Facebook"
+          >
+            <i className="fab fa-tiktok fa-lg"></i>
+          </a>
         </div>
       </section>
 
-      {/* FOOTER
-      <footer className="mt-14 text-center text-sm text-gray-600">
-        © 2025 UnifyStore — All Rights Reserved.
-      </footer> */}
+     
       {/* FOOTER */}
       <footer className="mt-6 bg-gray-900 text-gray-400 text-center text-sm py-4">
         {/* <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between"> */}
         <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
           <p>© 2025 UnifyStore — All Rights Reserved.</p>
-          {/* <div className="flex space-x-6 mt-3 md:mt-0">
-            <a
-              href="#"
-              className="hover:text-white transition-colors"
-              aria-label="Privacy Policy"
-            >
-              Privacy Policy
-            </a>
-            <a
-              href="#"
-              className="hover:text-white transition-colors"
-              aria-label="Terms of Service"
-            >
-              Terms of Service
-            </a>
-            <a
-              href="#"
-              className="hover:text-white transition-colors"
-              aria-label="Contact Us"
-            >
-              Contact Us
-            </a>
-          </div> */}
+          
         </div>
       </footer>
     </main>

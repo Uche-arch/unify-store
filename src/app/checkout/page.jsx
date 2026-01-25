@@ -874,6 +874,16 @@
 
 "use client";
 
+export const metadata = {
+  title: "Secure Checkout | UnifyStore",
+  description: "Complete your purchase securely at UnifyStore. We accept all major Nigerian bank transfers.",
+  // This tells Google NOT to show this page in search results
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
+
 import { useState } from "react";
 import { useCart } from "@/app/context/cartContext";
 import Confetti from "react-confetti";
@@ -1174,7 +1184,7 @@ export default function CheckoutPage() {
           </form>
 
           {/* Order Summary */}
-          <aside className="flex-1 bg-white p-6 md:p-8 rounded-lg shadow-md max-h-[min-content]">
+          <aside className="sticky top-[100px] flex-1 bg-white p-6 md:p-8 rounded-lg shadow-md h-fit">
             <h2 className="text-xl font-semibold mb-6 border-b pb-2 border-gray-300">
               Your Order
             </h2>
@@ -1200,7 +1210,7 @@ export default function CheckoutPage() {
                         <img
                           src={image}
                           alt={name}
-                          className="w-16 h-16 object-cover rounded-md border"
+                          className="w-16 h-16 object-cover rounded-md"
                         />
                         <div className="flex-1">
                           <p className="font-semibold truncate">{name}</p>

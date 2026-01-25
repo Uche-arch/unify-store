@@ -1221,7 +1221,7 @@ export default function ProductPageClient({
             {/* LEFT — Image Section */}
             <div>
               <div
-                className="w-full overflow-hidden  border cursor-pointer"
+                className="w-full overflow-hidden cursor-pointer"
                 onClick={() => setModalOpen(true)}
               >
                 <img

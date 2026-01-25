@@ -30,6 +30,17 @@
 // }
 
 
+export const metadata = {
+  title: "Shop All Shoes & Bags | UnifyStore Collection",
+  description: "Browse our full catalog of premium footwear and designer handbags. From trendy sneakers to elegant office bags, find the perfect match for your style at UnifyStore Nigeria.",
+  keywords: "buy shoes online, designer bags shop, sneakers collection, latest handbags, UnifyStore catalog",
+  openGraph: {
+    title: "Shop the Best Shoes & Bags at UnifyStore",
+    description: "Explore our latest arrivals in footwear and accessories. Fast delivery across Nigeria.",
+    type: "website",
+  },
+};
+
 export const dynamic = "force-dynamic";
 
 
@@ -38,18 +49,31 @@ import Product from "@/app/models/Product";
 import ShopPageClient from "./ShopPageClient";
 
 export default async function HomePage() {
-  await connectDB();
-  const products = await Product.find().sort({ createdAt: -1 }).lean();
+  try {
+    await connectDB();
+    
+    // Fetch products
+    const products = await Product.find().sort({ createdAt: -1 }).lean();
 
-  // Shuffle products randomly
-  const shuffledProducts = products.sort(() => Math.random() - 0.5);
+    // 1. FIXED THE SHUFFLE: 
+    // You were shuffling the array but still mapping the ORIGINAL 'products' array.
+    // Also, using [...products] ensures you don't mutate the original data unexpectedly.
+    const shuffledProducts = [...products].sort(() => Math.random() - 0.5);
 
-  const safeProducts = products.map((product) => ({
-    ...product,
-    _id: product._id.toString(),
-    createdAt: product.createdAt ? product.createdAt.toISOString() : null,
-    updatedAt: product.updatedAt ? product.updatedAt.toISOString() : null,
-  }));
+    // 2. DATA SERIALIZATION:
+    // We use 'shuffledProducts' here so the random order actually reaches the UI.
+    const safeProducts = shuffledProducts.map((product) => ({
+      ...product,
+      _id: product._id.toString(),
+      createdAt: product.createdAt ? product.createdAt.toISOString() : null,
+      updatedAt: product.updatedAt ? product.updatedAt.toISOString() : null,
+    }));
 
-  return <ShopPageClient products={safeProducts} />;
+    return <ShopPageClient products={safeProducts} />;
+    
+  } catch (error) {
+    console.error("Database error:", error);
+    // Return an empty array or a friendly error UI so the whole site doesn't crash
+    return <ShopPageClient products={[]} />;
+  }
 }

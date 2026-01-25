@@ -532,6 +532,9 @@ export default function ProductCard({ product }) {
     setLoading(true);
     router.push(`/product/${product._id}`);
   }
+  const discountPercentage = product.oldPrice 
+  ? Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100) 
+  : null;
 
   return (
     <div className="relative group p-3 sm:p-4">
@@ -551,6 +554,12 @@ export default function ProductCard({ product }) {
             group-hover:scale-105
           "
         />
+        {/* DISCOUNT BADGE */}
+    {discountPercentage > 0 && (
+      <div className="absolute top-2 left-2 bg-green-600 text-white text-[10px] sm:text-xs font-bold px-2 py-1 rounded shadow-md z-10">
+        -{discountPercentage}%
+      </div>
+    )}
       </Link>
 
       {/* PRODUCT INFO */}
@@ -591,8 +600,8 @@ export default function ProductCard({ product }) {
         title={outOfStock ? "Out of stock" : "View product"}
         aria-label="View product"
         className={`
-          absolute top-3 right-3 sm:top-4 sm:right-4
-          w-9 h-9 sm:w-10 sm:h-10
+          absolute top-5 right-5 sm:top-5 sm:right-5
+          w-8 h-8 sm:w-9 sm:h-9
           flex items-center justify-center
           rounded-full
           shadow-md
@@ -626,7 +635,7 @@ export default function ProductCard({ product }) {
             />
           </svg>
         ) : (
-          <span className="leading-none font-medium"><i className="fas fa-shopping-cart"></i></span>
+          <span className="leading-none font-small"><i className="fas fa-shopping-cart"></i></span>
         )}
       </button>
     </div>

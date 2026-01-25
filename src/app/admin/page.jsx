@@ -1462,6 +1462,20 @@
 
 "use client";
 
+export const metadata = {
+  title: "Admin Dashboard | UnifyStore",
+  // This is the "Stay Away" sign for Search Engines
+  robots: {
+    index: false,
+    follow: false,
+    nocache: true,
+    googleBot: {
+      index: false,
+      follow: false,
+    },
+  },
+};
+
 import { useState, useEffect } from "react";
 import { isAdminTokenValid } from "@/app/lib/adminTokenValid";
 

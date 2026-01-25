@@ -892,6 +892,16 @@
 
 "use client";
 
+export const metadata = {
+  title: "Your Cart | UnifyStore",
+  description: "Review your selected shoes and bags before proceeding to checkout. Secure your items now before they sell out!",
+  // Keep this hidden from search engines
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
+
 import { useCart } from "@/app/context/cartContext";
 import Link from "next/link";
 import { useState, useEffect } from "react";
@@ -1025,7 +1035,7 @@ export default function CartPage() {
                     <td className="p-5 flex items-center gap-5">
                       <img
                         src={image}
-                        className="w-20 h-20 rounded-xl object-cover border"
+                        className="w-20 h-20 rounded-xl object-cover"
                       />
                       <div>
                         <p className="font-semibold">{name}</p>
@@ -1182,7 +1192,7 @@ export default function CartPage() {
             Products Total: ₦{productTotal.toLocaleString()}
           </p>
 
-          {productTotal > 50000 && (
+          {/* {productTotal > 50000 && (
             <label className="flex items-center gap-2 mt-3">
               <input
                 type="checkbox"
@@ -1194,7 +1204,7 @@ export default function CartPage() {
                 Apply Free Shipping
               </span>
             </label>
-          )}
+          )} */}
 
           <p className="mt-3">
             Shipping Fee:{" "}

@@ -22,6 +22,28 @@ import { connectDB } from "@/app/lib/mongodb";
 import Product from "@/app/models/Product";
 import ProductPageClient from "./ProductPageClient";
 
+// This function fetches the product data specifically for SEO
+export async function generateMetadata({ params }) {
+  const { id } = params;
+  
+  // Fetch your product from your database/API
+  // const product = await getProduct(id); // Replace with your actual fetch logic
+  const product = await Product.findById(params.id).lean();
+
+
+  if (!product) {
+    return { title: "Product Not Found | UnifyStore" };
+  }
+
+  return {
+    title: `${product.name} - Buy Online`,
+    description: `Get this premium ${product.name} for only ₦${product.price.toLocaleString()}. Available now at UnifyStore with fast delivery.`,
+    openGraph: {
+      images: [product.images?.[0]],
+    },
+  };
+}
+
 export default async function ProductPage({ params }) {
   await connectDB();
 
