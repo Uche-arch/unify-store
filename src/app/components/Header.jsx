@@ -384,6 +384,22 @@ export default function Header() {
                 </span>
               )}
             </Link>
+            <Link   href="#"
+            className="hover:text-blue-700 transition-colors"
+            aria-label="Follow us on Facebook">
+              
+          
+          
+            <i className="fab fa-facebook-f fa-lg"></i>
+            </Link>
+            <Link   href="#"
+            className="hover:text-blue-700 transition-colors"
+            aria-label="Follow us on Facebook">
+              
+          
+          
+            <i className="fab fa-tiktok fa-lg"></i>
+            </Link>
           </nav>
 
           {/* MOBILE MENU BUTTON */}
@@ -424,6 +440,25 @@ export default function Header() {
                 </span>
               )}
             </Link>
+            <div className=" flex gap-8">
+               <Link   href="#"
+            className="hover:text-blue-700 transition-colors"
+            aria-label="Follow us on Facebook">
+              
+          
+          
+            <i className="fab fa-facebook-f fa-lg"></i>
+            </Link>
+            <Link   href="#"
+            className="hover:text-blue-700 transition-colors"
+            aria-label="Follow us on Facebook">
+              
+          
+          
+            <i className="fab fa-tiktok fa-lg"></i>
+            </Link>
+            </div>
+           
           </div>
         )}
       </header>

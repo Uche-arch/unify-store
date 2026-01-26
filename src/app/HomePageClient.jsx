@@ -6,7 +6,7 @@ import Header from "./components/Header";
 import Testimonials from "./components/client";
 import Image from "next/image";
 import Link from "next/link";
-
+import ShopNow from "./components/shop";
 
 
 export default function HomePageClient({ hotSales, popularProducts }) {
@@ -132,6 +132,8 @@ export default function HomePageClient({ hotSales, popularProducts }) {
           ))}
         </div>
       </section>
+      <ShopNow></ShopNow>
+
 
       {/* FLASH SALES HERO */}
 <section className="relative overflow-hidden bg-gradient-to-br from-red-600 via-red-700 to-black text-white px-4 py-8 md:px-12 md:py-16 
@@ -199,12 +201,16 @@ export default function HomePageClient({ hotSales, popularProducts }) {
           ))}
         </div>
       </section>
+      <ShopNow></ShopNow>
+
       {/* Testimonials */}
       <Testimonials></Testimonials>
+      {/* <ShopNow></ShopNow> */}
+
 
       {/* <section className="mt-16 text-left mx-9"> */}
       <section className="mt-5 text-left px-4 md:px-9">
-        <p className="mb-3">Follow Us</p>
+        <p className="mb-3">Stay Inspired</p>
         <div className="flex justify-start  gap-6 text-gray-600">
          
           <a
@@ -223,6 +229,7 @@ export default function HomePageClient({ hotSales, popularProducts }) {
           </a>
         </div>
       </section>
+
 
      
       {/* FOOTER */}

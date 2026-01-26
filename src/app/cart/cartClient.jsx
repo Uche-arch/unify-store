@@ -1117,7 +1117,7 @@ export default function CartClient() {
               <div className="flex gap-4">
                 <img
                   src={item.image}
-                  className="w-24 h-24 rounded-lg object-cover border"
+                  className="w-24 h-24 rounded-lg object-cover"
                   loading="lazy"
                 />
 
