@@ -3,6 +3,7 @@ import { CartProvider } from "./context/cartContext";
 import { ToastProvider } from "./context/toastContext";
 import { ModalProvider } from "./context/modalContext";
 import { Analytics } from "@vercel/analytics/react";
+import NextTopLoader from 'nextjs-toploader';
 
 import "./globals.css";
 
@@ -20,8 +21,14 @@ export const metadata = {
   title: "UnifyStore | Buy Quality Shoes & Bags Online in Nigeria",
   description: "UnifyStore is Nigeria's leading online shop for premium footwear and designer bags. Discover trendy sneakers, elegant heels, and luxury handbags with fast nationwide delivery.",
   keywords: "shoes, bags, sneakers, handbags, online shopping Nigeria, UnifyStore, fashion, footwear",
-  viewport: "width=device-width, initial-scale=1",
+  // viewport: "width=device-width, initial-scale=1",
   robots: "index, follow",
+};
+
+// 2. Add this new export for the viewport
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
 };
 
 export default function RootLayout({ children }) {
@@ -39,6 +46,17 @@ export default function RootLayout({ children }) {
         <link href="https://fonts.cdnfonts.com/css/satoshi" rel="stylesheet" />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        <NextTopLoader 
+          color="#1fa50d" // This is your emerald-800 hex code
+          initialPosition={0.08}
+          crawlSpeed={200}
+          height={3}
+          crawl={true}
+          showSpinner={false} // Keeping it "clean" and "minimal"
+          easing="ease"
+          speed={200}
+          shadow="0 0 10px #065f46,0 0 5px #065f46"
+        />
         <ToastProvider>
           <CartProvider>
             <ModalProvider>{children}</ModalProvider>
