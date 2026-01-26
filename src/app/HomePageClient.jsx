@@ -214,14 +214,14 @@ export default function HomePageClient({ hotSales, popularProducts }) {
         <div className="flex justify-start  gap-6 text-gray-600">
          
           <a
-            href="#"
+            href="https://www.facebook.com/profile.php?id=61582882441384"
             className="hover:text-blue-700 transition-colors"
             aria-label="Follow us on Facebook"
           >
             <i className="fab fa-facebook-f fa-lg"></i>
           </a>
            <a
-            href="#"
+            href="https://vm.tiktok.com/ZS91YoxMpJKhM-OjXNe/"
             className="hover:text-blue-700 transition-colors"
             aria-label="Follow us on Facebook"
           >

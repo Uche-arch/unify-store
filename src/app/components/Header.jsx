@@ -384,16 +384,18 @@ export default function Header() {
                 </span>
               )}
             </Link>
-            <Link   href="#"
-            className="hover:text-blue-700 transition-colors"
+            <Link   href="https://www.facebook.com/profile.php?id=61582882441384"
+            className="hover:text-green-600 transition-colors"
             aria-label="Follow us on Facebook">
               
           
           
             <i className="fab fa-facebook-f fa-lg"></i>
             </Link>
-            <Link   href="#"
-            className="hover:text-blue-700 transition-colors"
+
+
+            <Link   href="https://vm.tiktok.com/ZS91YoxMpJKhM-OjXNe/"
+            className="hover:text-green-600 transition-colors"
             aria-label="Follow us on Facebook">
               
           
@@ -440,17 +442,19 @@ export default function Header() {
                 </span>
               )}
             </Link>
-            <div className=" flex gap-8">
-               <Link   href="#"
-            className="hover:text-blue-700 transition-colors"
+            <div className=" flex gap-8 justify-end pr-3">
+               <Link   href="https://www.facebook.com/profile.php?id=61582882441384"
+            className="hover:text-green-600 transition-colors"
             aria-label="Follow us on Facebook">
               
           
           
             <i className="fab fa-facebook-f fa-lg"></i>
             </Link>
-            <Link   href="#"
-            className="hover:text-blue-700 transition-colors"
+
+
+            <Link   href="https://vm.tiktok.com/ZS91YoxMpJKhM-OjXNe/"
+            className="hover:text-green-600 transition-colors"
             aria-label="Follow us on Facebook">
               
           

@@ -994,7 +994,9 @@ export default function CartClient() {
       <Header />
 
       {/* PAGE CONTENT */}
-      <div className="max-w-6xl mx-auto w-full px-4 md:px-6 pt-6">
+      {/* <div className="max-w-6xl mx-auto w-full px-4 md:px-6 pt-6"> */}
+      <div className="max-w-6xl mx-auto w-full px-4 md:px-6 pt-6 flex flex-col flex-1">
+
         <h1 className="text-xl md:text-4xl mb-4 md:mb-10">Shopping Cart</h1>
 
         {/* DESKTOP TABLE */}
@@ -1211,8 +1213,10 @@ export default function CartClient() {
           </p>
         </div>
 
+            <div className="flex-grow" />
+
         {/* ACTIONS */}
-        <div className="flex flex-col sm:flex-row gap-4 mt-8">
+        <div className="flex flex-col sm:flex-row gap-4 mt-8 mb-2">
           <button
             onClick={clearCart}
             className="bg-red-500 text-white py-2 px-6 rounded font-semibold hover:bg-red-600"
