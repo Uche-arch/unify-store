@@ -1026,7 +1026,7 @@ export default function CheckoutClient() {
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 px-4">
         {/* {showConfetti && <Confetti width={width} height={height} />} */}
-        <div className="max-w-3xl w-full bg-white rounded shadow-lg p-5 text-center">
+        {/* <div className="max-w-3xl w-full bg-white rounded shadow-lg p-5 text-center">
           <h2 className="text-2xl font-bold text-green-700 mb-2">
             Order Received!
           </h2>
@@ -1068,7 +1068,68 @@ export default function CheckoutClient() {
           >
             Back to Shop
           </button>
-        </div>
+        </div> */}
+
+        <div className="max-w-3xl w-full bg-white rounded shadow-lg p-6 text-center mx-auto">
+  
+  <h2 className="text-3xl font-bold text-green-700 mb-4">
+    🎉 Order Received!
+  </h2>
+
+  <p className="mb-4 text-gray-700 text-lg">
+    Thank you,{" "}
+    <strong>
+      {orderInfo.firstName} {orderInfo.lastName}
+    </strong>!
+    <br />
+    Please complete a bank transfer using the details below to confirm your order.
+  </p>
+
+  {/* Payment Info Card */}
+  <div className="bg-gray-50 border border-gray-200 rounded p-4 mb-4 text-left text-gray-800">
+    <p className="font-semibold mb-1">Account Name: <span className="font-normal">John Doe</span></p>
+    <p className="font-semibold mb-1">Bank: <span className="font-normal">Access Bank</span></p>
+    <p className="font-semibold mb-1">
+      Account Number: <span className="font-mono">0123456789</span>
+      {/* Optional copy button */}
+      <button
+        onClick={() => navigator.clipboard.writeText("0123456789")}
+        className="ml-2 text-sm text-blue-600 hover:underline"
+      >
+        Copy
+      </button>
+    </p>
+    <p className="font-semibold mt-2">
+      Amount: <span className="text-xl text-green-700">₦{finalTotals.grandTotal.toLocaleString()}</span>
+    </p>
+  </div>
+
+  <p className="font-semibold mb-2">
+    Order ID:{" "}
+    <span className="font-mono bg-gray-100 px-2 py-1 rounded">
+      {shortOrderId}
+    </span>
+  </p>
+
+ <p className="mt-3 text-gray-600 text-sm leading-relaxed">
+  ⚠️ Please use your <strong>Order ID</strong> as the payment reference when making the transfer.
+  <br />
+  Your order will typically be shipped within <strong>3–5 working days</strong> after your payment is confirmed.
+</p>
+
+  <button
+    onClick={() => (window.location.href = "/shop")}
+    className="mt-6 bg-green-700 text-white px-6 py-3 rounded-md font-semibold hover:bg-green-800 transition"
+  >
+    Back to Shop
+  </button>
+
+  {/* Optional contact info */}
+  <p className="mt-4 text-sm text-gray-500">
+    For questions, contact us via <a mailto="email@gmail.com" className="text-blue-600 hover:underline">E-mail</a>.
+  </p>
+
+</div>
       </div>
     );
   }
