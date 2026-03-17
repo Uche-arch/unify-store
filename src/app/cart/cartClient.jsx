@@ -927,8 +927,8 @@ export default function CartClient() {
     0
   );
 
-  const shippingFee = productTotal > 50000 && useFreeShipping ? 0 : 1500;
-  const finalTotal = productTotal + shippingFee;
+  // const shippingFee = productTotal > 50000 && useFreeShipping ? 0 : 1500;
+  const finalTotal = productTotal
 
   /* EMPTY CART */
   if (cart.length === 0)
@@ -1183,34 +1183,28 @@ export default function CartClient() {
 
         {/* TOTALS */}
         <div className="mt-8 bg-white border border-gray-200 rounded p-5">
-          <p className="text-lg font-semibold">
-            Products Total: ₦{productTotal.toLocaleString()}
-          </p>
+            <p className="text-xl md:text-4xl font-extrabold">
+    Total: ₦{finalTotal.toLocaleString()}
+  </p>
+         
+           <p className="mt-3 text-gray-600">
+    Shipping is calculated at checkout based on your order.
+  </p>
 
-          {/* {productTotal > 50000 && (
-            <label className="flex items-center gap-2 mt-3">
-              <input
-                type="checkbox"
-                checked={useFreeShipping}
-                onChange={(e) => setUseFreeShipping(e.target.checked)}
-                className="w-5 h-5"
-              />
-              <span className="text-green-700 font-medium">
-                Apply Free Shipping
-              </span>
-            </label>
-          )} */}
+  {/* FREE SHIPPING DYNAMIC MESSAGE */}
+  {productTotal < 50000 && (
+    <p className="text-sm text-green-600 mt-1">
+      Add ₦{(50000 - productTotal).toLocaleString()} more to enjoy free shipping 
+    </p>
+  )}
 
-          <p className="mt-3">
-            Shipping Fee:{" "}
-            <span className="font-semibold">
-              {shippingFee === 0 ? "₦0 (Free)" : `₦${shippingFee}`}
-            </span>
-          </p>
+  {productTotal >= 50000 && (
+    <p className="text-sm text-green-600 mt-1">
+       You qualify for free shipping!
+    </p>
+  )}
 
-          <p className="text-xl md:text-4xl font-extrabold mt-5">
-            Total: ₦{finalTotal.toLocaleString()}
-          </p>
+          
         </div>
 
             <div className="flex-grow" />
