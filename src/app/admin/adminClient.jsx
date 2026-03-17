@@ -1668,6 +1668,35 @@ export default function AdminClient() {
     }
   }
 
+  // ---------- Delete Order ----------
+  async function handleDeleteOrder(id) {
+    if (!confirm("Are you sure you want to delete this order?")) return;
+
+    const token = localStorage.getItem("adminToken");
+
+    try {
+      const res = await fetch(`/api/orders/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        alert(data.error || "Failed to delete order");
+        return;
+      }
+
+      // Refresh orders
+      fetchOrders();
+      // setSelectedOrder(null);
+    } catch {
+      alert("Network error, try again.");
+    }
+  }
+
   // ---------- Update Order Status ----------
   async function updateOrderStatus(orderId, newStatus) {
     try {
@@ -2269,6 +2298,9 @@ export default function AdminClient() {
                       <th className="p-3 text-left border-b border-indigo-200 whitespace-nowrap">
                         Date
                       </th>
+                      <th className="p-3 text-left border-b border-indigo-200 whitespace-nowrap">
+                        Actions
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -2305,6 +2337,17 @@ export default function AdminClient() {
                         </td>
                         <td className="p-3 whitespace-nowrap text-gray-500 text-sm">
                           {new Date(order.createdAt).toLocaleDateString()}
+                        </td>
+                        <td className="p-3 whitespace-nowrap">
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation(); // VERY IMPORTANT (prevents modal opening)
+                              handleDeleteOrder(order._id);
+                            }}
+                            className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs font-semibold"
+                          >
+                            Delete
+                          </button>
                         </td>
                       </tr>
                     ))}
@@ -2466,6 +2509,13 @@ export default function AdminClient() {
                         className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold px-6 py-2 rounded-md transition"
                       >
                         Close
+                      </button>
+
+                      <button
+                        onClick={() => handleDeleteOrder(selectedOrder._id)}
+                        className="bg-red-500 hover:bg-red-600 text-white font-semibold px-6 py-2 rounded-md transition"
+                      >
+                        Delete Order
                       </button>
                     </div>
                   </div>
