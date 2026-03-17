@@ -36,3 +36,30 @@ export async function PATCH(req, { params }) {
     });
   }
 }
+
+export async function DELETE(req, { params }) {
+  const { id } = params;
+
+  try {
+    await connectDB();
+
+    const order = await Order.findById(id);
+
+    if (!order) {
+      return new Response(JSON.stringify({ error: "Order not found" }), {
+        status: 404,
+      });
+    }
+
+    await Order.findByIdAndDelete(id);
+
+    return new Response(
+      JSON.stringify({ message: "Order deleted successfully" }),
+      { status: 200 }
+    );  
+  } catch (err) {
+    return new Response(JSON.stringify({ error: err.message }), {
+      status: 500,
+    });
+  }
+}
