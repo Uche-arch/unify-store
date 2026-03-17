@@ -277,10 +277,37 @@ export default function ShopPageClient({ products }) {
       {/* PRODUCTS */}
       <section className="flex-grow px-0 md:px-6">
         {filtered.length === 0 ? (
-          <p className="text-center text-gray-600 text-lg mt-20">
-            Sorry, no products found matching your criteria.
-          </p>
-        ) : (
+  <div className="text-center text-gray-600 text-lg mt-20 px-4">
+    
+    {!search && !category && (
+      <p>No products available at the moment.</p>
+    )}
+
+    {search && !category && (
+      <p>
+        No products found for "<span className="font-semibold">{search}</span>".
+      </p>
+    )}
+
+    {!search && category && (
+      <p>
+        No products found in the <span className="font-semibold">{category}</span> category.
+      </p>
+    )}
+
+    {search && category && (
+      <p>
+        No products found for "<span className="font-semibold">{search}</span>" in the{" "}
+        <span className="font-semibold">{category}</span> category.
+      </p>
+    )}
+
+    <p className="text-sm text-gray-500 mt-2">
+  Try adjusting your search or browse other categories.
+</p>
+
+  </div>
+) : (
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-1">
             {filtered.map((product) => (
               <ProductCard key={product._id} product={product} />
